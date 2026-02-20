@@ -22,8 +22,8 @@ This plan outlines the steps to replace straight-line distance calculations with
 - [x] Task: Integrate API client into the main calculation loop (TDD - Green Phase) f1b225c
 - [x] Task: Conductor - User Manual Verification 'Phase 2: API Client and Core Logic' (Protocol in workflow.md)
 
-## Phase 3: Reporting and Validation
+## Phase 3: Reporting and Validation [checkpoint: baf1a74]
 - [x] Task: Update the Markdown table generator to include "Commute Time" da51aaf
-- [~] Task: Verify end-to-end flow with real search results
-- [ ] Task: Ensure code coverage for new modules is >80%
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Reporting and Validation' (Protocol in workflow.md)
+- [x] Task: Verify end-to-end flow with real search results baf1a74
+- [x] Task: Ensure code coverage for new modules is >80% baf1a74
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Reporting and Validation' (Protocol in workflow.md) baf1a74
