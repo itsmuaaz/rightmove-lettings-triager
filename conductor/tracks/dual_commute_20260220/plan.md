@@ -5,7 +5,8 @@ This plan outlines the steps to integrate Cycling commute times alongside Public
 ## Phase 1: TfL Client Enhancement
 - [x] Task: Research TfL API documentation for Cycling options (`cyclePreference`) to determine correct query parameters. 4a9aefe
 
-- [ ] Task: Update `TflClient` to support fetching cycling journey times (TDD - Red/Green).
+- [x] Task: Update `TflClient` to support fetching cycling journey times (TDD - Red/Green). 43c3240
+
     - Add `mode` parameter to `get_commute_time` or create `get_cycling_time`.
     - Implement logic for "Moderate" cycle preference.
 - [ ] Task: Verify updated client with unit tests covering both modes and error scenarios.
