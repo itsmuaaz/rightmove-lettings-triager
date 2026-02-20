@@ -2,7 +2,7 @@
 
 This plan outlines the steps to integrate Cycling commute times alongside Public Transport times in the search results.
 
-## Phase 1: TfL Client Enhancement
+## Phase 1: TfL Client Enhancement [checkpoint: 1c2cc4f]
 - [x] Task: Research TfL API documentation for Cycling options (`cyclePreference`) to determine correct query parameters. 4a9aefe
 
 - [x] Task: Update `TflClient` to support fetching cycling journey times (TDD - Red/Green). 43c3240
@@ -11,7 +11,7 @@ This plan outlines the steps to integrate Cycling commute times alongside Public
     - Implement logic for "Moderate" cycle preference.
 - [x] Task: Verify updated client with unit tests covering both modes and error scenarios. 6e46269
 
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: TfL Client Enhancement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: TfL Client Enhancement' (Protocol in workflow.md) 1c2cc4f
 
 ## Phase 2: Data Processing & Integration
 - [ ] Task: Update `main` loop in `rightmove_search.py` to fetch both Public Transport and Cycling times for each property.
