@@ -34,5 +34,12 @@ class TestCommuteCalculator(unittest.TestCase):
         self.assertIsNone(result['commute_time'])
         self.assertEqual(result['distance'], float('inf'))
 
+    def test_calculate_no_destination(self):
+        self.calculator.destination = None
+        prop = {'location': {'latitude': 51.5007, 'longitude': -0.1246}}
+        result = self.calculator.calculate(prop)
+        self.assertIsNone(result['commute_time'])
+        self.assertEqual(result['distance'], float('inf'))
+
 if __name__ == "__main__":
     unittest.main()

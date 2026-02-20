@@ -10,7 +10,7 @@ class CommuteCalculator:
         location = property_data.get('location', {})
         lat, lon = location.get('latitude'), location.get('longitude')
         
-        if not lat or not lon:
+        if not lat or not lon or not self.destination:
             return {'commute_time': None, 'distance': float('inf')}
             
         distance = haversine(lat, lon, self.destination[0], self.destination[1])
