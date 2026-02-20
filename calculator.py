@@ -33,11 +33,14 @@ class CommuteCalculator:
             
         distance = haversine(lat, lon, self.destination[0], self.destination[1])
         commute_time = None
+        commute_cycling = None
         
         if self.tfl_client:
             commute_time = self.tfl_client.get_commute_time((lat, lon), self.destination)
+            commute_cycling = self.tfl_client.get_cycling_time((lat, lon), self.destination)
             
         return {
             'commute_time': commute_time,
+            'commute_cycling': commute_cycling,
             'distance': distance
         }

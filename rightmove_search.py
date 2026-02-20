@@ -146,6 +146,7 @@ def main():
         res = calculator.calculate(p['_original'])
         p['distance'] = res['distance']
         p['commute_time'] = res['commute_time']
+        p['commute_cycling'] = res.get('commute_cycling')
     
     # Sort by distance (default)
     all_properties.sort(key=lambda x: x.get('distance') or float('inf'))

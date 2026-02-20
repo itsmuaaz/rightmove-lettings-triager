@@ -11,11 +11,13 @@ class TestCommuteCalculator(unittest.TestCase):
     def test_calculate_commute_success(self):
         # Mock TflClient success
         self.mock_tfl_client.get_commute_time.return_value = 25
+        self.mock_tfl_client.get_cycling_time.return_value = 15
         
         prop = {'location': {'latitude': 51.5007, 'longitude': -0.1246}}
         result = self.calculator.calculate(prop)
         
         self.assertEqual(result['commute_time'], 25)
+        self.assertEqual(result['commute_cycling'], 15)
         self.assertAlmostEqual(result['distance'], 2.36, places=2)
 
     def test_calculate_commute_fallback(self):
