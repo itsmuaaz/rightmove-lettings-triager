@@ -21,9 +21,9 @@ This plan outlines the steps to integrate Cycling commute times alongside Public
 
 
 ## Phase 3: Reporting Updates
-- [ ] Task: Update `Reporter` class to accept two commute values per property (TDD - Red/Green).
-- [ ] Task: Implement `_generate_commute_cell_md` helper for the new inline format with icons (`🚆 / 🚲`) (TDD - Red/Green).
-- [ ] Task: Implement `_generate_commute_cell_html` helper for the new stacked format (TDD - Red/Green).
-- [ ] Task: Update CSS in `get_html_template` to support `.commute-stack` class for vertical alignment.
-- [ ] Task: Verify the visual output in `results.md` and `results.html` matches the specification.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Reporting Updates' (Protocol in workflow.md)
+- [x] Task: Update `Reporter` class to accept two commute values per property (TDD - Red/Green). ac58312
+- [x] Task: Implement `_generate_commute_cell_md` helper for the new inline format with icons (`🚆 / 🚲`) (TDD - Red/Green). ac58312
+- [x] Task: Implement `_generate_commute_cell_html` helper for the new stacked format (TDD - Red/Green). ac58312
+- [x] Task: Update CSS in `get_html_template` to support `.commute-stack` class for vertical alignment. ac58312
+- [x] Task: Verify the visual output in `results.md` and `results.html` matches the specification. ac58312
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Reporting Updates' (Protocol in workflow.md) f310a32
