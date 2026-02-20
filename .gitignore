@@ -3,3 +3,7 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+results.md
+results.html
+test_report.md
+test_report.html
