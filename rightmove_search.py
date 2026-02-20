@@ -7,6 +7,7 @@ from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from config import load_config
 from tfl_client import TflClient
 from calculator import CommuteCalculator
+from reporter import Reporter
 
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
@@ -142,25 +143,20 @@ def main():
     # Calculate commute and distance
     for p in all_properties:
         res = calculator.calculate(p['_original'])
-        p['_dist'] = res['distance']
-        p['_commute'] = res['commute_time']
+        p['distance'] = res['distance']
+        p['commute_time'] = res['commute_time']
     
-    all_properties.sort(key=lambda x: x['_dist'])
+    # Sort by distance (default)
+    all_properties.sort(key=lambda x: x.get('distance') or float('inf'))
 
-    print(f"# Rightmove Search Results (Total: {len(all_properties)})\n")
-    print(f"| Price | Commute | Distance (mi) | Type | Address | Agent | Link |")
-    print(f"| :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
-
-    for p in all_properties:
-        link = f"https://www.rightmove.co.uk{p['url']}"
+    # Generate Markdown Report
+    reporter = Reporter()
+    md_content = reporter.generate_markdown(all_properties)
+    
+    with open('results.md', 'w') as f:
+        f.write(md_content)
         
-        dist_val = p.get('_dist', float('inf'))
-        dist_str = f"{dist_val:.2f}" if dist_val != float('inf') else "N/A"
-
-        commute_val = p.get('_commute')
-        commute_str = f"{commute_val} mins" if commute_val is not None else "N/A"
-
-        print(f"| {p['price']} | {commute_str} | {dist_str} | {p['type']} | {p['address']} | {p['agent']} | [View]({link}) |")
+    print(f"Found {len(all_properties)} properties. Report saved to results.md")
 
 if __name__ == "__main__":
     main()
