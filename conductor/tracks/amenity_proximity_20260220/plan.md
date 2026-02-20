@@ -16,8 +16,8 @@ This plan outlines the steps to integrate OpenStreetMap (Overpass) API to find n
 - [x] Task: Add a command-line flag or config setting for the search radius (default 1000m) fb5aa5f
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Core Integration and Calculation' (Protocol in workflow.md) 85aa478
 
-## Phase 3: Output and Reporting
-- [ ] Task: Update the Markdown table generator to include the "Nearby Amenities" column (TDD - Red/Green)
-- [ ] Task: Verify the end-to-end flow with real search results from Rightmove
-- [ ] Task: Ensure code coverage for new modules is >80%
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Output and Reporting' (Protocol in workflow.md)
+## Phase 3: Output and Reporting [checkpoint: 3a93df5]
+- [x] Task: Update the Markdown table generator to include the "Nearby Amenities" column (TDD - Red/Green) 0734d0f
+- [x] Task: Verify the end-to-end flow with real search results from Rightmove 0734d0f
+- [x] Task: Ensure code coverage for new modules is >80% 0734d0f
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Output and Reporting' (Protocol in workflow.md) 3a93df5
