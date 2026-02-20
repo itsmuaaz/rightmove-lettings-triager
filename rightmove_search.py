@@ -4,19 +4,13 @@ import sys
 import math
 import subprocess
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+from config import load_config
+from tfl_client import TflClient
+from calculator import CommuteCalculator
 
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-
-def haversine(lat1, lon1, lat2, lon2):
-    """Calculate the distance in miles between two coordinates."""
-    R = 6371  # Earth radius in km
-    dlat = math.radians(lat2 - lat1)
-    dlon = math.radians(lon2 - lon1)
-    a = math.sin(dlat / 2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2)**2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    return R * c * 0.621371  # km to miles
 
 def fetch_data(url):
     """Fetch the page HTML using curl."""
@@ -104,16 +98,18 @@ def main():
         print("No properties found.")
         return
 
-    # Sort by distance (optional but helpful)
+    # Initialize calculator
+    config = load_config()
+    tfl = TflClient(app_id=config.get('TFL_APP_ID'), app_key=config.get('TFL_APP_KEY'))
+    calculator = CommuteCalculator(tfl_client=tfl, destination=WORK_LOCATION_COORDS)
+
+    sys.stderr.write(f"Calculating commute times for {len(all_properties)} properties...\n")
+
+    # Calculate commute and distance
     for p in all_properties:
-        if 'location' in p:
-            lat, lon = p['location'].get('latitude'), p['location'].get('longitude')
-            if lat and lon:
-                p['_dist'] = haversine(lat, lon, WORK_LOCATION_COORDS[0], WORK_LOCATION_COORDS[1])
-            else:
-                p['_dist'] = float('inf')
-        else:
-            p['_dist'] = float('inf')
+        res = calculator.calculate(p)
+        p['_dist'] = res['distance']
+        p['_commute'] = res['commute_time']
     
     all_properties.sort(key=lambda x: x['_dist'])
 
