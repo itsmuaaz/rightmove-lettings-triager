@@ -77,6 +77,22 @@ def parse_property_data(p):
         '_original': p # Keep raw data for calculator
     }
 
+def get_sort_key(p):
+    """Determine the sort key for a property based on shortest commute."""
+    commute = p.get('commute_time')
+    cycling = p.get('commute_cycling')
+    
+    if commute is None and cycling is None:
+        return float('inf')
+    
+    if commute is None:
+        return cycling
+    
+    if cycling is None:
+        return commute
+        
+    return min(commute, cycling)
+
 def main():
     """Main execution function to search properties and generate reports."""
     if len(sys.argv) < 2:
@@ -148,8 +164,8 @@ def main():
         p['commute_time'] = res['commute_time']
         p['commute_cycling'] = res.get('commute_cycling')
     
-    # Sort by distance (default)
-    all_properties.sort(key=lambda x: x.get('distance') or float('inf'))
+    # Sort by shortest commute (default)
+    all_properties.sort(key=get_sort_key)
 
     # Generate Markdown Report
     reporter = Reporter()
