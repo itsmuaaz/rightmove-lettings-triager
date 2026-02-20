@@ -23,7 +23,7 @@ This plan outlines the steps to replace straight-line distance calculations with
 - [x] Task: Conductor - User Manual Verification 'Phase 2: API Client and Core Logic' (Protocol in workflow.md)
 
 ## Phase 3: Reporting and Validation
-- [ ] Task: Update the Markdown table generator to include "Commute Time"
-- [ ] Task: Verify end-to-end flow with real search results
+- [x] Task: Update the Markdown table generator to include "Commute Time" da51aaf
+- [~] Task: Verify end-to-end flow with real search results
 - [ ] Task: Ensure code coverage for new modules is >80%
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Reporting and Validation' (Protocol in workflow.md)
