@@ -20,7 +20,7 @@ This plan outlines the steps to replace straight-line distance calculations with
 - [x] Task: Refactor API client for error handling and fallbacks (TDD - Refactor) 397aa1f
 - [x] Task: Write failing tests for the commute calculation logic (TDD - Red Phase) b9a187e
 - [x] Task: Integrate API client into the main calculation loop (TDD - Green Phase) f1b225c
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: API Client and Core Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: API Client and Core Logic' (Protocol in workflow.md)
 
 ## Phase 3: Reporting and Validation
 - [ ] Task: Update the Markdown table generator to include "Commute Time"
