@@ -114,8 +114,8 @@ def main():
     all_properties.sort(key=lambda x: x['_dist'])
 
     print(f"# Rightmove Search Results (Total: {len(all_properties)})\n")
-    print(f"| Price | Distance (mi) | Type | Address | Agent | Link |")
-    print(f"| :--- | :--- | :--- | :--- | :--- | :--- |")
+    print(f"| Price | Commute | Distance (mi) | Type | Address | Agent | Link |")
+    print(f"| :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
 
     for p in all_properties:
         price = p.get('price', {}).get('displayPrices', [{'displayPrice': 'N/A'}])[0]['displayPrice']
@@ -127,7 +127,10 @@ def main():
         dist_val = p.get('_dist', float('inf'))
         dist_str = f"{dist_val:.2f}" if dist_val != float('inf') else "N/A"
 
-        print(f"| {price} | {dist_str} | {prop_type} | {address} | {agent} | [View]({link}) |")
+        commute_val = p.get('_commute')
+        commute_str = f"{commute_val} mins" if commute_val is not None else "N/A"
+
+        print(f"| {price} | {commute_str} | {dist_str} | {prop_type} | {address} | {agent} | [View]({link}) |")
 
 if __name__ == "__main__":
     main()
