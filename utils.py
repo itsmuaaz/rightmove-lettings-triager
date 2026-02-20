@@ -1,7 +1,12 @@
 """Utility module for geographical calculations."""
 
 import math
+import urllib.parse
 from datetime import datetime
+
+# Constants for Work Location
+WORK_ADDRESS = "6 Pancras Square, N1C 4AG"
+WORK_COORDS = (51.5349, -0.1238)
 
 def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """Calculates the distance in miles between two coordinates.
@@ -48,3 +53,42 @@ def format_date(iso_date: str) -> str:
             return f"{diff.days} days ago"
     except ValueError:
         return 'Unknown'
+
+def generate_google_maps_url(origin_address: str) -> str:
+    """Generates a Google Maps directions URL.
+
+    Args:
+        origin_address: The starting address string.
+
+    Returns:
+        A Google Maps URL for public transport directions to work.
+    """
+    params = {
+        "api": "1",
+        "origin": origin_address,
+        "destination": WORK_ADDRESS,
+        "travelmode": "transit"
+    }
+    query = urllib.parse.urlencode(params)
+    return f"https://www.google.com/maps/dir/?{query}"
+
+def generate_tfl_url(origin_address: str, origin_coords: tuple[float, float] = None) -> str:
+    """Generates a TfL Journey Planner URL.
+
+    Args:
+        origin_address: The starting address string.
+        origin_coords: Optional tuple of (latitude, longitude) for the origin.
+
+    Returns:
+        A TfL Journey Planner URL to work.
+    """
+    params = {
+        "InputFrom": origin_address,
+        "InputTo": WORK_ADDRESS,
+        "ToId": f"{WORK_COORDS[0]},{WORK_COORDS[1]}"
+    }
+    if origin_coords:
+        params["FromId"] = f"{origin_coords[0]},{origin_coords[1]}"
+        
+    query = urllib.parse.urlencode(params)
+    return f"https://tfl.gov.uk/plan-a-journey/results?{query}"
