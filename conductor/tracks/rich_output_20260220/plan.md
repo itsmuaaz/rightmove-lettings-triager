@@ -11,10 +11,10 @@ This plan outlines the steps to implement a richer reporting system using Markdo
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Dependency & Data Extraction' (Protocol in workflow.md) d46c1c2
 
 ## Phase 2: Markdown Logic with Color Classes
-- [ ] Task: Create `Reporter` class to manage Markdown generation (TDD - Red/Green/Refactor)
-- [ ] Task: Implement `get_commute_class` and similar helpers for visual cues (TDD - Red/Green)
-- [ ] Task: Refactor `main()` to use the `Reporter` and save `results.md`
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Markdown Logic with Color Classes' (Protocol in workflow.md)
+- [x] Task: Create `Reporter` class to manage Markdown generation (TDD - Red/Green/Refactor) 2afd342
+- [x] Task: Implement `get_commute_class` and similar helpers for visual cues (TDD - Red/Green) 2afd342
+- [x] Task: Refactor `main()` to use the `Reporter` and save `results.md` 2afd342
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Markdown Logic with Color Classes' (Protocol in workflow.md) 2afd342
 
 ## Phase 3: HTML Conversion & Styling
 - [ ] Task: Create HTML boilerplate with embedded CSS for the traffic light system
