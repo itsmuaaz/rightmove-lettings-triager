@@ -3,11 +3,14 @@ import re
 import sys
 import math
 import subprocess
+import argparse
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from config import load_config
 from tfl_client import TflClient
 from calculator import CommuteCalculator
 from reporter import Reporter
+from amenity_client import AmenityClient
+from amenity_calculator import AmenityCalculator
 
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
@@ -101,11 +104,14 @@ def get_sort_key(p):
 
 def main():
     """Main execution function to search properties and generate reports."""
-    if len(sys.argv) < 2:
-        print("Usage: python3 rightmove_search.py <URL>")
-        return
+    parser = argparse.ArgumentParser(description="Search Rightmove properties and calculate commutes/amenities.")
+    parser.add_argument("url", help="The Rightmove search results URL.")
+    parser.add_argument("--radius", type=int, default=1000, help="Search radius for amenities in meters (default: 1000).")
+    args = parser.parse_args()
 
-    base_url = sys.argv[1]
+    base_url = args.url
+    radius = args.radius
+    
     all_properties = []
     current_index = 0
     total_results = None
@@ -156,19 +162,26 @@ def main():
         print("No properties found.")
         return
 
-    # Initialize calculator
+    # Initialize calculators
     config = load_config()
     tfl = TflClient(app_id=config.get('TFL_APP_ID'), app_key=config.get('TFL_APP_KEY'))
     calculator = CommuteCalculator(tfl_client=tfl, destination=WORK_LOCATION_COORDS)
+    
+    amenity_client = AmenityClient()
+    amenity_calculator = AmenityCalculator(amenity_client=amenity_client, radius=radius)
 
-    sys.stderr.write(f"Calculating commute times for {len(all_properties)} properties...\n")
+    sys.stderr.write(f"Calculating metrics for {len(all_properties)} properties...\n")
 
-    # Calculate commute and distance
-    for p in all_properties:
+    # Calculate commute, distance and amenities
+    for i, p in enumerate(all_properties):
+        sys.stderr.write(f"[{i+1}/{len(all_properties)}] Processing: {p['address'][:40]}...\n")
         res = calculator.calculate(p['_original'])
         p['distance'] = res['distance']
         p['commute_time'] = res['commute_time']
         p['commute_cycling'] = res.get('commute_cycling')
+        
+        # New: Amenities
+        p['nearby_amenities'] = amenity_calculator.calculate(p.get('latitude'), p.get('longitude'))
     
     # Sort by shortest commute (default)
     all_properties.sort(key=get_sort_key)

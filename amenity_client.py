@@ -5,6 +5,7 @@ import json
 import os
 import hashlib
 import time
+import sys
 from utils import haversine
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
@@ -18,28 +19,26 @@ class AmenityClient:
             try:
                 os.makedirs(self.cache_dir)
             except Exception:
-                # Fallback to no caching if dir cannot be created
                 self.cache_dir = None
                 
-        self.categories = {
-            "supermarket": ['node["shop"="supermarket"]', 'way["shop"="supermarket"]'],
-            "gym": ['node["leisure"="fitness_centre"]', 'way["leisure"="fitness_centre"]'],
-            "park": ['way["leisure"="park"]', 'relation["leisure"="park"]'],
-            "hospital": ['node["amenity"="hospital"]', 'way["amenity"="hospital"]'],
-            "doctors": ['node["amenity"="doctors"]']
+        # Define tags for each category
+        self.category_tags = {
+            "supermarket": [('shop', 'supermarket')],
+            "gym": [('leisure', 'fitness_centre'), ('leisure', 'sports_centre')],
+            "park": [('leisure', 'park'), ('leisure', 'garden')],
+            "hospital": [('amenity', 'hospital')],
+            "doctors": [('amenity', 'doctors')]
         }
 
-    def _get_cache_key(self, lat: float, lon: float, radius: int, category: str) -> str:
-        """Generates a cache key based on query parameters."""
-        key = f"{round(lat, 4)}:{round(lon, 4)}:{radius}:{category}"
+    def _get_cache_key(self, lat: float, lon: float, radius: int) -> str:
+        """Generates a cache key for the bulk query."""
+        # Querying ALL categories at once, so key only depends on location/radius
+        key = f"{round(lat, 4)}:{round(lon, 4)}:{radius}:bulk"
         return hashlib.md5(key.encode('utf-8')).hexdigest()
 
-    def fetch_amenities(self, lat: float, lon: float, radius: int, category: str, max_attempts: int = 3) -> list:
-        """Fetches amenities of a specific category within a radius, using cache and retries."""
-        if category not in self.categories:
-            return []
-            
-        cache_key = self._get_cache_key(lat, lon, radius, category)
+    def fetch_all_amenities(self, lat: float, lon: float, radius: int, max_attempts: int = 3) -> dict:
+        """Fetches all categories of amenities in a single bulk query."""
+        cache_key = self._get_cache_key(lat, lon, radius)
         cache_file = os.path.join(self.cache_dir, f"{cache_key}.json") if self.cache_dir else None
         
         if cache_file and os.path.exists(cache_file):
@@ -49,57 +48,74 @@ class AmenityClient:
             except Exception:
                 pass
             
-        filters = self.categories[category]
+        # Construct bulk query
         query_parts = []
-        for f in filters:
-            query_parts.append(f'{f}(around:{radius},{lat},{lon});')
+        for cat, tags in self.category_tags.items():
+            for key, val in tags:
+                query_parts.append(f'node["{key}"="{val}"](around:{radius},{lat},{lon});')
+                query_parts.append(f'way["{key}"="{val}"](around:{radius},{lat},{lon});')
+                query_parts.append(f'relation["{key}"="{val}"](around:{radius},{lat},{lon});')
             
-        query = f'[out:json][timeout:25];({"".join(query_parts)});out center;'
+        query = f'[out:json][timeout:30];({"".join(query_parts)});out center;'
         
         for attempt in range(max_attempts):
             try:
                 data = urllib.parse.urlencode({'data': query}).encode('utf-8')
                 req = urllib.request.Request(OVERPASS_URL, data=data)
                 
-                with urllib.request.urlopen(req, timeout=30) as response:
-                    result = json.loads(response.read().decode('utf-8'))
+                with urllib.request.urlopen(req, timeout=40) as response:
+                    data = response.read().decode('utf-8')
+                    result = json.loads(data)
                     elements = result.get('elements', [])
                     
-                    amenities = []
+                    # Group results by category
+                    categorized = {cat: [] for cat in self.category_tags.keys()}
+                    
                     for el in elements:
                         el_lat = el.get('lat') or el.get('center', {}).get('lat')
                         el_lon = el.get('lon') or el.get('center', {}).get('lon')
-                        
                         if el_lat is None or el_lon is None:
                             continue
                             
-                        dist_miles = haversine(lat, lon, el_lat, el_lon)
-                        dist_meters = dist_miles * 1609.34
+                        tags = el.get('tags', {})
+                        dist_meters = round(haversine(lat, lon, el_lat, el_lon) * 1609.34, 0)
                         
-                        amenities.append({
-                            'name': el.get('tags', {}).get('name', 'Unknown'),
-                            'distance': round(dist_meters, 0),
+                        amenity_info = {
+                            'name': tags.get('name', 'Unknown'),
+                            'distance': dist_meters,
                             'lat': el_lat,
                             'lon': el_lon
-                        })
+                        }
+                        
+                        # Assign to categories
+                        for cat, tag_list in self.category_tags.items():
+                            for k, v in tag_list:
+                                if tags.get(k) == v:
+                                    categorized[cat].append(amenity_info)
+                                    break
                     
-                    amenities.sort(key=lambda x: x['distance'])
-                    
+                    # Sort each category and pick nearest
+                    final_results = {}
+                    for cat, items in categorized.items():
+                        items.sort(key=lambda x: x['distance'])
+                        # We keep the whole list or just nearest?
+                        # Calculator will pick nearest. Let's keep the sorted list.
+                        final_results[cat] = items
+                        
                     if cache_file:
                         try:
                             with open(cache_file, 'w') as f:
-                                json.dump(amenities, f)
+                                json.dump(final_results, f)
                         except Exception:
                             pass
                             
-                    return amenities
+                    return final_results
                     
             except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ConnectionError):
                 if attempt < max_attempts - 1:
-                    time.sleep(1.5 * (attempt + 1))
+                    time.sleep(2 * (attempt + 1))
                 continue
             except Exception:
-                # Other exceptions (like JSON parsing error) might not be transient
                 break
                 
-        return []
+        return {cat: [] for cat in self.category_tags.keys()}
