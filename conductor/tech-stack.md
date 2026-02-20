@@ -14,6 +14,7 @@
 
 ## External Tools
 - **`curl`:** Used as the primary data fetching mechanism, configured with a browser-like User-Agent to bypass simple anti-bot measures.
+- **TfL Unified API:** Primary data source for calculating public transport commute times in London.
 - **`pytest` / `pytest-cov`:** For automated testing and code coverage verification.
 
 ## Output Format
