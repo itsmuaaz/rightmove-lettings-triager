@@ -74,5 +74,18 @@ class TestReporter(unittest.TestCase):
         self.assertIn("<td>C1</td>", html)
         self.assertIn("background-color: #d4edda", html) # Ensure template is applied
 
+    def test_sanitize_newlines(self):
+        property_data = {
+            'price': '£100',
+            'address': 'Line 1\nLine 2',
+            'commute_time': 10
+        }
+        reporter = Reporter()
+        with patch('reporter.format_date', return_value='Today'):
+            row = reporter._generate_row(property_data)
+        
+        self.assertNotIn('\n', row.split('|')[6]) # Address column
+        self.assertIn('Line 1 Line 2', row)
+
 if __name__ == '__main__':
     unittest.main()

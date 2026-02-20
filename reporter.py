@@ -21,6 +21,12 @@ class Reporter:
         except (ValueError, TypeError):
             return "badge-grey"
 
+    def _sanitize(self, text):
+        """Removes pipes and newlines to prevent breaking Markdown tables."""
+        if not isinstance(text, str):
+            return text
+        return text.replace("|", " ").replace("\n", " ").replace("\r", " ").strip()
+
     def _generate_row(self, p):
         """Generates a Markdown table row for a property."""
         image_html = f'<img src="{p.get("image_url")}" class="prop-img" alt="Property">' if p.get("image_url") else "N/A"
@@ -33,13 +39,14 @@ class Reporter:
         dist_val = p.get("distance")
         dist_str = f"{dist_val:.2f} mi" if dist_val else "N/A"
         
-        details = f"{p.get('bedrooms', 0)} bed {p.get('type', 'Property')}"
+        details = self._sanitize(f"{p.get('bedrooms', 0)} bed {p.get('type', 'Property')}")
+        address = self._sanitize(p.get('address'))
         added_on = format_date(p.get("published_on"))
         
         link = f"https://www.rightmove.co.uk{p.get('url', '')}"
         link_html = f'[View]({link})'
 
-        return f"| {image_html} | **{p.get('price')}** | {commute_html} | {dist_str} | {details} | {p.get('address')} | {added_on} | {link_html} |"
+        return f"| {image_html} | **{p.get('price')}** | {commute_html} | {dist_str} | {details} | {address} | {added_on} | {link_html} |"
 
     def generate_markdown(self, properties):
         """Generates the full Markdown report."""
