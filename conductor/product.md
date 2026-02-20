@@ -1,6 +1,6 @@
 # Initial Concept
 
-# Product Guide: Rightmove Property Search and Commute Calculator
+# Product Guide: UK Letting Researcher
 
 ## Vision
 A tool that automates searching for properties on Rightmove and calculates the distance from a user's work location to help in finding a home with a manageable commute.

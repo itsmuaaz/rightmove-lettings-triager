@@ -1,4 +1,4 @@
-# Product Guidelines: Rightmove Property Search and Commute Calculator
+# Product Guidelines: UK Letting Researcher
 
 ## Purpose
 The purpose of these guidelines is to ensure the tool provides a clear, reliable, and user-friendly experience for people searching for homes.
