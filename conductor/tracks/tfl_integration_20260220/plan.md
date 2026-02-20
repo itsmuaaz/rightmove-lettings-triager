@@ -15,8 +15,8 @@ This plan outlines the steps to replace straight-line distance calculations with
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research and Setup' (Protocol in workflow.md)
 
 ## Phase 2: API Client and Core Logic
-- [ ] Task: Write failing tests for the API client (TDD - Red Phase)
-- [ ] Task: Implement a basic API client to fetch journey times (TDD - Green Phase)
+- [x] Task: Write failing tests for the API client (TDD - Red Phase) 994eae6
+- [x] Task: Implement a basic API client to fetch journey times (TDD - Green Phase) 994eae6
 - [ ] Task: Refactor API client for error handling and fallbacks (TDD - Refactor)
 - [ ] Task: Write failing tests for the commute calculation logic (TDD - Red Phase)
 - [ ] Task: Integrate API client into the main calculation loop (TDD - Green Phase)
