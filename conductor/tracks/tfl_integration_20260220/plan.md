@@ -14,7 +14,7 @@ This plan outlines the steps to replace straight-line distance calculations with
 - [x] Task: Implement environment variable loading for API keys 7498f0a
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research and Setup' (Protocol in workflow.md)
 
-## Phase 2: API Client and Core Logic
+## Phase 2: API Client and Core Logic [checkpoint: 42a09e2]
 - [x] Task: Write failing tests for the API client (TDD - Red Phase) 994eae6
 - [x] Task: Implement a basic API client to fetch journey times (TDD - Green Phase) 994eae6
 - [x] Task: Refactor API client for error handling and fallbacks (TDD - Refactor) 397aa1f
