@@ -21,22 +21,14 @@ class TflClient:
         self.app_key = app_key
         self.base_url = "https://api.tfl.gov.uk/Journey/JourneyResults"
 
-    def get_commute_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3) -> Optional[int]:
-        """Fetches commute time in minutes between two coordinates with retries.
-
-        Args:
-            from_coords: Tuple of (lat, lon) for the origin.
-            to_coords: Tuple of (lat, lon) for the destination.
-            max_retries: Number of retry attempts on failure.
-
-        Returns:
-            Shortest journey duration in minutes, or None if failed.
-        """
+    def _fetch_journey(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict, max_retries: int) -> Optional[int]:
+        """Internal helper to fetch journey time with specific parameters."""
         from_str = f"{from_coords[0]},{from_coords[1]}"
         to_str = f"{to_coords[0]},{to_coords[1]}"
         
         url = f"{self.base_url}/{from_str}/to/{to_str}"
-        params = {}
+        
+        # Add auth params
         if self.app_id:
             params['app_id'] = self.app_id
         if self.app_key:
@@ -69,3 +61,34 @@ class TflClient:
                 else:
                     return None
         return None
+
+    def get_commute_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3) -> Optional[int]:
+        """Fetches public transport commute time in minutes between two coordinates with retries.
+
+        Args:
+            from_coords: Tuple of (lat, lon) for the origin.
+            to_coords: Tuple of (lat, lon) for the destination.
+            max_retries: Number of retry attempts on failure.
+
+        Returns:
+            Shortest journey duration in minutes, or None if failed.
+        """
+        return self._fetch_journey(from_coords, to_coords, {}, max_retries)
+
+    def get_cycling_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3) -> Optional[int]:
+        """Fetches cycling commute time in minutes between two coordinates with retries.
+
+        Args:
+            from_coords: Tuple of (lat, lon) for the origin.
+            to_coords: Tuple of (lat, lon) for the destination.
+            max_retries: Number of retry attempts on failure.
+
+        Returns:
+            Shortest cycling duration in minutes, or None if failed.
+        """
+        params = {
+            'mode': 'cycle',
+            'cyclePreference': 'allTheWay',
+            'bikeProficiency': 'moderate'
+        }
+        return self._fetch_journey(from_coords, to_coords, params, max_retries)
