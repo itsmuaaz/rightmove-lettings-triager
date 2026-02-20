@@ -51,12 +51,30 @@ class TestTflClient(unittest.TestCase):
         self.assertIsNone(duration)
 
     @patch("urllib.request.urlopen")
-    def test_get_commute_time_exception(self, mock_urlopen):
+    @patch("time.sleep")
+    def test_get_commute_time_exception(self, mock_sleep, mock_urlopen):
         # Mock urlopen throwing an exception
         mock_urlopen.side_effect = Exception("API Down")
 
         duration = self.client.get_commute_time((51.5, -0.1), (51.6, -0.2))
         self.assertIsNone(duration)
+        self.assertEqual(mock_urlopen.call_count, 3) # Should retry 3 times
+
+    @patch("urllib.request.urlopen")
+    @patch("time.sleep")
+    def test_get_commute_time_retry_success(self, mock_sleep, mock_urlopen):
+        # Fail once, then succeed
+        mock_response = MagicMock()
+        mock_response.status = 200
+        mock_response.read.return_value = b'{"journeys": [{"duration": 40}]}'
+        mock_response.__enter__.return_value = mock_response
+        
+        mock_urlopen.side_effect = [Exception("Temporary error"), mock_response]
+
+        duration = self.client.get_commute_time((51.5, -0.1), (51.6, -0.2))
+        self.assertEqual(duration, 40)
+        self.assertEqual(mock_urlopen.call_count, 2)
+        mock_sleep.assert_called_once_with(1)
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,8 @@
 import json
 import urllib.request
 import urllib.parse
+import sys
+import time
 
 class TflClient:
     def __init__(self, app_id=None, app_key=None):
@@ -8,8 +10,8 @@ class TflClient:
         self.app_key = app_key
         self.base_url = "https://api.tfl.gov.uk/Journey/JourneyResults"
 
-    def get_commute_time(self, from_coords, to_coords):
-        """Fetch commute time in minutes between two coordinates."""
+    def get_commute_time(self, from_coords, to_coords, max_retries=3):
+        """Fetch commute time in minutes between two coordinates with retries."""
         from_str = f"{from_coords[0]},{from_coords[1]}"
         to_str = f"{to_coords[0]},{to_coords[1]}"
         
@@ -23,15 +25,21 @@ class TflClient:
         if params:
             url += "?" + urllib.parse.urlencode(params)
 
-        try:
-            with urllib.request.urlopen(url) as response:
-                if response.status != 200:
+        for attempt in range(max_retries):
+            try:
+                with urllib.request.urlopen(url) as response:
+                    if response.status != 200:
+                        sys.stderr.write(f"TfL API Error: Status {response.status}\n")
+                        return None
+                    data = json.loads(response.read().decode('utf-8'))
+                    journeys = data.get('journeys', [])
+                    if not journeys:
+                        return None
+                    # Return the shortest duration found
+                    return min(j.get('duration', 999) for j in journeys)
+            except Exception as e:
+                sys.stderr.write(f"TfL API Attempt {attempt + 1} failed: {str(e)}\n")
+                if attempt < max_retries - 1:
+                    time.sleep(1) # Simple backoff
+                else:
                     return None
-                data = json.loads(response.read().decode('utf-8'))
-                journeys = data.get('journeys', [])
-                if not journeys:
-                    return None
-                # Return the shortest duration found
-                return min(j.get('duration', 999) for j in journeys)
-        except Exception:
-            return None
