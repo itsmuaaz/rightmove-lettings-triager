@@ -23,11 +23,24 @@ class TestCommuteCalculator(unittest.TestCase):
     def test_calculate_commute_fallback(self):
         # Mock TflClient failure (None)
         self.mock_tfl_client.get_commute_time.return_value = None
+        self.mock_tfl_client.get_cycling_time.return_value = None
         
         prop = {'location': {'latitude': 51.5007, 'longitude': -0.1246}}
         result = self.calculator.calculate(prop)
         
         self.assertIsNone(result['commute_time'])
+        self.assertAlmostEqual(result['distance'], 2.36, places=2)
+
+    def test_calculate_partial_failure(self):
+        # Mock public transport failure, cycling success
+        self.mock_tfl_client.get_commute_time.return_value = None
+        self.mock_tfl_client.get_cycling_time.return_value = 20
+        
+        prop = {'location': {'latitude': 51.5007, 'longitude': -0.1246}}
+        result = self.calculator.calculate(prop)
+        
+        self.assertIsNone(result['commute_time'])
+        self.assertEqual(result['commute_cycling'], 20)
         self.assertAlmostEqual(result['distance'], 2.36, places=2)
 
     def test_calculate_commute_no_location(self):
