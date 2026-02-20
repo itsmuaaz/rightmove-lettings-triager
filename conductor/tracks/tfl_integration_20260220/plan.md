@@ -11,7 +11,7 @@ This plan outlines the steps to replace straight-line distance calculations with
 
 ## Phase 1: Research and Setup
 - [x] Task: Research TfL and Google Maps Distance Matrix API limits and requirements 05028f9
-- [ ] Task: Implement environment variable loading for API keys
+- [x] Task: Implement environment variable loading for API keys 7498f0a
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and Setup' (Protocol in workflow.md)
 
 ## Phase 2: API Client and Core Logic
