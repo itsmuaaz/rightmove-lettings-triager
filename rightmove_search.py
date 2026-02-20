@@ -78,6 +78,7 @@ def parse_property_data(p):
     }
 
 def main():
+    """Main execution function to search properties and generate reports."""
     if len(sys.argv) < 2:
         print("Usage: python3 rightmove_search.py <URL>")
         return

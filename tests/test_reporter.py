@@ -4,6 +4,7 @@ from reporter import Reporter
 
 class TestReporter(unittest.TestCase):
     def test_generate_markdown_row(self):
+        """Test generation of a single Markdown row with correct badges and links."""
         property_data = {
             'image_url': 'http://example.com/img.jpg',
             'price': '£2,000 pcm',
@@ -31,6 +32,7 @@ class TestReporter(unittest.TestCase):
         self.assertIn('(https://www.rightmove.co.uk/prop/1)', row)
 
     def test_get_commute_class(self):
+        """Test logic for assigning traffic light CSS classes to commute times."""
         reporter = Reporter()
         self.assertEqual(reporter._get_commute_class(None), "badge-grey")
         self.assertEqual(reporter._get_commute_class("invalid"), "badge-grey")
@@ -40,6 +42,7 @@ class TestReporter(unittest.TestCase):
         self.assertEqual(reporter._get_commute_class(45), "badge-red")
 
     def test_generate_markdown(self):
+        """Test full Markdown report generation."""
         reporter = Reporter()
         props = [
             {'price': '£100', 'commute_time': 10},
@@ -56,6 +59,7 @@ class TestReporter(unittest.TestCase):
         self.assertIn("badge-red", md)
 
     def test_get_html_template(self):
+        """Test retrieval of the HTML template with embedded CSS."""
         reporter = Reporter()
         html = reporter.get_html_template()
         self.assertIn("<!DOCTYPE html>", html)
@@ -64,6 +68,7 @@ class TestReporter(unittest.TestCase):
         self.assertIn("background-color: #d4edda", html) # Green background
 
     def test_convert_to_html(self):
+        """Test conversion of Markdown content to HTML using the template."""
         reporter = Reporter()
         md_content = "| H1 | H2 |\n|---|---|\n| C1 | C2 |"
         html = reporter.convert_to_html(md_content)
@@ -75,6 +80,7 @@ class TestReporter(unittest.TestCase):
         self.assertIn("background-color: #d4edda", html) # Ensure template is applied
 
     def test_sanitize_newlines(self):
+        """Test sanitization of newlines in property data to prevent broken tables."""
         property_data = {
             'price': '£100',
             'address': 'Line 1\nLine 2',
