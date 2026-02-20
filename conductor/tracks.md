@@ -24,5 +24,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Dual Commute Mode Display (Public Transport & Cycling)**
+- [x] **Track: Dual Commute Mode Display (Public Transport & Cycling)**
   *Link: [./tracks/dual_commute_20260220/](./tracks/dual_commute_20260220/)*
