@@ -1,14 +1,16 @@
 import urllib.request
 import urllib.parse
+import urllib.error
 import json
 import os
 import hashlib
+import time
 from utils import haversine
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 
 class AmenityClient:
-    """Client for fetching amenities from Overpass API with caching."""
+    """Client for fetching amenities from Overpass API with caching and retries."""
 
     def __init__(self, cache_dir=".amenity_cache"):
         self.cache_dir = cache_dir
@@ -29,13 +31,11 @@ class AmenityClient:
 
     def _get_cache_key(self, lat: float, lon: float, radius: int, category: str) -> str:
         """Generates a cache key based on query parameters."""
-        # Using a fixed precision for lat/lon can help increase cache hits
-        # Rounding to 4 decimal places (~11m precision)
         key = f"{round(lat, 4)}:{round(lon, 4)}:{radius}:{category}"
         return hashlib.md5(key.encode('utf-8')).hexdigest()
 
-    def fetch_amenities(self, lat: float, lon: float, radius: int, category: str) -> list:
-        """Fetches amenities of a specific category within a radius, using cache if available."""
+    def fetch_amenities(self, lat: float, lon: float, radius: int, category: str, max_attempts: int = 3) -> list:
+        """Fetches amenities of a specific category within a radius, using cache and retries."""
         if category not in self.categories:
             return []
             
@@ -47,7 +47,7 @@ class AmenityClient:
                 with open(cache_file, 'r') as f:
                     return json.load(f)
             except Exception:
-                pass # Proceed to API if cache reading fails
+                pass
             
         filters = self.categories[category]
         query_parts = []
@@ -56,43 +56,50 @@ class AmenityClient:
             
         query = f'[out:json][timeout:25];({"".join(query_parts)});out center;'
         
-        try:
-            data = urllib.parse.urlencode({'data': query}).encode('utf-8')
-            req = urllib.request.Request(OVERPASS_URL, data=data)
-            
-            with urllib.request.urlopen(req) as response:
-                result = json.loads(response.read().decode('utf-8'))
-                elements = result.get('elements', [])
+        for attempt in range(max_attempts):
+            try:
+                data = urllib.parse.urlencode({'data': query}).encode('utf-8')
+                req = urllib.request.Request(OVERPASS_URL, data=data)
                 
-                amenities = []
-                for el in elements:
-                    el_lat = el.get('lat') or el.get('center', {}).get('lat')
-                    el_lon = el.get('lon') or el.get('center', {}).get('lon')
+                with urllib.request.urlopen(req, timeout=30) as response:
+                    result = json.loads(response.read().decode('utf-8'))
+                    elements = result.get('elements', [])
                     
-                    if el_lat is None or el_lon is None:
-                        continue
+                    amenities = []
+                    for el in elements:
+                        el_lat = el.get('lat') or el.get('center', {}).get('lat')
+                        el_lon = el.get('lon') or el.get('center', {}).get('lon')
                         
-                    dist_miles = haversine(lat, lon, el_lat, el_lon)
-                    dist_meters = dist_miles * 1609.34
+                        if el_lat is None or el_lon is None:
+                            continue
+                            
+                        dist_miles = haversine(lat, lon, el_lat, el_lon)
+                        dist_meters = dist_miles * 1609.34
+                        
+                        amenities.append({
+                            'name': el.get('tags', {}).get('name', 'Unknown'),
+                            'distance': round(dist_meters, 0),
+                            'lat': el_lat,
+                            'lon': el_lon
+                        })
                     
-                    amenities.append({
-                        'name': el.get('tags', {}).get('name', 'Unknown'),
-                        'distance': round(dist_meters, 0),
-                        'lat': el_lat,
-                        'lon': el_lon
-                    })
+                    amenities.sort(key=lambda x: x['distance'])
+                    
+                    if cache_file:
+                        try:
+                            with open(cache_file, 'w') as f:
+                                json.dump(amenities, f)
+                        except Exception:
+                            pass
+                            
+                    return amenities
+                    
+            except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ConnectionError):
+                if attempt < max_attempts - 1:
+                    time.sleep(1.5 * (attempt + 1))
+                continue
+            except Exception:
+                # Other exceptions (like JSON parsing error) might not be transient
+                break
                 
-                amenities.sort(key=lambda x: x['distance'])
-                
-                # Save to cache
-                if cache_file:
-                    try:
-                        with open(cache_file, 'w') as f:
-                            json.dump(amenities, f)
-                    except Exception:
-                        pass # Non-critical failure
-                        
-                return amenities
-                
-        except Exception:
-            return []
+        return []

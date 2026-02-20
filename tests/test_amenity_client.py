@@ -69,5 +69,23 @@ class TestAmenityClient(unittest.TestCase):
             
             self.assertEqual(len(amenities), 0) # Should return empty list on error
 
+    def test_fetch_amenities_retry_success(self):
+        """Test that client retries on transient failure and eventually succeeds."""
+        import urllib.error
+        with patch('urllib.request.urlopen') as mock_urlopen:
+            mock_response = MagicMock()
+            mock_response.read.return_value = json.dumps({"elements": []}).encode('utf-8')
+            mock_response.__enter__.return_value = mock_response
+            
+            # Fail once with URLError, then succeed
+            mock_urlopen.side_effect = [urllib.error.URLError("Transient Fail"), mock_response]
+            
+            client = AmenityClient(cache_dir=self.test_cache)
+            with patch('time.sleep'): # Don't actually wait in tests
+                amenities = client.fetch_amenities(51.5, -0.1, 1000, "supermarket")
+            
+            self.assertEqual(mock_urlopen.call_count, 2)
+            self.assertEqual(len(amenities), 0)
+
 if __name__ == '__main__':
     unittest.main()
