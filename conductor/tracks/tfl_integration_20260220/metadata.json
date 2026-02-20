@@ -1,0 +1,8 @@
+{
+  "track_id": "tfl_integration_20260220",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-20T17:40:00Z",
+  "updated_at": "2026-02-20T17:40:00Z",
+  "description": "Integrate TfL or Google Maps API to calculate real public transport commute times instead of straight-line distances."
+}

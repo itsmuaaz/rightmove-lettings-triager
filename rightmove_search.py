@@ -1,0 +1,137 @@
+import json
+import re
+import sys
+import math
+import subprocess
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+
+# Configuration
+WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+
+def haversine(lat1, lon1, lat2, lon2):
+    """Calculate the distance in miles between two coordinates."""
+    R = 6371  # Earth radius in km
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c * 0.621371  # km to miles
+
+def fetch_data(url):
+    """Fetch the page HTML using curl."""
+    try:
+        result = subprocess.run(
+            ["curl", "-s", "-L", "-A", USER_AGENT, url],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return result.stdout
+    except Exception as e:
+        sys.stderr.write(f"Error fetching data: {str(e)}\n")
+        return None
+
+def extract_json_data(html):
+    """Extract the __NEXT_DATA__ JSON blob from the HTML."""
+    match = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.+?)</script>', html)
+    if not match:
+        return None
+    try:
+        return json.loads(match.group(1))
+    except Exception as e:
+        sys.stderr.write(f"Error parsing JSON: {str(e)}\n")
+        return None
+
+def update_url_index(url, new_index):
+    """Update the 'index' parameter in the URL."""
+    u = urlparse(url)
+    query = parse_qs(u.query)
+    query['index'] = [str(new_index)]
+    new_query = urlencode(query, doseq=True)
+    return urlunparse(u._replace(query=new_query))
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python3 rightmove_search.py <URL>")
+        return
+
+    base_url = sys.argv[1]
+    all_properties = []
+    current_index = 0
+    total_results = None
+    per_page = 24 # Default Rightmove page size
+
+    sys.stderr.write("Starting search and auto-pagination...\n")
+
+    while True:
+        url = update_url_index(base_url, current_index)
+        sys.stderr.write(f"Fetching index {current_index}...\n")
+        
+        html = fetch_data(url)
+        if not html:
+            break
+            
+        data = extract_json_data(html)
+        if not data:
+            sys.stderr.write("Failed to find data on page. Stopping.\n")
+            break
+
+        page_props = data.get('props', {}).get('pageProps', {})
+        search_results = page_props.get('searchResults', {})
+        
+        # On first page, get total count
+        if total_results is None:
+            try:
+                total_results = int(search_results.get('resultCount', 0))
+                per_page = int(search_results.get('searchParameters', {}).get('numberOfPropertiesPerPage', 24))
+                sys.stderr.write(f"Total results to fetch: {total_results}\n")
+            except:
+                total_results = 0
+
+        props = search_results.get('properties', [])
+        if not props:
+            break
+            
+        all_properties.extend(props)
+        
+        # Check if we have more pages
+        current_index += per_page
+        if current_index >= total_results:
+            break
+
+    if not all_properties:
+        print("No properties found.")
+        return
+
+    # Sort by distance (optional but helpful)
+    for p in all_properties:
+        if 'location' in p:
+            lat, lon = p['location'].get('latitude'), p['location'].get('longitude')
+            if lat and lon:
+                p['_dist'] = haversine(lat, lon, WORK_LOCATION_COORDS[0], WORK_LOCATION_COORDS[1])
+            else:
+                p['_dist'] = float('inf')
+        else:
+            p['_dist'] = float('inf')
+    
+    all_properties.sort(key=lambda x: x['_dist'])
+
+    print(f"# Rightmove Search Results (Total: {len(all_properties)})\n")
+    print(f"| Price | Distance (mi) | Type | Address | Agent | Link |")
+    print(f"| :--- | :--- | :--- | :--- | :--- | :--- |")
+
+    for p in all_properties:
+        price = p.get('price', {}).get('displayPrices', [{'displayPrice': 'N/A'}])[0]['displayPrice']
+        prop_type = p.get('propertyTypeFullDescription', 'Property')
+        address = p.get('displayAddress', 'No Address')
+        agent = p.get('customer', {}).get('brandTradingName', 'Unknown')
+        link = f"https://www.rightmove.co.uk{p.get('propertyUrl', '')}"
+        
+        dist_val = p.get('_dist', float('inf'))
+        dist_str = f"{dist_val:.2f}" if dist_val != float('inf') else "N/A"
+
+        print(f"| {price} | {dist_str} | {prop_type} | {address} | {agent} | [View]({link}) |")
+
+if __name__ == "__main__":
+    main()
