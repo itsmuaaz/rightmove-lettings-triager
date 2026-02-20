@@ -9,7 +9,8 @@ This plan outlines the steps to integrate Cycling commute times alongside Public
 
     - Add `mode` parameter to `get_commute_time` or create `get_cycling_time`.
     - Implement logic for "Moderate" cycle preference.
-- [ ] Task: Verify updated client with unit tests covering both modes and error scenarios.
+- [x] Task: Verify updated client with unit tests covering both modes and error scenarios. 6e46269
+
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: TfL Client Enhancement' (Protocol in workflow.md)
 
 ## Phase 2: Data Processing & Integration
