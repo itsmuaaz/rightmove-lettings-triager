@@ -27,14 +27,37 @@ class Reporter:
             return text
         return text.replace("|", " ").replace("\n", " ").replace("\r", " ").strip()
 
-    def _generate_row(self, p):
+    def _generate_commute_cell(self, p, for_html=False):
+        """Generates the commute cell content."""
+        commute_mins = p.get("commute_time")
+        cycling_mins = p.get("commute_cycling")
+        
+        # Helper to format a single badge
+        def format_badge(mins, icon):
+            cls = self._get_commute_class(mins)
+            txt = f"{mins} mins {icon}" if mins is not None else "N/A"
+            return f'<span class="{cls}">{txt}</span>'
+
+        items = []
+        if commute_mins is not None or cycling_mins is None: # Always show public transport if cycling also missing, or if present
+             items.append(format_badge(commute_mins, "🚆"))
+        
+        if cycling_mins is not None:
+             items.append(format_badge(cycling_mins, "🚲"))
+             
+        if not items: # Both None
+            return '<span class="badge-grey">N/A</span>'
+
+        if for_html:
+            return f'<div class="commute-stack">{"".join(items)}</div>'
+        else:
+            return " / ".join(items)
+
+    def _generate_row(self, p, for_html=False):
         """Generates a Markdown table row for a property."""
         image_html = f'<img src="{p.get("image_url")}" class="prop-img" alt="Property">' if p.get("image_url") else "N/A"
         
-        commute_mins = p.get("commute_time")
-        commute_class = self._get_commute_class(commute_mins)
-        commute_text = f"{commute_mins} mins" if commute_mins is not None else "N/A"
-        commute_html = f'<span class="{commute_class}">{commute_text}</span>'
+        commute_html = self._generate_commute_cell(p, for_html)
         
         dist_val = p.get("distance")
         dist_str = f"{dist_val:.2f} mi" if dist_val else "N/A"
@@ -48,7 +71,7 @@ class Reporter:
 
         return f"| {image_html} | **{p.get('price')}** | {commute_html} | {dist_str} | {details} | {address} | {added_on} | {link_html} |"
 
-    def generate_markdown(self, properties):
+    def generate_markdown(self, properties, for_html=False):
         """Generates the full Markdown report."""
         header_row = "| " + " | ".join(self.headers) + " |\n"
         separator_row = "| " + " | ".join(["---"] * len(self.headers)) + " |\n"
@@ -56,7 +79,7 @@ class Reporter:
         md = header_row + separator_row
         
         for p in properties:
-            md += self._generate_row(p) + "\n"
+            md += self._generate_row(p, for_html) + "\n"
             
         return md
 
@@ -90,6 +113,8 @@ class Reporter:
         .badge-amber { background-color: #fff3cd; color: #856404; }
         .badge-red { background-color: #f8d7da; color: #721c24; }
         .badge-grey { background-color: #e2e3e5; color: #383d41; }
+
+        .commute-stack { display: flex; flex-direction: column; gap: 4px; }
         
         a { color: #007bff; text-decoration: none; }
         a:hover { text-decoration: underline; }

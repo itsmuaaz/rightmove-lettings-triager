@@ -169,13 +169,14 @@ def main():
 
     # Generate Markdown Report
     reporter = Reporter()
-    md_content = reporter.generate_markdown(all_properties)
+    md_content = reporter.generate_markdown(all_properties, for_html=False)
     
     with open('results.md', 'w') as f:
         f.write(md_content)
         
     # Generate HTML Report
-    html_content = reporter.convert_to_html(md_content)
+    md_for_html = reporter.generate_markdown(all_properties, for_html=True)
+    html_content = reporter.convert_to_html(md_for_html)
     with open('results.html', 'w') as f:
         f.write(html_content)
         

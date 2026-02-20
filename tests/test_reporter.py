@@ -31,6 +31,36 @@ class TestReporter(unittest.TestCase):
         self.assertIn('Today', row)
         self.assertIn('(https://www.rightmove.co.uk/prop/1)', row)
 
+    def test_generate_markdown_row_dual_commute(self):
+        """Test generation of a row with both public transport and cycling times."""
+        property_data = {
+            'image_url': 'http://example.com/img.jpg',
+            'price': '£2,000 pcm',
+            'commute_time': 15,
+            'commute_cycling': 10,
+            'distance': 1.5,
+            'bedrooms': 2,
+            'type': 'Flat',
+            'address': 'Test St',
+            'published_on': '2023-10-27T10:00:00Z',
+            'url': '/prop/1'
+        }
+        
+        reporter = Reporter()
+        with patch('reporter.format_date', return_value='Today'):
+            # Test Markdown (Inline)
+            row_md = reporter._generate_row(property_data, for_html=False)
+            self.assertIn('15 mins', row_md)
+            self.assertIn('10 mins', row_md)
+            self.assertIn('🚆', row_md)
+            self.assertIn('🚲', row_md)
+            self.assertIn(' / ', row_md) # Separator
+            
+            # Test HTML (Stacked)
+            row_html = reporter._generate_row(property_data, for_html=True)
+            self.assertIn('commute-stack', row_html)
+            self.assertNotIn(' / ', row_html) # No text separator in stacked mode
+
     def test_get_commute_class(self):
         """Test logic for assigning traffic light CSS classes to commute times."""
         reporter = Reporter()
