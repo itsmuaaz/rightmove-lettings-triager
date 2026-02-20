@@ -1,0 +1,23 @@
+# Implementation Plan - Amenity Proximity Integration
+
+This plan outlines the steps to integrate OpenStreetMap (Overpass) API to find nearby amenities (supermarkets, gyms, parks, healthcare) for each rental property.
+
+---
+
+## Phase 1: Research and API Client Setup
+- [ ] Task: Research Overpass QL for fetching supermarkets, gyms, parks, and healthcare
+- [ ] Task: Implement `AmenityClient` using `requests` or `urllib` to query Overpass (TDD - Red/Green/Refactor)
+- [ ] Task: Implement a caching mechanism for API responses to avoid redundant queries (TDD - Red/Green)
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and API Client Setup' (Protocol in workflow.md)
+
+## Phase 2: Core Integration and Calculation
+- [ ] Task: Update the property processing loop to call the `AmenityClient` (TDD - Red/Green)
+- [ ] Task: Implement logic to calculate distance to the nearest instance of each category (TDD - Red/Green)
+- [ ] Task: Add a command-line flag or config setting for the search radius (default 1000m)
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Integration and Calculation' (Protocol in workflow.md)
+
+## Phase 3: Output and Reporting
+- [ ] Task: Update the Markdown table generator to include the "Nearby Amenities" column (TDD - Red/Green)
+- [ ] Task: Verify the end-to-end flow with real search results from Rightmove
+- [ ] Task: Ensure code coverage for new modules is >80%
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Output and Reporting' (Protocol in workflow.md)
