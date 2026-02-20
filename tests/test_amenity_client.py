@@ -94,8 +94,8 @@ class TestAmenityClient(unittest.TestCase):
             with patch('time.sleep'):
                 results = client.fetch_all_amenities(51.5, -0.1, 1000)
             
-            # Should try 3 times (default max_attempts)
-            self.assertEqual(mock_urlopen.call_count, 3)
+            # Should try 5 times (default max_attempts)
+            self.assertEqual(mock_urlopen.call_count, 5)
             self.assertIsNone(results)
 
 if __name__ == '__main__':

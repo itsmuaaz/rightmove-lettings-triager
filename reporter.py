@@ -88,7 +88,8 @@ class Reporter:
             if item:
                 name = item.get('name', 'Unknown')
                 dist = int(item.get('distance', 0))
-                parts.append(f"{label} {name} ({dist}m)")
+                mins = max(1, round(dist / 80)) # 80m/min walking speed
+                parts.append(f"{label} {name} (~{mins} mins)")
             else:
                 parts.append(f"{label} None nearby")
                 

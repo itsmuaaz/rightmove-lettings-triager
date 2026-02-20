@@ -85,8 +85,9 @@ class TestReporter(unittest.TestCase):
                 with patch('reporter.generate_tfl_url', return_value=''):
                     row = reporter._generate_row(property_data)
                     
-        self.assertIn('🛒 Tesco (200m)', row)
-        self.assertIn('💪 PureGym (500m)', row)
+        # 200m / 80 = 2.5 -> 2 mins. 500m / 80 = 6.25 -> 6 mins
+        self.assertIn('🛒 Tesco (~2 mins)', row)
+        self.assertIn('💪 PureGym (~6 mins)', row)
         self.assertIn('🌳 None nearby', row)
 
     def test_generate_markdown_row_amenities_error(self):

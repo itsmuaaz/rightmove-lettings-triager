@@ -36,7 +36,7 @@ class AmenityClient:
         key = f"{round(lat, 4)}:{round(lon, 4)}:{radius}:bulk"
         return hashlib.md5(key.encode('utf-8')).hexdigest()
 
-    def fetch_all_amenities(self, lat: float, lon: float, radius: int, max_attempts: int = 3) -> dict:
+    def fetch_all_amenities(self, lat: float, lon: float, radius: int, max_attempts: int = 5) -> dict:
         """Fetches all categories of amenities in a single bulk query."""
         cache_key = self._get_cache_key(lat, lon, radius)
         cache_file = os.path.join(self.cache_dir, f"{cache_key}.json") if self.cache_dir else None
@@ -56,14 +56,14 @@ class AmenityClient:
                 query_parts.append(f'way["{key}"="{val}"](around:{radius},{lat},{lon});')
                 query_parts.append(f'relation["{key}"="{val}"](around:{radius},{lat},{lon});')
             
-        query = f'[out:json][timeout:30];({"".join(query_parts)});out center;'
+        query = f'[out:json][timeout:60];({"".join(query_parts)});out center;'
         
         for attempt in range(max_attempts):
             try:
                 data = urllib.parse.urlencode({'data': query}).encode('utf-8')
                 req = urllib.request.Request(OVERPASS_URL, data=data)
                 
-                with urllib.request.urlopen(req, timeout=40) as response:
+                with urllib.request.urlopen(req, timeout=60) as response:
                     data = response.read().decode('utf-8')
                     result = json.loads(data)
                     elements = result.get('elements', [])
