@@ -1,7 +1,19 @@
+"""Utility module for geographical calculations."""
+
 import math
 
-def haversine(lat1, lon1, lat2, lon2):
-    """Calculate the distance in miles between two coordinates."""
+def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Calculates the distance in miles between two coordinates.
+
+    Args:
+        lat1: Latitude of the first point.
+        lon1: Longitude of the first point.
+        lat2: Latitude of the second point.
+        lon2: Longitude of the second point.
+
+    Returns:
+        The distance between the two points in miles.
+    """
     R = 6371  # Earth radius in km
     dlat = math.radians(lat2 - lat1)
     dlon = math.radians(lon2 - lon1)

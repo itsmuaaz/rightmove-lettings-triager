@@ -1,7 +1,14 @@
-import os
+"""Configuration module for loading environment variables."""
 
-def load_config():
-    """Load configuration from environment variables."""
+import os
+from typing import Dict, Optional
+
+def load_config() -> Dict[str, Optional[str]]:
+    """Loads configuration from environment variables.
+
+    Returns:
+        A dictionary containing TfL and Google Maps API keys.
+    """
     return {
         "TFL_APP_ID": os.environ.get("TFL_APP_ID"),
         "TFL_APP_KEY": os.environ.get("TFL_APP_KEY"),

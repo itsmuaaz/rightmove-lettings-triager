@@ -1,17 +1,37 @@
+"""Module for interacting with the TfL Unified API."""
+
 import json
 import urllib.request
 import urllib.parse
 import sys
 import time
+from typing import Optional, Tuple, Any
 
 class TflClient:
-    def __init__(self, app_id=None, app_key=None):
+    """Client for fetching journey results from Transport for London."""
+
+    def __init__(self, app_id: Optional[str] = None, app_key: Optional[str] = None):
+        """Initializes the TfL client.
+
+        Args:
+            app_id: The TfL App ID (optional for low limits).
+            app_key: The TfL App Key (optional for low limits).
+        """
         self.app_id = app_id
         self.app_key = app_key
         self.base_url = "https://api.tfl.gov.uk/Journey/JourneyResults"
 
-    def get_commute_time(self, from_coords, to_coords, max_retries=3):
-        """Fetch commute time in minutes between two coordinates with retries."""
+    def get_commute_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3) -> Optional[int]:
+        """Fetches commute time in minutes between two coordinates with retries.
+
+        Args:
+            from_coords: Tuple of (lat, lon) for the origin.
+            to_coords: Tuple of (lat, lon) for the destination.
+            max_retries: Number of retry attempts on failure.
+
+        Returns:
+            Shortest journey duration in minutes, or None if failed.
+        """
         from_str = f"{from_coords[0]},{from_coords[1]}"
         to_str = f"{to_coords[0]},{to_coords[1]}"
         
@@ -48,3 +68,4 @@ class TflClient:
                     time.sleep(1) # Simple backoff
                 else:
                     return None
+        return None
