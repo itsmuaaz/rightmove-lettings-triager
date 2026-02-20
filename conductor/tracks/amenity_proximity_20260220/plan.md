@@ -10,11 +10,11 @@ This plan outlines the steps to integrate OpenStreetMap (Overpass) API to find n
 - [x] Task: Implement a caching mechanism for API responses to avoid redundant queries (TDD - Red/Green) a1b1a3a
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research and API Client Setup' (Protocol in workflow.md) a1b1a3a
 
-## Phase 2: Core Integration and Calculation
-- [ ] Task: Update the property processing loop to call the `AmenityClient` (TDD - Red/Green)
-- [ ] Task: Implement logic to calculate distance to the nearest instance of each category (TDD - Red/Green)
-- [ ] Task: Add a command-line flag or config setting for the search radius (default 1000m)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Integration and Calculation' (Protocol in workflow.md)
+## Phase 2: Core Integration and Calculation [checkpoint: 85aa478]
+- [x] Task: Update the property processing loop to call the `AmenityClient` (TDD - Red/Green) fb5aa5f
+- [x] Task: Implement logic to calculate distance to the nearest instance of each category (TDD - Red/Green) fb5aa5f
+- [x] Task: Add a command-line flag or config setting for the search radius (default 1000m) fb5aa5f
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Core Integration and Calculation' (Protocol in workflow.md) 85aa478
 
 ## Phase 3: Output and Reporting
 - [ ] Task: Update the Markdown table generator to include the "Nearby Amenities" column (TDD - Red/Green)
