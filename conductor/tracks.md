@@ -26,3 +26,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Dual Commute Mode Display (Public Transport & Cycling)**
   *Link: [./tracks/dual_commute_20260220/](./tracks/dual_commute_20260220/)*
+
+---
+
+- [ ] **Track: Add Google Maps and TfL navigation links to commute report.**
+  *Link: [./tracks/commute_links_20260220/](./tracks/commute_links_20260220/)*
