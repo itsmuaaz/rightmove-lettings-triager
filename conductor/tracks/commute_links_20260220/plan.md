@@ -2,13 +2,13 @@
 
 This plan outlines the steps to generate and display navigation links for properties.
 
-## Phase 1: URL Generation Logic
-- [ ] Task: Create a new utility function for generating navigation URLs (add to `utils.py`).
+## Phase 1: URL Generation Logic [checkpoint: 24f63b2]
+- [x] Task: Create a new utility function for generating navigation URLs (add to `utils.py`). f075b03
     -   Define constants for Work Address and Coordinates.
-- [ ] Task: Implement `generate_google_maps_url(origin_address)` (TDD - Red/Green).
-- [ ] Task: Implement `generate_tfl_url(origin_address, origin_coords)` (TDD - Red/Green).
-- [ ] Task: Verify URLs with unit tests, checking for correct query parameters and encoding.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: URL Generation Logic' (Protocol in workflow.md)
+- [x] Task: Implement `generate_google_maps_url(origin_address)` (TDD - Red/Green). f075b03
+- [x] Task: Implement `generate_tfl_url(origin_address, origin_coords)` (TDD - Red/Green). f075b03
+- [x] Task: Verify URLs with unit tests, checking for correct query parameters and encoding. f075b03
+- [x] Task: Conductor - User Manual Verification 'Phase 1: URL Generation Logic' (Protocol in workflow.md) 24f63b2
 
 ## Phase 2: Reporter Integration
 - [ ] Task: Update `Reporter` class in `reporter.py` to incorporate the new link generator functions.
