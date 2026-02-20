@@ -16,6 +16,7 @@
 - **`curl`:** Used as the primary data fetching mechanism, configured with a browser-like User-Agent to bypass simple anti-bot measures.
 - **TfL Unified API:** Primary data source for calculating public transport commute times in London.
 - **`pytest` / `pytest-cov`:** For automated testing and code coverage verification.
+- **`markdown`:** Python library for converting Markdown text to HTML.
 
 ## Output Format
 - **Markdown:** All search results are formatted as Markdown tables for easy readability and integration into other documents or tools.
