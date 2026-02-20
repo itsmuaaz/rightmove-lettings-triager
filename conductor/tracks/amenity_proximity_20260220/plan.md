@@ -4,11 +4,11 @@ This plan outlines the steps to integrate OpenStreetMap (Overpass) API to find n
 
 ---
 
-## Phase 1: Research and API Client Setup
-- [ ] Task: Research Overpass QL for fetching supermarkets, gyms, parks, and healthcare
-- [ ] Task: Implement `AmenityClient` using `requests` or `urllib` to query Overpass (TDD - Red/Green/Refactor)
-- [ ] Task: Implement a caching mechanism for API responses to avoid redundant queries (TDD - Red/Green)
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and API Client Setup' (Protocol in workflow.md)
+## Phase 1: Research and API Client Setup [checkpoint: 0c5d631]
+- [x] Task: Research Overpass QL for fetching supermarkets, gyms, parks, and healthcare a1b1a3a
+- [x] Task: Implement `AmenityClient` using `requests` or `urllib` to query Overpass (TDD - Red/Green/Refactor) a1b1a3a
+- [x] Task: Implement a caching mechanism for API responses to avoid redundant queries (TDD - Red/Green) a1b1a3a
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Research and API Client Setup' (Protocol in workflow.md) a1b1a3a
 
 ## Phase 2: Core Integration and Calculation
 - [ ] Task: Update the property processing loop to call the `AmenityClient` (TDD - Red/Green)
