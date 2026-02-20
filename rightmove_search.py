@@ -4,6 +4,7 @@ import sys
 import math
 import subprocess
 import argparse
+import concurrent.futures
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from config import load_config
 from tfl_client import TflClient
@@ -172,16 +173,25 @@ def main():
 
     sys.stderr.write(f"Calculating metrics for {len(all_properties)} properties...\n")
 
-    # Calculate commute, distance and amenities
-    for i, p in enumerate(all_properties):
-        sys.stderr.write(f"[{i+1}/{len(all_properties)}] Processing: {p['address'][:40]}...\n")
+    # Calculate commute, distance and amenities in parallel
+    def process_property(p, i, total):
+        sys.stderr.write(f"[{i+1}/{total}] Processing: {p['address'][:40]}...\n")
+        # CommuteCalculator.calculate now parallelizes public/cycling calls
         res = calculator.calculate(p['_original'])
         p['distance'] = res['distance']
         p['commute_time'] = res['commute_time']
         p['commute_cycling'] = res.get('commute_cycling')
         
-        # New: Amenities
+        # Amenity calculation
         p['nearby_amenities'] = amenity_calculator.calculate(p.get('latitude'), p.get('longitude'))
+        return p
+
+    # Using 3 workers to stay well within TfL's 50 req/min limit and Overpass limits
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        futures = [executor.submit(process_property, p, i, len(all_properties)) 
+                   for i, p in enumerate(all_properties)]
+        # Wait for all to complete
+        concurrent.futures.wait(futures)
     
     # Sort by shortest commute (default)
     all_properties.sort(key=get_sort_key)
