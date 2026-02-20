@@ -3,8 +3,10 @@ import markdown
 from string import Template
 
 class Reporter:
+    """Generates Markdown and HTML reports for property search results."""
+
     def __init__(self):
-        self.headers = ["Image", "Price", "Commute", "Distance", "Details", "Address", "Added On", "Link"]
+        self.headers = ["Image", "Price", "Commute", "Nearby Amenities", "Distance", "Details", "Address", "Added On", "Link"]
 
     def _get_commute_class(self, minutes):
         """Returns the CSS class for the commute badge."""
@@ -39,13 +41,13 @@ class Reporter:
             return f'<span class="{cls}">{txt}</span>'
 
         items = []
-        if commute_mins is not None or cycling_mins is None: # Always show public transport if cycling also missing, or if present
+        if commute_mins is not None or cycling_mins is None:
              items.append(format_badge(commute_mins, "🚆"))
         
         if cycling_mins is not None:
              items.append(format_badge(cycling_mins, "🚲"))
              
-        if not items: # Both None
+        if not items:
             return '<span class="badge-grey">N/A</span>'
 
         # Generate Links
@@ -66,11 +68,42 @@ class Reporter:
             links_md = f"[GMaps]({gmaps_link}) [TfL]({tfl_link})"
             return f"{badges_md} <br> {links_md}"
 
+    def _generate_amenity_cell(self, p, for_html=False):
+        """Generates the nearby amenities cell content."""
+        amenities = p.get('nearby_amenities')
+        
+        if amenities is None:
+            return '<span class="badge-grey">Unavailable</span>' if for_html else "⚠ Unavailable"
+
+        cat_labels = {
+            'supermarket': '🛒',
+            'gym': '💪',
+            'park': '🌳',
+            'healthcare': '🏥'
+        }
+        
+        parts = []
+        for key, label in cat_labels.items():
+            item = amenities.get(key) if amenities else None
+            if item:
+                name = item.get('name', 'Unknown')
+                dist = int(item.get('distance', 0))
+                parts.append(f"{label} {name} ({dist}m)")
+            else:
+                parts.append(f"{label} None nearby")
+                
+        if for_html:
+            items_html = [f'<div>{part}</div>' for part in parts]
+            return f'<div style="font-size: 0.8em; line-height: 1.2;">{"".join(items_html)}</div>'
+        else:
+            return " <br> ".join(parts)
+
     def _generate_row(self, p, for_html=False):
         """Generates a Markdown table row for a property."""
         image_html = f'<img src="{p.get("image_url")}" class="prop-img" alt="Property">' if p.get("image_url") else "N/A"
         
         commute_html = self._generate_commute_cell(p, for_html)
+        amenity_html = self._generate_amenity_cell(p, for_html)
         
         dist_val = p.get("distance")
         dist_str = f"{dist_val:.2f} mi" if dist_val else "N/A"
@@ -82,7 +115,7 @@ class Reporter:
         link = f"https://www.rightmove.co.uk{p.get('url', '')}"
         link_html = f'[View]({link})'
 
-        return f"| {image_html} | **{p.get('price')}** | {commute_html} | {dist_str} | {details} | {address} | {added_on} | {link_html} |"
+        return f"| {image_html} | **{p.get('price')}** | {commute_html} | {amenity_html} | {dist_str} | {details} | {address} | {added_on} | {link_html} |"
 
     def generate_markdown(self, properties, for_html=False):
         """Generates the full Markdown report."""

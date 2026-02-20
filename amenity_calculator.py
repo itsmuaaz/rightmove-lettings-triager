@@ -35,6 +35,9 @@ class AmenityCalculator:
             
         all_amenities = self.amenity_client.fetch_all_amenities(lat, lon, self.radius)
         
+        if all_amenities is None:
+            return None # Indicate failure
+        
         results = {}
         
         # Supermarket

@@ -118,4 +118,4 @@ class AmenityClient:
             except Exception:
                 break
                 
-        return {cat: [] for cat in self.category_tags.keys()}
+        return None

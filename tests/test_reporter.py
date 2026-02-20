@@ -69,6 +69,41 @@ class TestReporter(unittest.TestCase):
                     self.assertIn('href="http://gmaps"', row_html)
                     self.assertIn('href="http://tfl"', row_html)
 
+    def test_generate_markdown_row_amenities(self):
+        """Test generation of a row with nearby amenities."""
+        property_data = {
+            'price': '£1,000',
+            'nearby_amenities': {
+                'supermarket': {'name': 'Tesco', 'distance': 200},
+                'gym': {'name': 'PureGym', 'distance': 500}
+            }
+        }
+        
+        reporter = Reporter()
+        with patch('reporter.format_date', return_value='Today'):
+            with patch('reporter.generate_google_maps_url', return_value=''):
+                with patch('reporter.generate_tfl_url', return_value=''):
+                    row = reporter._generate_row(property_data)
+                    
+        self.assertIn('🛒 Tesco (200m)', row)
+        self.assertIn('💪 PureGym (500m)', row)
+        self.assertIn('🌳 None nearby', row)
+
+    def test_generate_markdown_row_amenities_error(self):
+        """Test generation of a row when amenities calculation failed."""
+        property_data = {
+            'price': '£1,000',
+            'nearby_amenities': None
+        }
+        
+        reporter = Reporter()
+        with patch('reporter.format_date', return_value='Today'):
+            with patch('reporter.generate_google_maps_url', return_value=''):
+                with patch('reporter.generate_tfl_url', return_value=''):
+                    row = reporter._generate_row(property_data)
+                    
+        self.assertIn('⚠ Unavailable', row)
+
     def test_get_commute_class(self):
         """Test logic for assigning traffic light CSS classes to commute times."""
         reporter = Reporter()

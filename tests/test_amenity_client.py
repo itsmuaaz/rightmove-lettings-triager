@@ -66,8 +66,8 @@ class TestAmenityClient(unittest.TestCase):
             
             self.assertEqual(len(results['supermarket']), 0)
 
-    def test_fetch_all_amenities_retry(self):
-        """Test retry logic for bulk fetch."""
+    def test_fetch_all_amenities_retry_success(self):
+        """Test retry logic: fail once, then succeed."""
         with patch('urllib.request.urlopen') as mock_urlopen:
             mock_response = MagicMock()
             mock_response.read.return_value = json.dumps({"elements": []}).encode('utf-8')
@@ -81,6 +81,22 @@ class TestAmenityClient(unittest.TestCase):
                 results = client.fetch_all_amenities(51.5, -0.1, 1000)
             
             self.assertEqual(mock_urlopen.call_count, 2)
+            self.assertIsNotNone(results)
+            self.assertIn('supermarket', results)
+
+    def test_fetch_all_amenities_retry_failure(self):
+        """Test retry logic: fail always -> return None."""
+        with patch('urllib.request.urlopen') as mock_urlopen:
+            # Always fail
+            mock_urlopen.side_effect = urllib.error.URLError("Fail")
+            
+            client = AmenityClient(cache_dir=self.test_cache)
+            with patch('time.sleep'):
+                results = client.fetch_all_amenities(51.5, -0.1, 1000)
+            
+            # Should try 3 times (default max_attempts)
+            self.assertEqual(mock_urlopen.call_count, 3)
+            self.assertIsNone(results)
 
 if __name__ == '__main__':
     unittest.main()
