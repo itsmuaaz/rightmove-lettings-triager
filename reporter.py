@@ -59,7 +59,7 @@ class Reporter:
 
         if for_html:
             badges_html = "".join(items)
-            links_html = f'<div style="margin-top: 4px; font-size: 0.85em;"><a href="{gmaps_link}" target="_blank">[GMaps]</a> <a href="{tfl_link}" target="_blank">[TfL]</a></div>'
+            links_html = f'<div class="commute-links"><a href="{gmaps_link}" target="_blank">[GMaps]</a> <a href="{tfl_link}" target="_blank">[TfL]</a></div>'
             return f'<div class="commute-stack">{badges_html}{links_html}</div>'
         else:
             badges_md = " / ".join(items)
@@ -128,6 +128,7 @@ class Reporter:
         .badge-grey { background-color: #e2e3e5; color: #383d41; }
 
         .commute-stack { display: flex; flex-direction: column; gap: 4px; }
+        .commute-links { margin-top: 4px; font-size: 0.85em; }
         
         a { color: #007bff; text-decoration: none; }
         a:hover { text-decoration: underline; }
