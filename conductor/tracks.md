@@ -9,7 +9,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Amenity Proximity: Calculate distance to nearest supermarkets, gyms, and green spaces.**
+- [x] **Track: Amenity Proximity: Calculate distance to nearest supermarkets, gyms, and green spaces.**
   *Link: [./tracks/amenity_proximity_20260220/](./tracks/amenity_proximity_20260220/)*
 
 ---
