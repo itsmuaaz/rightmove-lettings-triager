@@ -29,5 +29,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Add Google Maps and TfL navigation links to commute report.**
+- [x] **Track: Add Google Maps and TfL navigation links to commute report.**
   *Link: [./tracks/commute_links_20260220/](./tracks/commute_links_20260220/)*
