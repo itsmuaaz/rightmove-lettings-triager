@@ -31,3 +31,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Add Google Maps and TfL navigation links to commute report.**
   *Link: [./tracks/commute_links_20260220/](./tracks/commute_links_20260220/)*
+
+---
+
+- [ ] **Track: Implement interactive dashboard with persistent notes.**
+  *Link: [./tracks/dashboard_notes_20260220/](./tracks/dashboard_notes_20260220/)*
