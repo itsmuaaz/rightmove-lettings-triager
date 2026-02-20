@@ -14,9 +14,11 @@ This plan outlines the steps to integrate Cycling commute times alongside Public
 - [x] Task: Conductor - User Manual Verification 'Phase 1: TfL Client Enhancement' (Protocol in workflow.md) 1c2cc4f
 
 ## Phase 2: Data Processing & Integration
-- [ ] Task: Update `main` loop in `rightmove_search.py` to fetch both Public Transport and Cycling times for each property.
-- [ ] Task: Implement error handling logic: ensure failure in one mode doesn't block the other (TDD - Red/Green).
-- [ ] Task: Update sorting logic to sort properties by the *minimum* of the two available commute times (TDD - Red/Green).
+- [x] Task: Update `main` loop in `rightmove_search.py` to fetch both Public Transport and Cycling times for each property. c645dbe
+
+- [~] Task: Implement error handling logic: ensure failure in one mode doesn't block the other (TDD - Red/Green).
+- [x] Task: Update sorting logic to sort properties by the *minimum* of the two available commute times (TDD - Red/Green). f8c272f
+
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Data Processing & Integration' (Protocol in workflow.md)
 
 ## Phase 3: Reporting Updates
