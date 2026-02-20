@@ -55,5 +55,24 @@ class TestReporter(unittest.TestCase):
         self.assertIn("£200", md)
         self.assertIn("badge-red", md)
 
+    def test_get_html_template(self):
+        reporter = Reporter()
+        html = reporter.get_html_template()
+        self.assertIn("<!DOCTYPE html>", html)
+        self.assertIn(".badge-green", html)
+        self.assertIn(".prop-img", html)
+        self.assertIn("background-color: #d4edda", html) # Green background
+
+    def test_convert_to_html(self):
+        reporter = Reporter()
+        md_content = "| H1 | H2 |\n|---|---|\n| C1 | C2 |"
+        html = reporter.convert_to_html(md_content)
+        
+        self.assertIn("<table>", html)
+        self.assertIn("<thead>", html)
+        self.assertIn("<tbody>", html)
+        self.assertIn("<td>C1</td>", html)
+        self.assertIn("background-color: #d4edda", html) # Ensure template is applied
+
 if __name__ == '__main__':
     unittest.main()

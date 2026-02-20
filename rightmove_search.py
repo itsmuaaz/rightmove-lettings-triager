@@ -156,7 +156,13 @@ def main():
     with open('results.md', 'w') as f:
         f.write(md_content)
         
-    print(f"Found {len(all_properties)} properties. Report saved to results.md")
+    # Generate HTML Report
+    html_content = reporter.convert_to_html(md_content)
+    with open('results.html', 'w') as f:
+        f.write(html_content)
+        
+    print(f"Found {len(all_properties)} properties.")
+    print("Report saved to results.md and results.html")
 
 if __name__ == "__main__":
     main()
