@@ -12,6 +12,7 @@ People who are looking for rental properties in London and want to quickly compa
 - **Search Automation:** Fetches search results directly from a Rightmove URL.
 - **Auto-Pagination:** Automatically browses through all available result pages.
 - **Commute calculation:** Calculates real-world commute times (Public Transport & Cycling) using the TfL API, with straight-line distance as a fallback.
+- **Amenity Proximity:** Identifies nearby supermarkets, gyms, parks, and healthcare facilities using OpenStreetMap data.
 - **Rich Reporting:** Generates a consolidated Markdown report and a styled HTML dashboard with property images, color-coded metrics, and direct navigation links (Google Maps, TfL).
 
 ## Architecture
