@@ -103,7 +103,7 @@ class TestReporter(unittest.TestCase):
                 with patch('reporter.generate_tfl_url', return_value=''):
                     row = reporter._generate_row(property_data)
                     
-        self.assertIn('⚠ Unavailable', row)
+        self.assertIn('⚠ Data Error', row)
 
     def test_get_commute_class(self):
         """Test logic for assigning traffic light CSS classes to commute times."""

@@ -73,7 +73,7 @@ class Reporter:
         amenities = p.get('nearby_amenities')
         
         if amenities is None:
-            return '<span class="badge-grey">Unavailable</span>' if for_html else "⚠ Unavailable"
+            return '<span class="badge-grey">Data Error</span>' if for_html else "⚠ Data Error"
 
         cat_labels = {
             'supermarket': '🛒',
