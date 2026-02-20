@@ -11,7 +11,7 @@ People who are looking for rental properties in London and want to quickly compa
 ## Core Features
 - **Search Automation:** Fetches search results directly from a Rightmove URL.
 - **Auto-Pagination:** Automatically browses through all available result pages.
-- **Commute calculation:** Calculates real-world commute times using the TfL API, with straight-line distance as a fallback.
+- **Commute calculation:** Calculates real-world commute times (Public Transport & Cycling) using the TfL API, with straight-line distance as a fallback.
 - **Rich Reporting:** Generates a consolidated Markdown report and a styled HTML dashboard with property images and color-coded metrics.
 
 ## Architecture
