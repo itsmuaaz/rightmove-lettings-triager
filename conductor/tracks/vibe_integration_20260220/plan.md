@@ -1,0 +1,23 @@
+# Implementation Plan - Property "Vibe" Integration
+
+This plan outlines the steps to integrate LLM-based (e.g., Gemini) "vibe" categorization for each rental property based on its location (postcode/borough).
+
+---
+
+## Phase 1: LLM Client and Prompt Engineering
+- [ ] Task: Research LLM prompt strategies to categorize London postcodes by safety, reputation, and prestige
+- [ ] Task: Implement `VibeClient` using the Google Gemini API to query postcode attributes (TDD - Red/Green/Refactor)
+- [ ] Task: Implement a caching mechanism for postcode lookups to minimize API calls (TDD - Red/Green)
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: LLM Client and Prompt Engineering' (Protocol in workflow.md)
+
+## Phase 2: Vibe Scoring and Integration
+- [ ] Task: Update the property processing loop to call the `VibeClient` for each unique postcode (TDD - Red/Green)
+- [ ] Task: Implement logic to calculate the aggregate "Vibe Score" (1-10) based on LLM attributes (TDD - Red/Green)
+- [ ] Task: Add a short summary tag generator based on the vibe scores (TDD - Red/Green)
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Vibe Scoring and Integration' (Protocol in workflow.md)
+
+## Phase 3: Reporting and Validation
+- [ ] Task: Update the Markdown table generator to include the "Vibe Score & Summary" column (TDD - Red/Green)
+- [ ] Task: Verify the end-to-end flow with real search results for disparate London areas (e.g., Richmond vs. Newham)
+- [ ] Task: Ensure code coverage for new modules is >80%
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Reporting and Validation' (Protocol in workflow.md)
