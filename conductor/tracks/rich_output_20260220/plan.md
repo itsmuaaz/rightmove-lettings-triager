@@ -5,7 +5,7 @@ This plan outlines the steps to implement a richer reporting system using Markdo
 ---
 
 ## Phase 1: Dependency & Data Extraction
-- [ ] Task: Add `markdown` library to `requirements.txt` and update `tech-stack.md`
+- [x] Task: Add `markdown` library to `requirements.txt` and update `tech-stack.md` 7c5611e
 - [ ] Task: Update property extraction logic to include images, bedrooms, and dates (TDD - Red/Green)
 - [ ] Task: Implement `FormattedDate` helper for human-readable dates (TDD - Red/Green)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Dependency & Data Extraction' (Protocol in workflow.md)
