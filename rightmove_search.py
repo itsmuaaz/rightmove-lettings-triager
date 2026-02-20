@@ -45,6 +45,37 @@ def update_url_index(url, new_index):
     new_query = urlencode(query, doseq=True)
     return urlunparse(u._replace(query=new_query))
 
+def parse_property_data(p):
+    """Extract relevant fields from a raw property object."""
+    price = p.get('price', {}).get('displayPrices', [{'displayPrice': 'N/A'}])[0]['displayPrice']
+    prop_type = p.get('propertyTypeFullDescription', 'Property')
+    address = p.get('displayAddress', 'No Address')
+    agent = p.get('customer', {}).get('brandTradingName', 'Unknown')
+    url = p.get('propertyUrl', '')
+    
+    # New fields
+    image_url = None
+    images = p.get('propertyImages', {}).get('images', [])
+    if images:
+        image_url = images[0].get('srcUrl')
+        
+    bedrooms = p.get('bedrooms', 0)
+    published_on = p.get('firstPublishedDate')
+    summary = p.get('summary', '')
+
+    return {
+        'price': price,
+        'type': prop_type,
+        'address': address,
+        'agent': agent,
+        'url': url,
+        'image_url': image_url,
+        'bedrooms': bedrooms,
+        'published_on': published_on,
+        'summary': summary,
+        '_original': p # Keep raw data for calculator
+    }
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python3 rightmove_search.py <URL>")
@@ -87,7 +118,10 @@ def main():
         if not props:
             break
             
-        all_properties.extend(props)
+        # Parse and store
+        for p in props:
+            parsed = parse_property_data(p)
+            all_properties.append(parsed)
         
         # Check if we have more pages
         current_index += per_page
@@ -107,7 +141,7 @@ def main():
 
     # Calculate commute and distance
     for p in all_properties:
-        res = calculator.calculate(p)
+        res = calculator.calculate(p['_original'])
         p['_dist'] = res['distance']
         p['_commute'] = res['commute_time']
     
@@ -118,11 +152,7 @@ def main():
     print(f"| :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
 
     for p in all_properties:
-        price = p.get('price', {}).get('displayPrices', [{'displayPrice': 'N/A'}])[0]['displayPrice']
-        prop_type = p.get('propertyTypeFullDescription', 'Property')
-        address = p.get('displayAddress', 'No Address')
-        agent = p.get('customer', {}).get('brandTradingName', 'Unknown')
-        link = f"https://www.rightmove.co.uk{p.get('propertyUrl', '')}"
+        link = f"https://www.rightmove.co.uk{p['url']}"
         
         dist_val = p.get('_dist', float('inf'))
         dist_str = f"{dist_val:.2f}" if dist_val != float('inf') else "N/A"
@@ -130,7 +160,7 @@ def main():
         commute_val = p.get('_commute')
         commute_str = f"{commute_val} mins" if commute_val is not None else "N/A"
 
-        print(f"| {price} | {commute_str} | {dist_str} | {prop_type} | {address} | {agent} | [View]({link}) |")
+        print(f"| {p['price']} | {commute_str} | {dist_str} | {p['type']} | {p['address']} | {p['agent']} | [View]({link}) |")
 
 if __name__ == "__main__":
     main()
