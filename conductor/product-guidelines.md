@@ -12,7 +12,8 @@ The purpose of these guidelines is to ensure the tool provides a clear, reliable
 - **Efficiency:** The tool should be fast and handle multiple pages without requiring user intervention once started.
 - **Readability:** The final Markdown table should be formatted for quick scanning, with the most relevant information (Price and Distance) highlighted or placed prominently.
 - **Reliability:** All distance calculations must be accurate based on the provided coordinates.
+- **Visual Clarity:** Use color-coded badges (Green/Amber/Red) in reports to help users instantly assess commute times.
 
 ## Branding
-- **Utility Over Style:** As a CLI tool, the focus is on functional utility and clean Markdown output rather than visual flair.
+- **Utility & Clarity:** Focus on functional utility with clean, accessible reports. Visual flair should enhance readability, not distract.
 - **Consistency:** Use consistent terminology for property types and status labels.

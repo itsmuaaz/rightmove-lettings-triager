@@ -19,4 +19,4 @@
 - **`markdown`:** Python library for converting Markdown text to HTML.
 
 ## Output Format
-- **Markdown:** All search results are formatted as Markdown tables for easy readability and integration into other documents or tools.
+- **Rich Markdown & HTML:** Search results are formatted as an enriched Markdown table (`results.md`) and a styled HTML dashboard (`results.html`) for browser viewing.

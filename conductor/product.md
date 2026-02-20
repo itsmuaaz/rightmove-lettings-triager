@@ -12,7 +12,7 @@ People who are looking for rental properties in London and want to quickly compa
 - **Search Automation:** Fetches search results directly from a Rightmove URL.
 - **Auto-Pagination:** Automatically browses through all available result pages.
 - **Commute calculation:** Calculates real-world commute times using the TfL API, with straight-line distance as a fallback.
-- **Consolidated Output:** Combines all properties into a single, sorted Markdown table for easy comparison.
+- **Rich Reporting:** Generates a consolidated Markdown report and a styled HTML dashboard with property images and color-coded metrics.
 
 ## Architecture
 A standalone Python script that uses `curl` for fetching data and standard libraries for processing. It relies on the Next.js JSON blob found within Rightmove's HTML source for its data extraction.
