@@ -1,10 +1,10 @@
 # Implementation Plan - Interactive Dashboard
 
-## Phase 1: Storage Logic
-- [ ] Task: Implement `NoteManager` class to handle `notes.json` operations (TDD - Red/Green)
-    - [ ] Create `notes_manager.py` with methods to load, get, save notes.
-    - [ ] Ensure atomic writes (or safe overwrites) for `notes.json`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Storage Logic' (Protocol in workflow.md)
+## Phase 1: Storage Logic [checkpoint: 3894d22]
+- [x] Task: Implement `NoteManager` class to handle `notes.json` operations (TDD - Red/Green) 5b01060
+    - [x] Create `notes_manager.py` with methods to load, get, save notes. 5b01060
+    - [x] Ensure atomic writes (or safe overwrites) for `notes.json`. 5b01060
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Storage Logic' (Protocol in workflow.md) 3894d22
 
 ## Phase 2: Server Infrastructure
 - [ ] Task: Create `dashboard.py` implementing `DashboardHandler` (TDD - Red/Green)
