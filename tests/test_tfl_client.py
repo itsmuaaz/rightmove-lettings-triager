@@ -19,13 +19,14 @@ class TestTflClient(unittest.TestCase):
         duration = self.client.get_commute_time((51.5007, -0.1246), (51.5349, -0.1238))
         
         self.assertEqual(duration, 35)
-        # Check if correct URL was called
+        # Check if correct Request was called
         args, kwargs = mock_urlopen.call_args
-        url = args[0]
-        self.assertIn("app_id=test_id", url)
-        self.assertIn("app_key=test_key", url)
-        self.assertIn("51.5007,-0.1246", url)
-        self.assertIn("51.5349,-0.1238", url)
+        req = args[0]
+        self.assertIn("app_id=test_id", req.full_url)
+        self.assertIn("app_key=test_key", req.full_url)
+        self.assertIn("51.5007,-0.1246", req.full_url)
+        self.assertIn("51.5349,-0.1238", req.full_url)
+        self.assertEqual(req.get_header("User-agent"), "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
     @patch("urllib.request.urlopen")
     def test_get_commute_time_no_journeys(self, mock_urlopen):

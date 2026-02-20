@@ -25,9 +25,14 @@ class TflClient:
         if params:
             url += "?" + urllib.parse.urlencode(params)
 
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
+
         for attempt in range(max_retries):
             try:
-                with urllib.request.urlopen(url) as response:
+                req = urllib.request.Request(url, headers=headers)
+                with urllib.request.urlopen(req) as response:
                     if response.status != 200:
                         sys.stderr.write(f"TfL API Error: Status {response.status}\n")
                         return None
