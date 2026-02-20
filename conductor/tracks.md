@@ -4,7 +4,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Integrate TfL/Google Maps API for true commute times**
+- [x] **Track: Integrate TfL/Google Maps API for true commute times**
   *Link: [./tracks/tfl_integration_20260220/](./tracks/tfl_integration_20260220/)*
 
 ---
