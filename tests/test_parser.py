@@ -27,6 +27,8 @@ class TestParser(unittest.TestCase):
         self.assertEqual(parsed['bedrooms'], 2)
         self.assertEqual(parsed['published_on'], '2023-10-27T10:00:00Z')
         self.assertEqual(parsed['summary'], 'A lovely flat.')
+        self.assertEqual(parsed['latitude'], 51.5)
+        self.assertEqual(parsed['longitude'], -0.1)
 
     def test_parse_property_data_missing_fields(self):
         raw_property = {}

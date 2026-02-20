@@ -63,6 +63,10 @@ def parse_property_data(p):
     bedrooms = p.get('bedrooms', 0)
     published_on = p.get('firstPublishedDate')
     summary = p.get('summary', '')
+    
+    location = p.get('location', {})
+    latitude = location.get('latitude')
+    longitude = location.get('longitude')
 
     return {
         'price': price,
@@ -74,6 +78,8 @@ def parse_property_data(p):
         'bedrooms': bedrooms,
         'published_on': published_on,
         'summary': summary,
+        'latitude': latitude,
+        'longitude': longitude,
         '_original': p # Keep raw data for calculator
     }
 

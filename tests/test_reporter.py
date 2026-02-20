@@ -43,23 +43,31 @@ class TestReporter(unittest.TestCase):
             'type': 'Flat',
             'address': 'Test St',
             'published_on': '2023-10-27T10:00:00Z',
-            'url': '/prop/1'
+            'url': '/prop/1',
+            'latitude': 51.5,
+            'longitude': -0.1
         }
         
         reporter = Reporter()
         with patch('reporter.format_date', return_value='Today'):
-            # Test Markdown (Inline)
-            row_md = reporter._generate_row(property_data, for_html=False)
-            self.assertIn('15 mins', row_md)
-            self.assertIn('10 mins', row_md)
-            self.assertIn('🚆', row_md)
-            self.assertIn('🚲', row_md)
-            self.assertIn(' / ', row_md) # Separator
-            
-            # Test HTML (Stacked)
-            row_html = reporter._generate_row(property_data, for_html=True)
-            self.assertIn('commute-stack', row_html)
-            self.assertNotIn(' / ', row_html) # No text separator in stacked mode
+            with patch('reporter.generate_google_maps_url', return_value='http://gmaps'):
+                with patch('reporter.generate_tfl_url', return_value='http://tfl'):
+                    # Test Markdown (Inline)
+                    row_md = reporter._generate_row(property_data, for_html=False)
+                    self.assertIn('15 mins', row_md)
+                    self.assertIn('10 mins', row_md)
+                    self.assertIn('🚆', row_md)
+                    self.assertIn('🚲', row_md)
+                    self.assertIn(' / ', row_md) # Separator
+                    self.assertIn('[GMaps](http://gmaps)', row_md)
+                    self.assertIn('[TfL](http://tfl)', row_md)
+                    
+                    # Test HTML (Stacked)
+                    row_html = reporter._generate_row(property_data, for_html=True)
+                    self.assertIn('commute-stack', row_html)
+                    self.assertNotIn(' / ', row_html) # No text separator in stacked mode
+                    self.assertIn('href="http://gmaps"', row_html)
+                    self.assertIn('href="http://tfl"', row_html)
 
     def test_get_commute_class(self):
         """Test logic for assigning traffic light CSS classes to commute times."""

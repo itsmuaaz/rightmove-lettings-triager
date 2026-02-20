@@ -1,4 +1,4 @@
-from utils import format_date
+from utils import format_date, generate_google_maps_url, generate_tfl_url
 import markdown
 from string import Template
 
@@ -48,10 +48,23 @@ class Reporter:
         if not items: # Both None
             return '<span class="badge-grey">N/A</span>'
 
+        # Generate Links
+        origin_address = p.get('address', '')
+        origin_coords = None
+        if p.get('latitude') and p.get('longitude'):
+            origin_coords = (p.get('latitude'), p.get('longitude'))
+            
+        gmaps_link = generate_google_maps_url(origin_address)
+        tfl_link = generate_tfl_url(origin_address, origin_coords)
+
         if for_html:
-            return f'<div class="commute-stack">{"".join(items)}</div>'
+            badges_html = "".join(items)
+            links_html = f'<div style="margin-top: 4px; font-size: 0.85em;"><a href="{gmaps_link}" target="_blank">[GMaps]</a> <a href="{tfl_link}" target="_blank">[TfL]</a></div>'
+            return f'<div class="commute-stack">{badges_html}{links_html}</div>'
         else:
-            return " / ".join(items)
+            badges_md = " / ".join(items)
+            links_md = f"[GMaps]({gmaps_link}) [TfL]({tfl_link})"
+            return f"{badges_md} <br> {links_md}"
 
     def _generate_row(self, p, for_html=False):
         """Generates a Markdown table row for a property."""
