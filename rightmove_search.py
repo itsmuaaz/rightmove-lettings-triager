@@ -227,6 +227,8 @@ def main():
     server = HTTPServer(('127.0.0.1', port), DashboardHandler)
     server.html_content = html_content
     server.note_manager = note_manager
+    server.properties = all_properties
+    server.reporter = reporter
     
     try:
         server.serve_forever()
