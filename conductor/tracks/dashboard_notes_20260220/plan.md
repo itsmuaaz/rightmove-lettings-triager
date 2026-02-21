@@ -18,3 +18,6 @@
 - [x] Task: Update `rightmove_search.py` to start the server by default (TDD/Integration) 5a15cd0
     - [x] Replace exit with `server.serve_forever()`. 5a15cd0
 - [x] Task: Conductor - User Manual Verification 'Phase 3: UI Integration & Main Loop' (Protocol in workflow.md) e7c5ee3
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (Security fix, commit tests) f04cb57
