@@ -101,7 +101,7 @@ class Reporter:
 
     def _generate_notes_cell(self, p, for_html=False):
         """Generates the editable notes cell."""
-        note_content = p.get('note', '')
+        note_content = p.get('note') or ''
         prop_id = p.get('id', '')
         
         if for_html and prop_id:

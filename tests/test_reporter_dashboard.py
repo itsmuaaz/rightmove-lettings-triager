@@ -38,5 +38,14 @@ class TestReporterDashboard(unittest.TestCase):
         self.assertIn('placeholder="Start typing..."', row)
         self.assertIn('></textarea>', row)
 
+    def test_notes_textarea_none_content(self):
+        """Test generation when note is explicitly None."""
+        reporter = Reporter()
+        prop = {'id': '11111', 'note': None}
+        row = reporter._generate_row(prop, for_html=True)
+        
+        self.assertIn('placeholder="Start typing..."', row)
+        self.assertIn('></textarea>', row)
+
 if __name__ == '__main__':
     unittest.main()
