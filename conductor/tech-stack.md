@@ -11,6 +11,7 @@
 - **`urllib`:** For URL parsing, encoding, and constructing search query parameters.
 - **`os`:** For interacting with environment variables.
 - **`venv`:** For managing project dependencies in a virtual environment.
+- **`http.server`:** For serving the local interactive dashboard.
 
 ## External Tools
 - **`curl`:** Used as the primary data fetching mechanism, configured with a browser-like User-Agent to bypass simple anti-bot measures.
