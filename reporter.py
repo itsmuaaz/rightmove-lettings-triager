@@ -6,7 +6,7 @@ class Reporter:
     """Generates Markdown and HTML reports for property search results."""
 
     def __init__(self):
-        self.headers = ["Image", "Price", "Commute", "Nearby Amenities", "Distance", "Details", "Address", "Added On", "Link"]
+        self.headers = ["Image", "Price", "Commute", "Nearby Amenities", "Distance", "Notes", "Details", "Address", "Added On", "Link"]
 
     def _get_commute_class(self, minutes):
         """Returns the CSS class for the commute badge."""
@@ -99,12 +99,26 @@ class Reporter:
         else:
             return " <br> ".join(parts)
 
+    def _generate_notes_cell(self, p, for_html=False):
+        """Generates the editable notes cell."""
+        note_content = p.get('note', '')
+        prop_id = p.get('id', '')
+        
+        if for_html and prop_id:
+            # Escape quotes for safety
+            escaped_content = note_content.replace('"', '&quot;')
+            return f'''<textarea class="note-input" placeholder="Start typing..." 
+                       onblur="saveNote('{prop_id}', this.value)">{note_content}</textarea>'''
+        else:
+            return note_content if note_content else "N/A"
+
     def _generate_row(self, p, for_html=False):
         """Generates a Markdown table row for a property."""
         image_html = f'<img src="{p.get("image_url")}" class="prop-img" alt="Property">' if p.get("image_url") else "N/A"
         
         commute_html = self._generate_commute_cell(p, for_html)
         amenity_html = self._generate_amenity_cell(p, for_html)
+        notes_html = self._generate_notes_cell(p, for_html)
         
         dist_val = p.get("distance")
         dist_str = f"{dist_val:.2f} mi" if dist_val else "N/A"
@@ -116,7 +130,7 @@ class Reporter:
         link = f"https://www.rightmove.co.uk{p.get('url', '')}"
         link_html = f'[View]({link})'
 
-        return f"| {image_html} | **{p.get('price')}** | {commute_html} | {amenity_html} | {dist_str} | {details} | {address} | {added_on} | {link_html} |"
+        return f"| {image_html} | **{p.get('price')}** | {commute_html} | {amenity_html} | {dist_str} | {notes_html} | {details} | {address} | {added_on} | {link_html} |"
 
     def generate_markdown(self, properties, for_html=False):
         """Generates the full Markdown report."""
@@ -137,7 +151,7 @@ class Reporter:
         return template.substitute(content=html_table)
 
     def get_html_template(self):
-        """Returns the HTML boilerplate with embedded CSS."""
+        """Returns the HTML boilerplate with embedded CSS and JS."""
         return """
 <!DOCTYPE html>
 <html lang="en">
@@ -148,7 +162,7 @@ class Reporter:
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; color: #333; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: middle; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
         th { background-color: #f2f2f2; font-weight: 600; }
         tr:nth-child(even) { background-color: #f9f9f9; }
         
@@ -164,13 +178,35 @@ class Reporter:
         .commute-stack { display: flex; flex-direction: column; gap: 4px; }
         .commute-links { margin-top: 4px; font-size: 0.85em; }
         
+        /* Notes */
+        .note-input { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit; }
+        .note-input:focus { border-color: #007bff; outline: none; }
+        
         a { color: #007bff; text-decoration: none; }
         a:hover { text-decoration: underline; }
     </style>
+    <script>
+        function saveNote(propertyId, text) {
+            fetch('/api/notes', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: propertyId, note: text})
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Note saved for ' + propertyId);
+                } else {
+                    console.error('Failed to save note for ' + propertyId);
+                    alert('Failed to save note. Check connection.');
+                }
+            }).catch(err => {
+                console.error('Error saving note:', err);
+            });
+        }
+    </script>
 </head>
 <body>
     <h1>Property Search Results</h1>
-    <p>Generated report.</p>
+    <p>Generated report. Use the text areas to save notes.</p>
     <div id="content">
         $content
     </div>
