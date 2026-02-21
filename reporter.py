@@ -1,5 +1,6 @@
 from utils import format_date, generate_google_maps_url, generate_tfl_url
 import markdown
+import html
 from string import Template
 
 class Reporter:
@@ -106,8 +107,8 @@ class Reporter:
         
         if for_html and prop_id:
             # Escape quotes for safety
-            escaped_content = note_content.replace('"', '&quot;')
-            return f'<textarea class="note-input" placeholder="Start typing..." onblur="saveNote(\'{prop_id}\', this.value)">{note_content}</textarea>'
+            escaped_content = html.escape(note_content)
+            return f'<textarea class="note-input" placeholder="Start typing..." onblur="saveNote(\'{prop_id}\', this.value)">{escaped_content}</textarea>'
         else:
             return note_content if note_content else "N/A"
 
