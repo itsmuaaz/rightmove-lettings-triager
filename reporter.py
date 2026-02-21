@@ -131,6 +131,40 @@ class Reporter:
 
         return f"| {image_html} | **{p.get('price')}** | {commute_html} | {amenity_html} | {dist_str} | {notes_html} | {details} | {address} | {added_on} | {link_html} |"
 
+    def _generate_html_row(self, p):
+        """Generates an HTML table row for a property."""
+        image_html = f'<img src="{p.get("image_url")}" class="prop-img" alt="Property">' if p.get("image_url") else "N/A"
+        
+        commute_html = self._generate_commute_cell(p, for_html=True)
+        amenity_html = self._generate_amenity_cell(p, for_html=True)
+        notes_html = self._generate_notes_cell(p, for_html=True)
+        
+        dist_val = p.get("distance")
+        dist_str = f"{dist_val:.2f} mi" if dist_val else "N/A"
+        
+        details = self._sanitize(f"{p.get('bedrooms', 0)} bed {p.get('type', 'Property')}")
+        address = self._sanitize(p.get('address'))
+        added_on = format_date(p.get("published_on"))
+        
+        link = f"https://www.rightmove.co.uk{p.get('url', '')}"
+        link_html = f'<a href="{link}" target="_blank">View</a>'
+
+        cells = [image_html, f"<strong>{p.get('price')}</strong>", commute_html, amenity_html, dist_str, notes_html, details, address, added_on, link_html]
+        row_content = "".join([f"<td>{c}</td>" for c in cells])
+        return f"<tr>{row_content}</tr>"
+
+    def generate_html_report(self, properties):
+        """Generates the full HTML report directly."""
+        header_row = "".join([f"<th>{h}</th>" for h in self.headers])
+        thead = f"<thead><tr>{header_row}</tr></thead>"
+        
+        rows = "".join([self._generate_html_row(p) for p in properties])
+        tbody = f"<tbody>{rows}</tbody>"
+        
+        table = f"<table>{thead}{tbody}</table>"
+        template = Template(self.get_html_template())
+        return template.substitute(content=table)
+
     def generate_markdown(self, properties, for_html=False):
         """Generates the full Markdown report."""
         header_row = "| " + " | ".join(self.headers) + " |\n"
@@ -178,7 +212,7 @@ class Reporter:
         .commute-links { margin-top: 4px; font-size: 0.85em; }
         
         /* Notes */
-        .note-input { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit; }
+        .note-input { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit; box-sizing: border-box; }
         .note-input:focus { border-color: #007bff; outline: none; }
         
         a { color: #007bff; text-decoration: none; }
