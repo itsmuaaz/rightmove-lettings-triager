@@ -12,9 +12,9 @@
     - [x] Implement `do_POST` to handle `/api/notes` and call `NoteManager`. 372a8a6
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Server Infrastructure' (Protocol in workflow.md) f41c48f
 
-## Phase 3: UI Integration & Main Loop
-- [ ] Task: Update `Reporter` class to add "Notes" column and client-side JavaScript (TDD - Red/Green)
-    - [ ] Add `<textarea>` and `fetch` logic to HTML template.
-- [ ] Task: Update `rightmove_search.py` to start the server by default (TDD/Integration)
-    - [ ] Replace exit with `server.serve_forever()`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: UI Integration & Main Loop' (Protocol in workflow.md)
+## Phase 3: UI Integration & Main Loop [checkpoint: e7c5ee3]
+- [x] Task: Update `Reporter` class to add "Notes" column and client-side JavaScript (TDD - Red/Green) 5a15cd0
+    - [x] Add `<textarea>` and `fetch` logic to HTML template. 5a15cd0
+- [x] Task: Update `rightmove_search.py` to start the server by default (TDD/Integration) 5a15cd0
+    - [x] Replace exit with `server.serve_forever()`. 5a15cd0
+- [x] Task: Conductor - User Manual Verification 'Phase 3: UI Integration & Main Loop' (Protocol in workflow.md) e7c5ee3
