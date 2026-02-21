@@ -37,3 +37,4 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Implement interactive dashboard with persistent notes.**
   *Link: [./tracks/dashboard_notes_20260220/](./tracks/dashboard_notes_20260220/)*
 \n---\n\n- [ ] **Track: Refactor codebase to support multiple property portals**\n  *Link: [./tracks/refactor_portals_20260221/](./tracks/refactor_portals_20260221/)*
+\n---\n\n- [ ] **Track: Fix 'Added On' date column showing 'Unknown'**\n  *Link: [./tracks/fix_added_on_date_20260221/](./tracks/fix_added_on_date_20260221/)*
