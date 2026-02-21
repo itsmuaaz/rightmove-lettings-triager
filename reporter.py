@@ -107,8 +107,7 @@ class Reporter:
         if for_html and prop_id:
             # Escape quotes for safety
             escaped_content = note_content.replace('"', '&quot;')
-            return f'''<textarea class="note-input" placeholder="Start typing..." 
-                       onblur="saveNote('{prop_id}', this.value)">{note_content}</textarea>'''
+            return f'<textarea class="note-input" placeholder="Start typing..." onblur="saveNote(\'{prop_id}\', this.value)">{note_content}</textarea>'
         else:
             return note_content if note_content else "N/A"
 
