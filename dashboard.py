@@ -11,8 +11,16 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'text/html')
             self.end_headers()
             
-            # Serve the generated HTML content from the server instance
-            if hasattr(self.server, 'html_content'):
+            # Regenerate HTML if possible to show latest notes
+            if hasattr(self.server, 'properties') and hasattr(self.server, 'reporter') and hasattr(self.server, 'note_manager'):
+                # Refresh notes
+                for p in self.server.properties:
+                    p['note'] = self.server.note_manager.get_note(p['id'])
+                
+                html_content = self.server.reporter.generate_html_report(self.server.properties)
+                self.wfile.write(html_content.encode('utf-8'))
+            # Fallback to static content
+            elif hasattr(self.server, 'html_content'):
                 self.wfile.write(self.server.html_content.encode('utf-8'))
             else:
                 self.wfile.write(b"No report generated.")

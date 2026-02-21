@@ -6,7 +6,9 @@ from dashboard import DashboardHandler
 
 class TestDashboardHandler(unittest.TestCase):
     def setUp(self):
-        self.mock_server = MagicMock()
+        class MockServer:
+            pass
+        self.mock_server = MockServer()
         self.mock_server.note_manager = MagicMock()
         self.mock_server.html_content = "<html>Test</html>"
 
