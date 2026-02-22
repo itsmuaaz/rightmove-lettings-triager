@@ -103,6 +103,11 @@ class TflClient:
                 
                 req = urllib.request.Request(url, headers=headers)
                 with urllib.request.urlopen(req) as response:
+                    if response.status == 429:
+                        sys.stderr.write(f"TfL API Rate Limit (429). Backing off for 20s...\n")
+                        time.sleep(20)
+                        continue
+                        
                     if response.status != 200:
                         sys.stderr.write(f"TfL API Error: Status {response.status}\n")
                         return None
