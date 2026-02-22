@@ -7,8 +7,11 @@ from tfl_client import TflClient
 class TestTflClient(unittest.TestCase):
     def setUp(self):
         self.test_cache_dir = ".tfl_cache_test_old"
-        self.client = TflClient(app_id="test_id", app_key="test_key")
+        self.client = TflClient(app_id="test_id", app_key="test_key", min_interval=0.1)
         self.client.cache_dir = self.test_cache_dir
+        
+        # Disable rate limiting for these tests to focus on retry logic
+        self.client._wait_for_slot = MagicMock()
         
         if os.path.exists(self.test_cache_dir):
             shutil.rmtree(self.test_cache_dir)
