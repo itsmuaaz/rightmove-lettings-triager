@@ -7,22 +7,36 @@ import sys
 import time
 import hashlib
 import os
+import threading
 from typing import Optional, Tuple, Any
 
 class TflClient:
     """Client for fetching journey results from Transport for London."""
 
-    def __init__(self, app_id: Optional[str] = None, app_key: Optional[str] = None):
+    def __init__(self, app_id: Optional[str] = None, app_key: Optional[str] = None, min_interval: float = 1.5):
         """Initializes the TfL client.
 
         Args:
             app_id: The TfL App ID (optional for low limits).
             app_key: The TfL App Key (optional for low limits).
+            min_interval: Minimum time in seconds between API requests.
         """
         self.app_id = app_id
         self.app_key = app_key
         self.base_url = "https://api.tfl.gov.uk/Journey/JourneyResults"
         self.cache_dir = ".tfl_cache"
+        self.min_interval = min_interval
+        self.last_request_time = 0.0
+        self.lock = threading.Lock()
+
+    def _wait_for_slot(self) -> None:
+        """Blocks until the rate limit interval has passed."""
+        with self.lock:
+            current_time = time.time()
+            elapsed = current_time - self.last_request_time
+            if elapsed < self.min_interval:
+                time.sleep(self.min_interval - elapsed)
+            self.last_request_time = time.time()
 
     def _get_cache_key(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict) -> str:
         """Generates a unique cache key based on request parameters."""
