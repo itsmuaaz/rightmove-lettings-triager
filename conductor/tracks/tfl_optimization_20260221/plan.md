@@ -7,7 +7,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Caching Infrastructure' (Protocol in workflow.md) [checkpoint: 971c5c3]
 
 ## Phase 2: Rate Limiting & Resilience
-- [ ] Task: Implement thread-safe `_wait_for_slot` method using `threading.Lock` (TDD - Red/Green)
+- [x] Task: Implement thread-safe `_wait_for_slot` method using `threading.Lock` (TDD - Red/Green) [52e217a]
 - [ ] Task: Integrate rate limiting into `_fetch_journey` (Refactor)
 - [ ] Task: Improve 429 error handling with aggressive backoff (Refactor)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Rate Limiting & Resilience' (Protocol in workflow.md)
