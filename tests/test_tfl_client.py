@@ -1,10 +1,22 @@
 import unittest
+import os
+import shutil
 from unittest.mock import patch, MagicMock
 from tfl_client import TflClient
 
 class TestTflClient(unittest.TestCase):
     def setUp(self):
+        self.test_cache_dir = ".tfl_cache_test_old"
         self.client = TflClient(app_id="test_id", app_key="test_key")
+        self.client.cache_dir = self.test_cache_dir
+        
+        if os.path.exists(self.test_cache_dir):
+            shutil.rmtree(self.test_cache_dir)
+        os.makedirs(self.test_cache_dir)
+
+    def tearDown(self):
+        if os.path.exists(self.test_cache_dir):
+            shutil.rmtree(self.test_cache_dir)
 
     @patch("urllib.request.urlopen")
     def test_get_commute_time_success(self, mock_urlopen):
