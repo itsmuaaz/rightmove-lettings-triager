@@ -5,6 +5,8 @@ import urllib.request
 import urllib.parse
 import sys
 import time
+import hashlib
+import os
 from typing import Optional, Tuple, Any
 
 class TflClient:
@@ -20,6 +22,35 @@ class TflClient:
         self.app_id = app_id
         self.app_key = app_key
         self.base_url = "https://api.tfl.gov.uk/Journey/JourneyResults"
+        self.cache_dir = ".tfl_cache"
+
+    def _get_cache_key(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict) -> str:
+        """Generates a unique cache key based on request parameters."""
+        key_str = f"{from_coords}-{to_coords}-{json.dumps(params, sort_keys=True)}"
+        return hashlib.md5(key_str.encode('utf-8')).hexdigest()
+
+    def _load_cache(self, key: str) -> Optional[Any]:
+        """Loads data from cache if available."""
+        cache_path = os.path.join(self.cache_dir, f"{key}.json")
+        if os.path.exists(cache_path):
+            try:
+                with open(cache_path, 'r') as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, IOError):
+                return None
+        return None
+
+    def _save_cache(self, key: str, data: Any) -> None:
+        """Saves data to cache."""
+        if not os.path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir)
+            
+        cache_path = os.path.join(self.cache_dir, f"{key}.json")
+        try:
+            with open(cache_path, 'w') as f:
+                json.dump(data, f)
+        except IOError as e:
+            sys.stderr.write(f"Failed to write to cache: {e}\n")
 
     def _fetch_journey(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict, max_retries: int) -> Optional[int]:
         """Internal helper to fetch journey time with specific parameters."""
