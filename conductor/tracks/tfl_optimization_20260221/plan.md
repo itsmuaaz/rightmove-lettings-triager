@@ -8,6 +8,6 @@
 
 ## Phase 2: Rate Limiting & Resilience
 - [x] Task: Implement thread-safe `_wait_for_slot` method using `threading.Lock` (TDD - Red/Green) [52e217a]
-- [ ] Task: Integrate rate limiting into `_fetch_journey` (Refactor)
+- [x] Task: Integrate rate limiting into `_fetch_journey` (Refactor) [beab4ee]
 - [ ] Task: Improve 429 error handling with aggressive backoff (Refactor)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Rate Limiting & Resilience' (Protocol in workflow.md)
