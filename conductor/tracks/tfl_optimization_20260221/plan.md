@@ -1,0 +1,13 @@
+# Implementation Plan - TfL Client Optimization
+
+## Phase 1: Caching Infrastructure
+- [ ] Task: Implement `_get_cache_key` and `_load_cache`/`_save_cache` methods in `TflClient` (TDD - Red/Green)
+- [ ] Task: Update `_fetch_journey` to check and write to cache (Refactor)
+- [ ] Task: Verify caching avoids network calls on repeat requests (TDD - Green)
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Caching Infrastructure' (Protocol in workflow.md)
+
+## Phase 2: Rate Limiting & Resilience
+- [ ] Task: Implement thread-safe `_wait_for_slot` method using `threading.Lock` (TDD - Red/Green)
+- [ ] Task: Integrate rate limiting into `_fetch_journey` (Refactor)
+- [ ] Task: Improve 429 error handling with aggressive backoff (Refactor)
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Rate Limiting & Resilience' (Protocol in workflow.md)
