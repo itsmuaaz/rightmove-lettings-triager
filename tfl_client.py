@@ -98,6 +98,9 @@ class TflClient:
 
         for attempt in range(max_retries):
             try:
+                # Rate limit before request
+                self._wait_for_slot()
+                
                 req = urllib.request.Request(url, headers=headers)
                 with urllib.request.urlopen(req) as response:
                     if response.status != 200:
