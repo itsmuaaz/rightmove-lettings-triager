@@ -1,7 +1,7 @@
 # Implementation Plan - TfL Client Optimization
 
 ## Phase 1: Caching Infrastructure
-- [ ] Task: Implement `_get_cache_key` and `_load_cache`/`_save_cache` methods in `TflClient` (TDD - Red/Green)
+- [x] Task: Implement `_get_cache_key` and `_load_cache`/`_save_cache` methods in `TflClient` (TDD - Red/Green) [e71a55f]
 - [ ] Task: Update `_fetch_journey` to check and write to cache (Refactor)
 - [ ] Task: Verify caching avoids network calls on repeat requests (TDD - Green)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Caching Infrastructure' (Protocol in workflow.md)
