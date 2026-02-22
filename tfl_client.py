@@ -54,19 +54,29 @@ class TflClient:
 
     def _fetch_journey(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict, max_retries: int) -> Optional[int]:
         """Internal helper to fetch journey time with specific parameters."""
+        # Check cache first
+        cache_key = self._get_cache_key(from_coords, to_coords, params)
+        cached_data = self._load_cache(cache_key)
+        if cached_data:
+            journeys = cached_data.get('journeys', [])
+            if not journeys:
+                return None
+            return min(j.get('duration', 999) for j in journeys)
+
         from_str = f"{from_coords[0]},{from_coords[1]}"
         to_str = f"{to_coords[0]},{to_coords[1]}"
         
         url = f"{self.base_url}/{from_str}/to/{to_str}"
         
-        # Add auth params
+        # Add auth params to a copy to avoid side effects
+        request_params = params.copy()
         if self.app_id:
-            params['app_id'] = self.app_id
+            request_params['app_id'] = self.app_id
         if self.app_key:
-            params['app_key'] = self.app_key
+            request_params['app_key'] = self.app_key
             
-        if params:
-            url += "?" + urllib.parse.urlencode(params)
+        if request_params:
+            url += "?" + urllib.parse.urlencode(request_params)
 
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
@@ -80,6 +90,10 @@ class TflClient:
                         sys.stderr.write(f"TfL API Error: Status {response.status}\n")
                         return None
                     data = json.loads(response.read().decode('utf-8'))
+                    
+                    # Save to cache
+                    self._save_cache(cache_key, data)
+                    
                     journeys = data.get('journeys', [])
                     if not journeys:
                         return None
