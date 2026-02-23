@@ -9,10 +9,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Backend Support' (Protocol in workflow.md)
 
 ## Phase 2: Frontend Implementation
-- [ ] Task: Update `reporter.py` CSS/JS
-    - [ ] Add `.status-shortlisted` style (gold border, full opacity).
-    - [ ] Update `markViewed` JS function to check if item is shortlisted before applying `.status-viewed`.
-    - [ ] Implement `markShortlisted` JS function.
+- [x] Task: Update `reporter.py` CSS/JS 4a8b47f
+    - [x] Add `.status-shortlisted` style (gold border, full opacity).
+    - [x] Update `markViewed` JS function to check if item is shortlisted before applying `.status-viewed`.
+    - [x] Implement `markShortlisted` JS function.
 - [ ] Task: Update `reporter.py` HTML generation
     - [ ] Add "Star" button to `_generate_html_row`.
     - [ ] Ensure correct initial class is applied if property is already shortlisted.
