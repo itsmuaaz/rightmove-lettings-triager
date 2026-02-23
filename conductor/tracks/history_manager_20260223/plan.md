@@ -33,6 +33,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Frontend Implementation' (Protocol in workflow.md) [checkpoint: 4cb533e]
 
 ## Phase 4: Final Polish & Documentation
-- [~] Task: Update `product.md` and `tech-stack.md` to reflect new architecture
+- [x] Task: Update `product.md` and `tech-stack.md` to reflect new architecture [c5fb264]
 - [ ] Task: Final End-to-End Verification (Scrape -> View -> Restart -> Verify State)
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & Documentation' (Protocol in workflow.md)
