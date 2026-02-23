@@ -34,5 +34,5 @@
 
 ## Phase 4: Final Polish & Documentation
 - [x] Task: Update `product.md` and `tech-stack.md` to reflect new architecture [c5fb264]
-- [ ] Task: Final End-to-End Verification (Scrape -> View -> Restart -> Verify State)
+- [~] Task: Final End-to-End Verification (Scrape -> View -> Restart -> Verify State)
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & Documentation' (Protocol in workflow.md)
