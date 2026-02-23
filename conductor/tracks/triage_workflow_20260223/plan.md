@@ -23,3 +23,6 @@
 - [x] Task: Update `product.md` to reflect the new Triage workflow. 990e2de
 - [x] Task: Final End-to-End Verification (Shortlist -> Restart -> Verify Persistence). aead172
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Final Integration' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions 02fff74
