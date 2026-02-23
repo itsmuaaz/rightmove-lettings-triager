@@ -1,10 +1,9 @@
-"""Module for managing the history of property interactions (viewed, dismissed)."""
-
 import json
 import os
 import time
 import shutil
 import tempfile
+from datetime import datetime
 from typing import Dict, Any, Optional
 
 class HistoryManager:
@@ -50,7 +49,11 @@ class HistoryManager:
         return self.history.get(property_id)
 
     def mark_seen(self, property_id: str) -> None:
-        """Marks a property as viewed."""
+        """Marks a property as viewed.
+        
+        Args:
+            property_id: The unique ID of the property.
+        """
         entry = self.history.get(property_id, {})
         if not entry:
             entry = {
@@ -59,12 +62,36 @@ class HistoryManager:
             }
         
         entry['last_viewed'] = datetime.now().isoformat()
-        entry['status'] = 'viewed'
+        
+        # Only set to 'viewed' if not already 'shortlisted' or 'dismissed'
+        if entry.get('status') not in ['shortlisted', 'dismissed']:
+            entry['status'] = 'viewed'
+            
+        self.history[property_id] = entry
+        self._save_history()
+
+    def mark_shortlisted(self, property_id: str) -> None:
+        """Marks a property as shortlisted.
+        
+        Args:
+            property_id: The unique ID of the property.
+        """
+        entry = self.history.get(property_id, {})
+        if not entry:
+            entry = {
+                "first_seen": datetime.now().isoformat()
+            }
+        
+        entry['status'] = 'shortlisted'
         self.history[property_id] = entry
         self._save_history()
 
     def mark_dismissed(self, property_id: str) -> None:
-        """Marks a property as dismissed."""
+        """Marks a property as dismissed.
+        
+        Args:
+            property_id: The unique ID of the property.
+        """
         entry = self.history.get(property_id, {})
         if not entry:
             entry = {
@@ -77,7 +104,11 @@ class HistoryManager:
         self._save_history()
 
     def initialize_properties(self, properties: list) -> None:
-        """Ensures all properties in the list have a history entry."""
+        """Ensures all properties in the list have a history entry.
+        
+        Args:
+            properties: A list of property dictionaries.
+        """
         changed = False
         for prop in properties:
             pid = prop.get('id')
@@ -93,5 +124,3 @@ class HistoryManager:
         
         if changed:
             self._save_history()
-
-from datetime import datetime
