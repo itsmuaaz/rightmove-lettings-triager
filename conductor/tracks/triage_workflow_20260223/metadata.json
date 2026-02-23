@@ -1,0 +1,8 @@
+{
+  "track_id": "triage_workflow_20260223",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-23T12:00:00Z",
+  "updated_at": "2026-02-23T12:00:00Z",
+  "description": "Implement a 'Shortlist' state and triage workflow for properties."
+}

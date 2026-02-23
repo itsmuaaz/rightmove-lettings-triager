@@ -56,3 +56,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: History Manager: Track seen/dismissed properties with 'Inbox Style' dashboard.**
   *Link: [./tracks/history_manager_20260223/](./tracks/history_manager_20260223/)*
+
+---
+
+- [ ] **Track: Triage Workflow: Implement 'Shortlist' state and improved property triage.**
+  *Link: [./tracks/triage_workflow_20260223/](./tracks/triage_workflow_20260223/)*
