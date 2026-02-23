@@ -1,3 +1,5 @@
+"""Module for managing the history of property interactions (viewed, dismissed)."""
+
 import json
 import os
 import time
