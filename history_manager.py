@@ -86,6 +86,18 @@ class HistoryManager:
         self.history[property_id] = entry
         self._save_history()
 
+    def unshortlist(self, property_id: str) -> None:
+        """Reverts a property from shortlisted to viewed.
+        
+        Args:
+            property_id: The unique ID of the property.
+        """
+        entry = self.history.get(property_id, {})
+        if entry:
+            entry['status'] = 'viewed'
+            self.history[property_id] = entry
+            self._save_history()
+
     def mark_dismissed(self, property_id: str) -> None:
         """Marks a property as dismissed.
         

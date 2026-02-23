@@ -78,6 +78,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     self.server.history_manager.mark_dismissed(property_id)
                 elif action == 'shortlist':
                     self.server.history_manager.mark_shortlisted(property_id)
+                elif action == 'unshortlist':
+                    self.server.history_manager.unshortlist(property_id)
                 elif action == 'undo_dismiss':
                     # Revert to viewed or new.
                     # TODO: Implement stricter undo if needed.
