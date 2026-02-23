@@ -16,7 +16,7 @@
 - [x] Task: Update main scraping loop (`main.py` equivalent or where `properties` are processed) [25804f3]
     - [x] Initialize `HistoryManager`
     - [x] On scrape completion, update history with new IDs (`status=new`)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: API & Scraper Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: API & Scraper Integration' (Protocol in workflow.md) [checkpoint: 95fc34c]
 
 ## Phase 3: Frontend Implementation
 - [ ] Task: Update `reporter.py` to inject `history_status` into property objects passed to template
