@@ -10,4 +10,4 @@
 - [x] Task: Implement thread-safe `_wait_for_slot` method using `threading.Lock` (TDD - Red/Green) [52e217a]
 - [x] Task: Integrate rate limiting into `_fetch_journey` (Refactor) [beab4ee]
 - [x] Task: Improve 429 error handling with aggressive backoff (Refactor) [c01d63b]
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Rate Limiting & Resilience' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Rate Limiting & Resilience' (Protocol in workflow.md)
