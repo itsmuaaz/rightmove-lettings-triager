@@ -1,4 +1,8 @@
-"""Module for interacting with the TfL Unified API."""
+"""Module for interacting with the TfL Unified API.
+
+This module provides a client for fetching journey times (Public Transport and Cycling)
+from the Transport for London API, with support for caching and rate limiting.
+"""
 
 import json
 import urllib.request
