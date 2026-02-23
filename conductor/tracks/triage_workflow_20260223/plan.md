@@ -8,7 +8,7 @@
 - [x] Task: Update `DashboardHandler` in `dashboard.py` to handle `action: shortlist`. 84dacfc
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Backend Support' (Protocol in workflow.md)
 
-## Phase 2: Frontend Implementation
+## Phase 2: Frontend Implementation [checkpoint: 66bc026]
 - [x] Task: Update `reporter.py` CSS/JS 4a8b47f
     - [x] Add `.status-shortlisted` style (gold border, full opacity).
     - [x] Update `markViewed` JS function to check if item is shortlisted before applying `.status-viewed`.
@@ -16,7 +16,8 @@
 - [x] Task: Update `reporter.py` HTML generation bf72597
     - [x] Add "Star" button to `_generate_html_row`.
     - [x] Ensure correct initial class is applied if property is already shortlisted.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Frontend Implementation' (Protocol in workflow.md)
+    - [x] Add "Shortlist Summary" section with navigation links. 66bc026
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Frontend Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Final Integration & Polish
 - [ ] Task: Update `product.md` to reflect the new Triage workflow.
