@@ -13,9 +13,11 @@ class DashboardHandler(BaseHTTPRequestHandler):
             
             # Regenerate HTML if possible to show latest notes
             if hasattr(self.server, 'properties') and hasattr(self.server, 'reporter') and hasattr(self.server, 'note_manager'):
-                # Refresh notes
+                # Refresh notes and history
                 for p in self.server.properties:
                     p['note'] = self.server.note_manager.get_note(p['id'])
+                    if hasattr(self.server, 'history_manager'):
+                        p['history_status'] = self.server.history_manager.get_status(p['id'])
                 
                 html_content = self.server.reporter.generate_html_report(self.server.properties)
                 self.wfile.write(html_content.encode('utf-8'))
