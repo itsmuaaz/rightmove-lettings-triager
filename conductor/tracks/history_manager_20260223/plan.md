@@ -36,3 +36,6 @@
 - [x] Task: Update `product.md` and `tech-stack.md` to reflect new architecture [c5fb264]
 - [x] Task: Final End-to-End Verification (Scrape -> View -> Restart -> Verify State) [06586a4]
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & Documentation' (Protocol in workflow.md) [checkpoint: c2f78a1]
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions [6158fc3]
