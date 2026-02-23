@@ -6,7 +6,7 @@
     - [x] Implement `mark_seen(property_id)`
     - [x] Implement `mark_dismissed(property_id)`
     - [x] Implement `get_status(property_id)`
-- [~] Task: Integrate `HistoryManager` into `dashboard.py` (Dependency Injection)
+- [x] Task: Integrate `HistoryManager` into `dashboard.py` (Dependency Injection) [947d6ca]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: History Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: API & Scraper Integration
