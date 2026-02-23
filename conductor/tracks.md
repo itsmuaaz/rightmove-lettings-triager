@@ -49,5 +49,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Optimize TfL Client (Caching & Rate Limiting)**
+- [x] **Track: Optimize TfL Client (Caching & Rate Limiting)**
   *Link: [./tracks/tfl_optimization_20260221/](./tracks/tfl_optimization_20260221/)*
