@@ -15,6 +15,7 @@ People who are looking for rental properties in London and want to quickly compa
 - **Amenity Proximity:** Identifies nearby supermarkets, gyms, parks, and healthcare facilities using OpenStreetMap data.
 - **Rich Reporting:** Generates a consolidated Markdown report and a styled HTML dashboard with property images, color-coded metrics, and direct navigation links (Google Maps, TfL).
 - **Interactive Dashboard:** Serves a local web interface where users can add persistent notes to properties.
+- **TfL Client Optimization:** Implements robust caching and rate limiting to ensure reliable and efficient commute time calculations, preventing API throttling.
 
 ## Architecture
 A standalone Python script that uses `curl` for fetching data and standard libraries for processing. It relies on the Next.js JSON blob found within Rightmove's HTML source for its data extraction.
