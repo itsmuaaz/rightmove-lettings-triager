@@ -12,14 +12,20 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self.end_headers()
             
             # Regenerate HTML if possible to show latest notes
-            if hasattr(self.server, 'properties') and hasattr(self.server, 'reporter') and hasattr(self.server, 'note_manager'):
+            has_reqs = (hasattr(self.server, 'properties') and 
+                        hasattr(self.server, 'reporter') and 
+                        hasattr(self.server, 'note_manager'))
+            
+            if has_reqs:
                 # Refresh notes and history
                 for p in self.server.properties:
                     p['note'] = self.server.note_manager.get_note(p['id'])
                     if hasattr(self.server, 'history_manager'):
-                        p['history_status'] = self.server.history_manager.get_status(p['id'])
+                        p['history_status'] = \
+                            self.server.history_manager.get_status(p['id'])
                 
-                html_content = self.server.reporter.generate_html_report(self.server.properties)
+                html_content = \
+                    self.server.reporter.generate_html_report(self.server.properties)
                 self.wfile.write(html_content.encode('utf-8'))
             # Fallback to static content
             elif hasattr(self.server, 'html_content'):
@@ -41,12 +47,14 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 note_content = data.get('note')
                 
                 if property_id and hasattr(self.server, 'note_manager'):
-                    self.server.note_manager.save_note(property_id, note_content)
+                    self.server.note_manager.save_note(property_id, 
+                                                      note_content)
                     
                     self.send_response(200)
                     self.send_header('Content-type', 'application/json')
                     self.end_headers()
-                    self.wfile.write(json.dumps({'status': 'success'}).encode('utf-8'))
+                    self.wfile.write(json.dumps({'status': 'success'})
+                                     .encode('utf-8'))
                 else:
                     self.send_error(400, "Invalid request or missing NoteManager")
             except Exception as e:
@@ -68,13 +76,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     self.server.history_manager.mark_seen(property_id)
                 elif action == 'dismiss':
                     self.server.history_manager.mark_dismissed(property_id)
+                elif action == 'shortlist':
+                    self.server.history_manager.mark_shortlisted(property_id)
                 elif action == 'undo_dismiss':
-                    # Revert to viewed or new. For now, mark as seen updates timestamp,
-                    # which is close enough to 'undo' effectively.
-                    # Or we could just set status back to 'viewed' without updating timestamp?
-                    # Spec says: "Reverts status to viewed (or new if never viewed)."
-                    # Current HistoryManager doesn't support revert explicitly.
-                    # Let's just re-mark as seen for now as a safe default for 'undo'.
+                    # Revert to viewed or new.
                     # TODO: Implement stricter undo if needed.
                     self.server.history_manager.mark_seen(property_id)
                 else:
@@ -84,7 +89,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({'status': 'success'}).encode('utf-8'))
+                self.wfile.write(json.dumps({'status': 'success'})
+                                 .encode('utf-8'))
             except Exception as e:
                 self.send_error(500, f"Server error: {str(e)}")
         else:
