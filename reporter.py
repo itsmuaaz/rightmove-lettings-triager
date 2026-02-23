@@ -143,7 +143,11 @@ class Reporter:
         # New Badge
         new_badge = '<span class="badge-new">NEW</span>' if status == 'new' else ''
         
-        image_html = f'<div class="img-container">{new_badge}<img src="{p.get("image_url")}" class="prop-img" alt="Property"></div>' if p.get("image_url") else "N/A"
+        img_src = p.get("image_url")
+        if img_src:
+            image_html = f'<div class="img-container">{new_badge}<img src="{img_src}" class="prop-img" alt="Property"></div>'
+        else:
+            image_html = f'<div class="img-container">{new_badge}N/A</div>'
         
         commute_html = self._generate_commute_cell(p, for_html=True)
         amenity_html = self._generate_amenity_cell(p, for_html=True)
@@ -160,10 +164,11 @@ class Reporter:
         
         # Actions
         view_btn = f'<a href="{link}" target="_blank" class="btn btn-view" onclick="markViewed(\'{prop_id}\', this)">View</a>'
+        shortlist_btn = f'<button class="btn btn-shortlist" onclick="markShortlisted(\'{prop_id}\', this)">⭐ Shortlist</button>'
         dismiss_btn = f'<button class="btn btn-dismiss" onclick="dismissProperty(\'{prop_id}\', this)">Dismiss</button>'
         undo_btn = f'<button class="btn btn-undo" onclick="undoDismiss(\'{prop_id}\', this)">Undo</button>'
         
-        actions_html = f'<div class="action-stack">{view_btn}{dismiss_btn}{undo_btn}</div>'
+        actions_html = f'<div class="action-stack">{view_btn}{shortlist_btn}{dismiss_btn}{undo_btn}</div>'
 
         cells = [image_html, f"<strong>{p.get('price')}</strong>", commute_html, amenity_html, dist_str, notes_html, details, address, added_on, actions_html]
         row_content = "".join([f"<td>{c}</td>" for c in cells])
