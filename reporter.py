@@ -180,7 +180,11 @@ class Reporter:
         shortlisted = [p for p in properties if (p.get('history_status') or {}).get('status') == 'shortlisted']
         
         if not shortlisted:
-            chips_html = '<span style="color: #a0aec0; font-size: 0.9em;">No properties shortlisted yet. Click "⭐ Shortlist" on a property to add it here.</span>'
+            chips_html = (
+                '<span style="color: #a0aec0; font-size: 0.9em;">'
+                'No properties shortlisted yet. Click "⭐ Shortlist" '
+                'on a property to add it here.</span>'
+            )
         else:
             chips = []
             for p in shortlisted:
