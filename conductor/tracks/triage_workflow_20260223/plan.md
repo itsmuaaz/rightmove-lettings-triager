@@ -20,6 +20,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Frontend Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Final Integration & Polish
-- [ ] Task: Update `product.md` to reflect the new Triage workflow.
-- [ ] Task: Final End-to-End Verification (Shortlist -> Restart -> Verify Persistence).
+- [x] Task: Update `product.md` to reflect the new Triage workflow. 990e2de
+- [~] Task: Final End-to-End Verification (Shortlist -> Restart -> Verify Persistence).
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Integration' (Protocol in workflow.md)
