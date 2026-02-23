@@ -317,7 +317,7 @@ class Reporter:
                 return;
             }
             
-            if (!confirm(`Mark ${newRows.length} items as seen?`)) return;
+            if (!confirm(`Mark $${newRows.length} items as seen?`)) return;
             
             newRows.forEach(row => {
                 const id = row.id.replace('row-', '');
