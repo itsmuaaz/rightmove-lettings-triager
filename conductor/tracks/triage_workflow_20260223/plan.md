@@ -13,9 +13,9 @@
     - [x] Add `.status-shortlisted` style (gold border, full opacity).
     - [x] Update `markViewed` JS function to check if item is shortlisted before applying `.status-viewed`.
     - [x] Implement `markShortlisted` JS function.
-- [ ] Task: Update `reporter.py` HTML generation
-    - [ ] Add "Star" button to `_generate_html_row`.
-    - [ ] Ensure correct initial class is applied if property is already shortlisted.
+- [x] Task: Update `reporter.py` HTML generation bf72597
+    - [x] Add "Star" button to `_generate_html_row`.
+    - [x] Ensure correct initial class is applied if property is already shortlisted.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Frontend Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Final Integration & Polish
