@@ -40,3 +40,4 @@
 ## Phase: Review Fixes
 - [x] Task: Apply review suggestions [c434a20]
 - [x] Task: Fix logic regression in rightmove_search.py [bb4b0f9]
+- [~] Task: Apply review suggestions
