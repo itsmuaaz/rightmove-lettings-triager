@@ -220,6 +220,7 @@ class Reporter:
         
         /* Status Styles */
         tr.status-new { background-color: #e6fffa !important; border-left: 4px solid #38b2ac; }
+        tr.status-shortlisted { background-color: #fffaf0 !important; border-left: 4px solid #ecc94b; opacity: 1 !important; }
         tr.status-viewed { opacity: 0.6; filter: grayscale(20%); }
         tr.status-dismissed { opacity: 0.3; filter: grayscale(100%); max-height: 50px; overflow: hidden; }
         /* Hide details when dismissed */
@@ -243,12 +244,13 @@ class Reporter:
         .btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; text-align: center; text-decoration: none; color: white; display: inline-block; }
         .btn-view { background-color: #3182ce; }
         .btn-dismiss { background-color: #718096; }
+        .btn-shortlist { background-color: #d69e2e; }
         .btn-undo { background-color: #38a169; display: none; }
         
         /* Show Undo only when dismissed */
         tr.status-dismissed .btn-dismiss { display: none; }
         tr.status-dismissed .btn-undo { display: inline-block; }
-        tr.status-dismissed .btn-view { display: none; }
+        tr.status-dismissed .btn-view, tr.status-dismissed .btn-shortlist { display: none; }
 
         /* Notes */
         .note-input { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit; box-sizing: border-box; }
@@ -283,7 +285,10 @@ class Reporter:
             const row = document.getElementById('row-' + id);
             if (row) {
                 row.classList.remove('status-new');
-                row.classList.add('status-viewed');
+                // Only mark as viewed if not already shortlisted
+                if (!row.classList.contains('status-shortlisted')) {
+                    row.classList.add('status-viewed');
+                }
                 const badge = row.querySelector('.badge-new');
                 if (badge) badge.remove();
             }
@@ -292,10 +297,21 @@ class Reporter:
             return true;
         }
 
-        function dismissProperty(id, btn) {
+        function markShortlisted(id, btn) {
             const row = document.getElementById('row-' + id);
             if (row) {
                 row.classList.remove('status-new', 'status-viewed');
+                row.classList.add('status-shortlisted');
+                const badge = row.querySelector('.badge-new');
+                if (badge) badge.remove();
+            }
+            apiCall('/api/history', {id: id, action: 'shortlist'});
+        }
+
+        function dismissProperty(id, btn) {
+            const row = document.getElementById('row-' + id);
+            if (row) {
+                row.classList.remove('status-new', 'status-viewed', 'status-shortlisted');
                 row.classList.add('status-dismissed');
             }
             apiCall('/api/history', {id: id, action: 'dismiss'});
@@ -305,7 +321,9 @@ class Reporter:
             const row = document.getElementById('row-' + id);
             if (row) {
                 row.classList.remove('status-dismissed');
-                row.classList.add('status-viewed'); // Default back to viewed state
+                // Could be either viewed or shortlisted. 
+                // For simplicity, default back to viewed unless we want to track prev state.
+                row.classList.add('status-viewed'); 
             }
             apiCall('/api/history', {id: id, action: 'undo_dismiss'});
         }
