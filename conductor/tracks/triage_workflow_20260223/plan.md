@@ -19,7 +19,7 @@
     - [x] Add "Shortlist Summary" section with navigation links. 66bc026
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Frontend Implementation' (Protocol in workflow.md)
 
-## Phase 3: Final Integration & Polish
+## Phase 3: Final Integration & Polish [checkpoint: aead172]
 - [x] Task: Update `product.md` to reflect the new Triage workflow. 990e2de
-- [~] Task: Final End-to-End Verification (Shortlist -> Restart -> Verify Persistence).
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Integration' (Protocol in workflow.md)
+- [x] Task: Final End-to-End Verification (Shortlist -> Restart -> Verify Persistence). aead172
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Integration' (Protocol in workflow.md)
