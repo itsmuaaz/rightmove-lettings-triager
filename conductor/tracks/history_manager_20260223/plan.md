@@ -19,17 +19,17 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: API & Scraper Integration' (Protocol in workflow.md) [checkpoint: 95fc34c]
 
 ## Phase 3: Frontend Implementation
-- [~] Task: Update `reporter.py` to inject `history_status` into property objects passed to template
-- [ ] Task: Update HTML/CSS in `reporter.py` (or template file)
-    - [ ] Add CSS classes: `.status-new`, `.status-viewed`, `.status-dismissed`
-    - [ ] Add "NEW" badge element
-    - [ ] Add "Dismiss" button
-    - [ ] Add "Undo Dismiss" button (visible on collapsed state)
-- [ ] Task: Implement Frontend Logic (JavaScript)
-    - [ ] Attach `onclick` to "View on Rightmove" -> Call API `view` -> Add `.status-viewed`
-    - [ ] Attach `onclick` to "Dismiss" -> Call API `dismiss` -> Add `.status-dismissed` (collapse card)
-    - [ ] Attach `onclick` to "Undo" -> Call API `undo_dismiss` -> Remove `.status-dismissed` (expand card)
-    - [ ] Implement "Mark All Visible as Seen" button logic
+- [x] Task: Update `reporter.py` to inject `history_status` into property objects passed to template [bea3769]
+- [x] Task: Update HTML/CSS in `reporter.py` (or template file) [bea3769]
+    - [x] Add CSS classes: `.status-new`, `.status-viewed`, `.status-dismissed`
+    - [x] Add "NEW" badge element
+    - [x] Add "Dismiss" button
+    - [x] Add "Undo Dismiss" button (visible on collapsed state)
+- [x] Task: Implement Frontend Logic (JavaScript) [bea3769]
+    - [x] Attach `onclick` to "View on Rightmove" -> Call API `view` -> Add `.status-viewed`
+    - [x] Attach `onclick` to "Dismiss" -> Call API `dismiss` -> Add `.status-dismissed` (collapse card)
+    - [x] Attach `onclick` to "Undo" -> Call API `undo_dismiss` -> Remove `.status-dismissed` (expand card)
+    - [x] Implement "Mark All Visible as Seen" button logic
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Frontend Implementation' (Protocol in workflow.md)
 
 ## Phase 4: Final Polish & Documentation
