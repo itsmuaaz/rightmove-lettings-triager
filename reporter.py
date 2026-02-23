@@ -134,7 +134,16 @@ class Reporter:
 
     def _generate_html_row(self, p):
         """Generates an HTML table row for a property."""
-        image_html = f'<img src="{p.get("image_url")}" class="prop-img" alt="Property">' if p.get("image_url") else "N/A"
+        prop_id = p.get('id', '')
+        history = p.get('history_status', {}) or {}
+        status = history.get('status', 'new')
+        
+        row_class = f"prop-row status-{status}"
+        
+        # New Badge
+        new_badge = '<span class="badge-new">NEW</span>' if status == 'new' else ''
+        
+        image_html = f'<div class="img-container">{new_badge}<img src="{p.get("image_url")}" class="prop-img" alt="Property"></div>' if p.get("image_url") else "N/A"
         
         commute_html = self._generate_commute_cell(p, for_html=True)
         amenity_html = self._generate_amenity_cell(p, for_html=True)
@@ -148,11 +157,17 @@ class Reporter:
         added_on = format_date(p.get("published_on"))
         
         link = f"https://www.rightmove.co.uk{p.get('url', '')}"
-        link_html = f'<a href="{link}" target="_blank">View</a>'
+        
+        # Actions
+        view_btn = f'<a href="{link}" target="_blank" class="btn btn-view" onclick="markViewed(\'{prop_id}\', this)">View</a>'
+        dismiss_btn = f'<button class="btn btn-dismiss" onclick="dismissProperty(\'{prop_id}\', this)">Dismiss</button>'
+        undo_btn = f'<button class="btn btn-undo" onclick="undoDismiss(\'{prop_id}\', this)">Undo</button>'
+        
+        actions_html = f'<div class="action-stack">{view_btn}{dismiss_btn}{undo_btn}</div>'
 
-        cells = [image_html, f"<strong>{p.get('price')}</strong>", commute_html, amenity_html, dist_str, notes_html, details, address, added_on, link_html]
+        cells = [image_html, f"<strong>{p.get('price')}</strong>", commute_html, amenity_html, dist_str, notes_html, details, address, added_on, actions_html]
         row_content = "".join([f"<td>{c}</td>" for c in cells])
-        return f"<tr>{row_content}</tr>"
+        return f'<tr class="{row_class}" id="row-{prop_id}">{row_content}</tr>'
 
     def generate_html_report(self, properties):
         """Generates the full HTML report directly."""
@@ -201,8 +216,19 @@ class Reporter:
         tr:nth-child(even) { background-color: #f9f9f9; }
         
         .prop-img { max-width: 150px; height: auto; border-radius: 4px; object-fit: cover; }
+        .img-container { position: relative; display: inline-block; }
         
-        /* Commute Badges */
+        /* Status Styles */
+        tr.status-new { background-color: #e6fffa !important; border-left: 4px solid #38b2ac; }
+        tr.status-viewed { opacity: 0.6; filter: grayscale(20%); }
+        tr.status-dismissed { opacity: 0.3; filter: grayscale(100%); max-height: 50px; overflow: hidden; }
+        /* Hide details when dismissed */
+        tr.status-dismissed td { padding-top: 5px; padding-bottom: 5px; }
+        tr.status-dismissed .prop-img, tr.status-dismissed .commute-stack, tr.status-dismissed .note-input { display: none; }
+        
+        /* Badges */
+        .badge-new { position: absolute; top: -5px; right: -5px; background: #e53e3e; color: white; font-size: 0.7em; padding: 2px 6px; border-radius: 10px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); z-index: 10; }
+        
         span[class^="badge-"] { padding: 4px 8px; border-radius: 4px; font-weight: 500; font-size: 0.9em; display: inline-block; }
         .badge-green { background-color: #d4edda; color: #155724; }
         .badge-amber { background-color: #fff3cd; color: #856404; }
@@ -212,34 +238,99 @@ class Reporter:
         .commute-stack { display: flex; flex-direction: column; gap: 4px; }
         .commute-links { margin-top: 4px; font-size: 0.85em; }
         
+        /* Actions */
+        .action-stack { display: flex; flex-direction: column; gap: 5px; }
+        .btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; text-align: center; text-decoration: none; color: white; display: inline-block; }
+        .btn-view { background-color: #3182ce; }
+        .btn-dismiss { background-color: #718096; }
+        .btn-undo { background-color: #38a169; display: none; }
+        
+        /* Show Undo only when dismissed */
+        tr.status-dismissed .btn-dismiss { display: none; }
+        tr.status-dismissed .btn-undo { display: inline-block; }
+        tr.status-dismissed .btn-view { display: none; }
+
         /* Notes */
         .note-input { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit; box-sizing: border-box; }
         .note-input:focus { border-color: #007bff; outline: none; }
         
         a { color: #007bff; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        
+        #mark-all-btn { margin-bottom: 10px; padding: 10px 20px; font-size: 1em; background-color: #2b6cb0; color: white; border: none; border-radius: 4px; cursor: pointer; }
     </style>
     <script>
+        async function apiCall(endpoint, data) {
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                return response.ok;
+            } catch (err) {
+                console.error('API Error:', err);
+                return false;
+            }
+        }
+
         function saveNote(propertyId, text) {
-            fetch('/api/notes', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({id: propertyId, note: text})
-            }).then(response => {
-                if (response.ok) {
-                    console.log('Note saved for ' + propertyId);
-                } else {
-                    console.error('Failed to save note for ' + propertyId);
-                    alert('Failed to save note. Check connection.');
-                }
-            }).catch(err => {
-                console.error('Error saving note:', err);
+            apiCall('/api/notes', {id: propertyId, note: text});
+        }
+
+        function markViewed(id, el) {
+            // Optimistic update
+            const row = document.getElementById('row-' + id);
+            if (row) {
+                row.classList.remove('status-new');
+                row.classList.add('status-viewed');
+                const badge = row.querySelector('.badge-new');
+                if (badge) badge.remove();
+            }
+            apiCall('/api/history', {id: id, action: 'view'});
+            // Allow link to open
+            return true;
+        }
+
+        function dismissProperty(id, btn) {
+            const row = document.getElementById('row-' + id);
+            if (row) {
+                row.classList.remove('status-new', 'status-viewed');
+                row.classList.add('status-dismissed');
+            }
+            apiCall('/api/history', {id: id, action: 'dismiss'});
+        }
+
+        function undoDismiss(id, btn) {
+            const row = document.getElementById('row-' + id);
+            if (row) {
+                row.classList.remove('status-dismissed');
+                row.classList.add('status-viewed'); // Default back to viewed state
+            }
+            apiCall('/api/history', {id: id, action: 'undo_dismiss'});
+        }
+        
+        function markAllVisible() {
+            const newRows = document.querySelectorAll('tr.status-new');
+            if (!newRows.length) {
+                alert('No new items to mark.');
+                return;
+            }
+            
+            if (!confirm(`Mark ${newRows.length} items as seen?`)) return;
+            
+            newRows.forEach(row => {
+                const id = row.id.replace('row-', '');
+                markViewed(id, null);
             });
         }
     </script>
 </head>
 <body>
-    <h1>Property Search Results</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Property Search Results</h1>
+        <button id="mark-all-btn" onclick="markAllVisible()">Mark All Visible as Seen</button>
+    </div>
     <p>Generated report. Use the text areas to save notes.</p>
     <div id="content">
         $content
