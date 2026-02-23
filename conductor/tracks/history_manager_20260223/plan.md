@@ -10,7 +10,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: History Infrastructure' (Protocol in workflow.md) [checkpoint: c38f6b9]
 
 ## Phase 2: API & Scraper Integration
-- [ ] Task: Update `DashboardHandler.do_POST` in `dashboard.py` to handle `/api/history`
+- [~] Task: Update `DashboardHandler.do_POST` in `dashboard.py` to handle `/api/history`
     - [ ] Handle actions: `view`, `dismiss`, `undo_dismiss`
     - [ ] Return updated status in JSON response
 - [ ] Task: Update main scraping loop (`main.py` equivalent or where `properties` are processed)
