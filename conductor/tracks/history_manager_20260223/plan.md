@@ -1,11 +1,11 @@
 # Implementation Plan - History Manager
 
 ## Phase 1: History Infrastructure (Backend)
-- [ ] Task: Create `HistoryManager` class in `history_manager.py` (TDD - Red/Green)
-    - [ ] Implement `load_history` and `save_history` (JSON persistence)
-    - [ ] Implement `mark_seen(property_id)`
-    - [ ] Implement `mark_dismissed(property_id)`
-    - [ ] Implement `get_status(property_id)`
+- [x] Task: Create `HistoryManager` class in `history_manager.py` (TDD - Red/Green) [f98e7e6]
+    - [x] Implement `load_history` and `save_history` (JSON persistence)
+    - [x] Implement `mark_seen(property_id)`
+    - [x] Implement `mark_dismissed(property_id)`
+    - [x] Implement `get_status(property_id)`
 - [ ] Task: Integrate `HistoryManager` into `dashboard.py` (Dependency Injection)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: History Infrastructure' (Protocol in workflow.md)
 
