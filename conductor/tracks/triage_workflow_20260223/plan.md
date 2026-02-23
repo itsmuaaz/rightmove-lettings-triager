@@ -1,10 +1,10 @@
 # Implementation Plan - Triage Workflow
 
 ## Phase 1: Backend Support for Shortlisting
-- [ ] Task: Update `HistoryManager` in `history_manager.py` (TDD - Red/Green)
-    - [ ] Add `mark_shortlisted(property_id)` method.
-    - [ ] Update `mark_seen(property_id)` to respect `shortlisted` state (don't overwrite it).
-    - [ ] Test transitions: `new` -> `shortlisted`, `viewed` -> `shortlisted`, `shortlisted` -> `viewed` (should stay shortlisted).
+- [x] Task: Update `HistoryManager` in `history_manager.py` (TDD - Red/Green) e8af081
+    - [x] Add `mark_shortlisted(property_id)` method.
+    - [x] Update `mark_seen(property_id)` to respect `shortlisted` state (don't overwrite it).
+    - [x] Test transitions: `new` -> `shortlisted`, `viewed` -> `shortlisted`, `shortlisted` -> `viewed` (should stay shortlisted).
 - [ ] Task: Update `DashboardHandler` in `dashboard.py` to handle `action: shortlist`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Backend Support' (Protocol in workflow.md)
 
