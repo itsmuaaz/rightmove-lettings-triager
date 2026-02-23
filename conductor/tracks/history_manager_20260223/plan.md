@@ -40,4 +40,5 @@
 ## Phase: Review Fixes
 - [x] Task: Apply review suggestions [c434a20]
 - [x] Task: Fix logic regression in rightmove_search.py [bb4b0f9]
+- [x] Task: Fix string.Template error in reporter.py [b60a41a]
 - [~] Task: Apply review suggestions
