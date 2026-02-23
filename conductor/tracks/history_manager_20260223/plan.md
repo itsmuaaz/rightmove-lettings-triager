@@ -30,7 +30,7 @@
     - [x] Attach `onclick` to "Dismiss" -> Call API `dismiss` -> Add `.status-dismissed` (collapse card)
     - [x] Attach `onclick` to "Undo" -> Call API `undo_dismiss` -> Remove `.status-dismissed` (expand card)
     - [x] Implement "Mark All Visible as Seen" button logic
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Frontend Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Frontend Implementation' (Protocol in workflow.md) [checkpoint: 4cb533e]
 
 ## Phase 4: Final Polish & Documentation
 - [ ] Task: Update `product.md` and `tech-stack.md` to reflect new architecture
