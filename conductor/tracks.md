@@ -59,7 +59,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Triage Workflow: Implement 'Shortlist' state and improved property triage.**
+- [~] **Track: Triage Workflow: Implement 'Shortlist' state and improved property triage.**
   *Link: [./tracks/triage_workflow_20260223/](./tracks/triage_workflow_20260223/)*
 
 ---
