@@ -38,4 +38,5 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & Documentation' (Protocol in workflow.md) [checkpoint: c2f78a1]
 
 ## Phase: Review Fixes
-- [x] Task: Apply review suggestions [6158fc3]
+- [x] Task: Apply review suggestions [c434a20]
+- [x] Task: Fix logic regression in rightmove_search.py [bb4b0f9]
