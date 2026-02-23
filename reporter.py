@@ -174,8 +174,34 @@ class Reporter:
         row_content = "".join([f"<td>{c}</td>" for c in cells])
         return f'<tr class="{row_class}" id="row-{prop_id}">{row_content}</tr>'
 
+    def _generate_shortlist_summary(self, properties):
+        """Generates a summary section with links to shortlisted properties."""
+        shortlisted = [p for p in properties if (p.get('history_status') or {}).get('status') == 'shortlisted']
+        
+        if not shortlisted:
+            chips_html = '<span style="color: #a0aec0; font-size: 0.9em;">No properties shortlisted yet. Click "⭐ Shortlist" on a property to add it here.</span>'
+        else:
+            chips = []
+            for p in shortlisted:
+                addr = p.get('address', 'Unknown')
+                # Shorten address for chip
+                short_addr = addr.split(',')[0][:25]
+                chips.append(f'<a href="#row-{p["id"]}" class="shortlist-chip" id="chip-{p["id"]}">{short_addr}</a>')
+            chips_html = "".join(chips)
+
+        return f"""
+        <div class="summary-box" id="shortlist-summary">
+            <h2>⭐ Shortlisted Properties</h2>
+            <div class="shortlist-chips" id="summary-chips">
+                {chips_html}
+            </div>
+        </div>
+        """
+
     def generate_html_report(self, properties):
         """Generates the full HTML report directly."""
+        summary = self._generate_shortlist_summary(properties)
+        
         header_row = "".join([f"<th>{h}</th>" for h in self.headers])
         thead = f"<thead><tr>{header_row}</tr></thead>"
         
@@ -184,7 +210,7 @@ class Reporter:
         
         table = f"<table>{thead}{tbody}</table>"
         template = Template(self.get_html_template())
-        return template.substitute(content=table)
+        return template.substitute(content=summary + table)
 
     def generate_markdown(self, properties, for_html=False):
         """Generates the full Markdown report."""
@@ -225,12 +251,20 @@ class Reporter:
         
         /* Status Styles */
         tr.status-new { background-color: #e6fffa !important; border-left: 4px solid #38b2ac; }
-        tr.status-shortlisted { background-color: #fffaf0 !important; border-left: 4px solid #ecc94b; opacity: 1 !important; }
+        tr.status-shortlisted { background-color: #fef3c7 !important; border-left: 4px solid #d69e2e; opacity: 1 !important; font-weight: 500; }
         tr.status-viewed { opacity: 0.6; filter: grayscale(20%); }
         tr.status-dismissed { opacity: 0.3; filter: grayscale(100%); max-height: 50px; overflow: hidden; }
         /* Hide details when dismissed */
         tr.status-dismissed td { padding-top: 5px; padding-bottom: 5px; }
         tr.status-dismissed .prop-img, tr.status-dismissed .commute-stack, tr.status-dismissed .note-input { display: none; }
+        
+        /* Summary Section */
+        .summary-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .summary-box h2 { margin-top: 0; font-size: 1.2em; color: #2d3748; display: flex; align-items: center; gap: 8px; }
+        .shortlist-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .shortlist-chip { background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 16px; font-size: 0.85em; font-weight: 600; text-decoration: none; border: 1px solid #fde68a; transition: all 0.2s; }
+        .shortlist-chip:hover { background: #fde68a; transform: translateY(-1px); }
+        .shortlist-chip::before { content: "⭐ "; }
         
         /* Badges */
         .badge-new { position: absolute; top: -5px; right: -5px; background: #e53e3e; color: white; font-size: 0.7em; padding: 2px 6px; border-radius: 10px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); z-index: 10; }
@@ -285,6 +319,36 @@ class Reporter:
             apiCall('/api/notes', {id: propertyId, note: text});
         }
 
+        function updateShortlistSummary(id, action, address) {
+            const container = document.getElementById('summary-chips');
+            if (!container) return;
+            
+            // Remove existing chip if any
+            const existingChip = document.getElementById('chip-' + id);
+            if (existingChip) existingChip.remove();
+            
+            if (action === 'shortlist') {
+                const shortAddr = (address || 'Unknown').split(',')[0].substring(0, 25);
+                const chip = document.createElement('a');
+                chip.href = '#row-' + id;
+                chip.className = 'shortlist-chip';
+                chip.id = 'chip-' + id;
+                chip.textContent = shortAddr;
+                container.appendChild(chip);
+                
+                // Clear placeholder if it's there
+                if (container.innerText.includes('No properties shortlisted')) {
+                    container.innerHTML = '';
+                    container.appendChild(chip);
+                }
+            } else if (action === 'dismiss') {
+                if (existingChip) existingChip.remove();
+                if (container.children.length === 0) {
+                    container.innerHTML = '<span style="color: #a0aec0; font-size: 0.9em;">No properties shortlisted yet. Click "⭐ Shortlist" on a property to add it here.</span>';
+                }
+            }
+        }
+
         function markViewed(id, el) {
             // Optimistic update
             const row = document.getElementById('row-' + id);
@@ -309,6 +373,10 @@ class Reporter:
                 row.classList.add('status-shortlisted');
                 const badge = row.querySelector('.badge-new');
                 if (badge) badge.remove();
+                
+                // Get address from cell (8th column, index 7)
+                const address = row.cells[7].innerText;
+                updateShortlistSummary(id, 'shortlist', address);
             }
             apiCall('/api/history', {id: id, action: 'shortlist'});
         }
@@ -318,6 +386,7 @@ class Reporter:
             if (row) {
                 row.classList.remove('status-new', 'status-viewed', 'status-shortlisted');
                 row.classList.add('status-dismissed');
+                updateShortlistSummary(id, 'dismiss');
             }
             apiCall('/api/history', {id: id, action: 'dismiss'});
         }
