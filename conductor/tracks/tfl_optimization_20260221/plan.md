@@ -11,3 +11,6 @@
 - [x] Task: Integrate rate limiting into `_fetch_journey` (Refactor) [beab4ee]
 - [x] Task: Improve 429 error handling with aggressive backoff (Refactor) [c01d63b]
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Rate Limiting & Resilience' (Protocol in workflow.md) [checkpoint: 08b068b]
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions [4f88e5a]
