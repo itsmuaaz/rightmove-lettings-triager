@@ -13,7 +13,7 @@
 - [x] Task: Update `DashboardHandler.do_POST` in `dashboard.py` to handle `/api/history` [06a7bd0]
     - [x] Handle actions: `view`, `dismiss`, `undo_dismiss`
     - [x] Return updated status in JSON response
-- [ ] Task: Update main scraping loop (`main.py` equivalent or where `properties` are processed)
+- [~] Task: Update main scraping loop (`main.py` equivalent or where `properties` are processed)
     - [ ] Initialize `HistoryManager`
     - [ ] On scrape completion, update history with new IDs (`status=new`)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: API & Scraper Integration' (Protocol in workflow.md)
