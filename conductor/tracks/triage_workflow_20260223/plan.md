@@ -5,7 +5,7 @@
     - [x] Add `mark_shortlisted(property_id)` method.
     - [x] Update `mark_seen(property_id)` to respect `shortlisted` state (don't overwrite it).
     - [x] Test transitions: `new` -> `shortlisted`, `viewed` -> `shortlisted`, `shortlisted` -> `viewed` (should stay shortlisted).
-- [ ] Task: Update `DashboardHandler` in `dashboard.py` to handle `action: shortlist`.
+- [x] Task: Update `DashboardHandler` in `dashboard.py` to handle `action: shortlist`. 84dacfc
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Backend Support' (Protocol in workflow.md)
 
 ## Phase 2: Frontend Implementation
