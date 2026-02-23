@@ -19,7 +19,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: API & Scraper Integration' (Protocol in workflow.md) [checkpoint: 95fc34c]
 
 ## Phase 3: Frontend Implementation
-- [ ] Task: Update `reporter.py` to inject `history_status` into property objects passed to template
+- [~] Task: Update `reporter.py` to inject `history_status` into property objects passed to template
 - [ ] Task: Update HTML/CSS in `reporter.py` (or template file)
     - [ ] Add CSS classes: `.status-new`, `.status-viewed`, `.status-dismissed`
     - [ ] Add "NEW" badge element
