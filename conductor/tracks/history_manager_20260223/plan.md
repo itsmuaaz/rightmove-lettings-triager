@@ -7,7 +7,7 @@
     - [x] Implement `mark_dismissed(property_id)`
     - [x] Implement `get_status(property_id)`
 - [x] Task: Integrate `HistoryManager` into `dashboard.py` (Dependency Injection) [947d6ca]
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: History Infrastructure' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: History Infrastructure' (Protocol in workflow.md) [checkpoint: c38f6b9]
 
 ## Phase 2: API & Scraper Integration
 - [ ] Task: Update `DashboardHandler.do_POST` in `dashboard.py` to handle `/api/history`
