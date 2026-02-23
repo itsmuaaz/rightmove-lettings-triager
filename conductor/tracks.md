@@ -54,5 +54,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: History Manager: Track seen/dismissed properties with 'Inbox Style' dashboard.**
+- [x] **Track: History Manager: Track seen/dismissed properties with 'Inbox Style' dashboard.**
   *Link: [./tracks/history_manager_20260223/](./tracks/history_manager_20260223/)*
