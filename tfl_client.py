@@ -12,7 +12,9 @@ import time
 import hashlib
 import os
 import threading
+from datetime import datetime
 from typing import Optional, Tuple, Any
+from benchmark_utils import get_next_benchmark_time
 
 class TflClient:
     """Client for fetching journey results from Transport for London."""
@@ -53,7 +55,18 @@ class TflClient:
         if os.path.exists(cache_path):
             try:
                 with open(cache_path, 'r') as f:
-                    return json.load(f)
+                    data = json.load(f)
+                
+                # Check for new structure with metadata
+                if isinstance(data, dict) and "response" in data:
+                    return data["response"]
+                else:
+                    # Legacy file or unexpected format, delete and return None
+                    try:
+                        os.remove(cache_path)
+                    except OSError:
+                        pass
+                    return None
             except (json.JSONDecodeError, IOError):
                 return None
         return None
@@ -65,8 +78,13 @@ class TflClient:
             
         cache_path = os.path.join(self.cache_dir, f"{key}.json")
         try:
+            wrapped_data = {
+                "calculated_at": datetime.now().isoformat(),
+                "arrival_benchmark": get_next_benchmark_time().isoformat(),
+                "response": data
+            }
             with open(cache_path, 'w') as f:
-                json.dump(data, f)
+                json.dump(wrapped_data, f)
         except IOError as e:
             sys.stderr.write(f"Failed to write to cache: {e}\n")
 
