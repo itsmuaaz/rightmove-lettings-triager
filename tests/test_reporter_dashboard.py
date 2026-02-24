@@ -7,7 +7,7 @@ class TestReporterDashboard(unittest.TestCase):
         reporter = Reporter()
         html = reporter.get_html_template()
         self.assertIn("function saveNote", html)
-        self.assertIn("fetch('/api/notes'", html)
+        self.assertIn("apiCall('/api/notes'", html)
 
     def test_notes_column_header(self):
         """Test that the Notes column header is added."""

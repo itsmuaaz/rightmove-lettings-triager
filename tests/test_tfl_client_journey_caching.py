@@ -50,7 +50,9 @@ class TestTflClientJourneyCaching(unittest.TestCase):
         # Verify cache content
         with open(cache_path, 'r') as f:
             data = json.load(f)
-            self.assertEqual(data['journeys'][0]['duration'], 25)
+            # data is now wrapped in metadata
+            self.assertIn('response', data)
+            self.assertEqual(data['response']['journeys'][0]['duration'], 25)
 
     @patch('urllib.request.urlopen')
     def test_fetch_journey_cache_hit_avoids_api(self, mock_urlopen):
