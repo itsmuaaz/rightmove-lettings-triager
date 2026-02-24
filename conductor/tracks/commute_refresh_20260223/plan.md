@@ -18,7 +18,7 @@
     - [x] Trigger re-calculation and return the updated property data with timestamp.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Backend Support' (Protocol in workflow.md) 9ad8ece
 
-## Phase 3: Frontend Implementation (Dashboard UI)
+## Phase 3: Frontend Implementation (Dashboard) [checkpoint: ca8b2eb]
 - [x] Task: Update `reporter.py` CSS/HTML to include refresh icons and timestamps (TDD - Red/Green) ed4cf92
     - [x] Add `.refresh-icon` (🔄) next to commute badges.
     - [x] Add `.calc-timestamp` label (e.g., "14:30") near badges.
@@ -27,7 +27,7 @@
     - [x] Call `/api/refresh`, show loading state, and update cell content on success.
 - [x] Task: Implement JavaScript `refreshAll()` to sequentially update all properties (TDD-like) ed4cf92
     - [x] Iterate through all property IDs and call `refreshProperty` for each.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Frontend Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Frontend Implementation' (Protocol in workflow.md) ca8b2eb
 
 ## Phase 4: Final Polish & Documentation
 - [ ] Task: Update `product.md` and `tech-stack.md` to reflect commute stability changes.
