@@ -263,209 +263,184 @@ class Reporter:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Report</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; color: #333; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
-        th { background-color: #f2f2f2; font-weight: 600; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
+        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; color: #333; }}
+        table {{ border-collapse: collapse; width: 100%; margin-top: 20px; }}
+        th, td {{ border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }}
+        th {{ background-color: #f2f2f2; font-weight: 600; }}
+        tr:nth-child(even) {{ background-color: #f9f9f9; }}
         
-        .prop-img { max-width: 150px; height: auto; border-radius: 4px; object-fit: cover; }
-        .img-container { position: relative; display: inline-block; }
+        .prop-img {{ max-width: 150px; height: auto; border-radius: 4px; object-fit: cover; }}
+        .img-container {{ position: relative; display: inline-block; }}
         
         /* Status Styles */
-        tr.status-new { background-color: #e6fffa !important; border-left: 4px solid #38b2ac; }
-        tr.status-shortlisted { background-color: #fef3c7 !important; border-left: 4px solid #d69e2e; opacity: 1 !important; font-weight: 500; }
-        tr.status-viewed { opacity: 0.6; filter: grayscale(20%); }
-        tr.status-dismissed { opacity: 0.3; filter: grayscale(100%); max-height: 50px; overflow: hidden; }
+        tr.status-new {{ background-color: #e6fffa !important; border-left: 4px solid #38b2ac; }}
+        tr.status-shortlisted {{ background-color: #fef3c7 !important; border-left: 4px solid #d69e2e; opacity: 1 !important; font-weight: 500; }}
+        tr.status-viewed {{ opacity: 0.6; filter: grayscale(20%); }}
+        tr.status-dismissed {{ opacity: 0.3; filter: grayscale(100%); max-height: 50px; overflow: hidden; }}
         /* Hide details when dismissed */
-        tr.status-dismissed td { padding-top: 5px; padding-bottom: 5px; }
-        tr.status-dismissed .prop-img, tr.status-dismissed .commute-stack, tr.status-dismissed .note-input { display: none; }
+        tr.status-dismissed td {{ padding-top: 5px; padding-bottom: 5px; }}
+        tr.status-dismissed .prop-img, tr.status-dismissed .commute-stack, tr.status-dismissed .note-input {{ display: none; }}
         
         /* Summary Section */
-        .summary-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .summary-box h2 { margin-top: 0; font-size: 1.2em; color: #2d3748; display: flex; align-items: center; gap: 8px; }
-        .shortlist-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-        .shortlist-chip { background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 16px; font-size: 0.85em; font-weight: 600; text-decoration: none; border: 1px solid #fde68a; transition: all 0.2s; }
-        .shortlist-chip:hover { background: #fde68a; transform: translateY(-1px); }
-        .shortlist-chip::before { content: "⭐ "; }
+        .summary-box {{ background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
+        .summary-box h2 {{ margin-top: 0; font-size: 1.2em; color: #2d3748; display: flex; align-items: center; gap: 8px; }}
+        .shortlist-chips {{ display: flex; flex-wrap: wrap; gap: 8px; }}
+        .shortlist-chip {{ background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 16px; font-size: 0.85em; font-weight: 600; text-decoration: none; border: 1px solid #fde68a; transition: all 0.2s; }}
+        .shortlist-chip:hover {{ background: #fde68a; transform: translateY(-1px); }}
+        .shortlist-chip::before {{ content: "⭐ "; }}
         
         /* Badges */
-        .badge-new { position: absolute; top: -5px; right: -5px; background: #e53e3e; color: white; font-size: 0.7em; padding: 2px 6px; border-radius: 10px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); z-index: 10; }
+        .badge-new {{ position: absolute; top: -5px; right: -5px; background: #e53e3e; color: white; font-size: 0.7em; padding: 2px 6px; border-radius: 10px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); z-index: 10; }}
         
-        span[class^="badge-"] { padding: 4px 8px; border-radius: 4px; font-weight: 500; font-size: 0.9em; display: inline-block; }
-        .badge-green { background-color: #d4edda; color: #155724; }
-        .badge-amber { background-color: #fff3cd; color: #856404; }
-        .badge-red { background-color: #f8d7da; color: #721c24; }
-        .badge-grey { background-color: #e2e3e5; color: #383d41; }
+        span[class^="badge-"] {{ padding: 4px 8px; border-radius: 4px; font-weight: 500; font-size: 0.9em; display: inline-block; }}
+        .badge-green {{ background-color: #d4edda; color: #155724; }}
+        .badge-amber {{ background-color: #fff3cd; color: #856404; }}
+        .badge-red {{ background-color: #f8d7da; color: #721c24; }}
+        .badge-grey {{ background-color: #e2e3e5; color: #383d41; }}
 
-        .commute-stack { display: flex; flex-direction: column; gap: 4px; }
-        .commute-links { margin-top: 4px; font-size: 0.85em; }
+        .commute-stack {{ display: flex; flex-direction: column; gap: 4px; }}
+        .commute-links {{ margin-top: 4px; font-size: 0.85em; }}
         
         /* Actions */
-        .action-stack { display: flex; flex-direction: column; gap: 5px; }
-        .btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; text-align: center; text-decoration: none; color: white; display: inline-block; }
-        .btn-view { background-color: #3182ce; }
-        .btn-dismiss { background-color: #718096; }
-        .btn-shortlist { background-color: #d69e2e; }
-        .btn-unshortlist { background-color: #ecc94b; color: #744210; }
-        .btn-undo { background-color: #38a169; display: none; }
+        .action-stack {{ display: flex; flex-direction: column; gap: 5px; }}
+        .btn {{ padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; text-align: center; text-decoration: none; color: white; display: inline-block; }}
+        .btn-view {{ background-color: #3182ce; }}
+        .btn-dismiss {{ background-color: #718096; }}
+        .btn-shortlist {{ background-color: #d69e2e; }}
+        .btn-unshortlist {{ background-color: #ecc94b; color: #744210; }}
+        .btn-undo {{ background-color: #38a169; display: none; }}
         
         /* Show Undo only when dismissed */
-        tr.status-dismissed .btn-dismiss { display: none; }
-        tr.status-dismissed .btn-undo { display: inline-block; }
-        tr.status-dismissed .btn-view, tr.status-dismissed .btn-shortlist, tr.status-dismissed .btn-unshortlist { display: none; }
+        tr.status-dismissed .btn-dismiss {{ display: none; }}
+        tr.status-dismissed .btn-undo {{ display: inline-block; }}
+        tr.status-dismissed .btn-view, tr.status-dismissed .btn-shortlist, tr.status-dismissed .btn-unshortlist {{ display: none; }}
 
         /* Button visibility based on status */
-        tr.status-shortlisted .btn-shortlist { display: none; }
-        tr:not(.status-shortlisted) .btn-unshortlist { display: none; }
+        tr.status-shortlisted .btn-shortlist {{ display: none; }}
+        tr:not(.status-shortlisted) .btn-unshortlist {{ display: none; }}
 
         /* Notes */
-        .note-input { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit; box-sizing: border-box; }
-        .note-input:focus { border-color: #007bff; outline: none; }
+        .note-input {{ width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit; box-sizing: border-box; }}
+        .note-input:focus {{ border-color: #007bff; outline: none; }}
         
-        a { color: #007bff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        a {{ color: #007bff; text-decoration: none; }}
+        a:hover {{ text-decoration: underline; }}
         
         /* Commute Timestamp and Refresh */
-        .calc-timestamp { font-size: 0.7em; color: #718096; margin-top: 2px; }
-        .refresh-icon { cursor: pointer; font-size: 0.9em; margin-left: 4px; transition: transform 0.5s ease; display: inline-block; }
-        .refresh-icon:hover { transform: rotate(180deg); }
-        .refresh-icon.spinning { animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .calc-timestamp {{ font-size: 0.7em; color: #718096; margin-top: 2px; }}
+        .refresh-icon {{ cursor: pointer; font-size: 0.9em; margin-left: 4px; transition: transform 0.5s ease; display: inline-block; }}
+        .refresh-icon:hover {{ transform: rotate(180deg); }}
+        .refresh-icon.spinning {{ animation: spin 1s linear infinite; }}
+        @keyframes spin {{ 100% {{ transform: rotate(360deg); }} }}
         
-        #refresh-all-btn { padding: 10px 20px; font-size: 1em; background-color: #38a169; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; }
-        #refresh-all-btn:disabled { background-color: #cbd5e0; cursor: not-allowed; }
+        #refresh-all-btn {{ padding: 10px 20px; font-size: 1em; background-color: #38a169; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; }}
+        #refresh-all-btn:disabled {{ background-color: #cbd5e0; cursor: not-allowed; }}
     </style>
     <script>
-        async function apiCall(endpoint, data) {
-            try {
-                const response = await fetch(endpoint, {
+        async function apiCall(endpoint, data) {{
+            try {{
+                const response = await fetch(endpoint, {{
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: {{'Content-Type': 'application/json'}},
                     body: JSON.stringify(data)
-                });
+                }});
                 if (!response.ok) return null;
                 return await response.json();
-            } catch (err) {
+            }} catch (err) {{
                 console.error('API Error:', err);
                 return null;
-            }
-        }
+            }}
+        }}
 
-        function saveNote(propertyId, text) {
+        function saveNote(propertyId, text) {{
             // Use fire-and-forget for notes, or handle error if needed
-            fetch('/api/notes', {
+            fetch('/api/notes', {{
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({id: propertyId, note: text})
-            }).catch(err => console.error(err));
-        }
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{id: propertyId, note: text}})
+            }}).catch(err => console.error(err));
+        }}
 
-        async function refreshProperty(id) {
+        async function refreshProperty(id) {{
             const row = document.getElementById('row-' + id);
             if (!row) return;
             
             const icon = row.querySelector('.refresh-icon');
             if (icon) icon.classList.add('spinning');
             
-            const result = await apiCall('/api/refresh', {id: id});
+            const result = await apiCall('/api/refresh', {{id: id}});
             
             if (icon) icon.classList.remove('spinning');
             
-            if (result && result.status === 'success' && result.property) {
+            if (result && result.status === 'success' && result.property) {{
                 const p = result.property;
-                // Update commute cell content
-                // We need to regenerate the commute HTML client-side or partial reload.
-                // For simplicity, let's update the text values if structure allows, 
-                // or just reload page? Reloading page is disruptive.
-                // Let's rely on finding specific elements if possible.
-                // But our cell structure is complex. 
-                // Alternative: The API could return the HTML fragment? 
-                // Or we just update the badges we can find.
-                
-                // Let's assume we just reload the page for "Refresh All" but for single refresh we want inline.
-                // Actually, simpler to just update the text content of the badges if we can select them.
-                // But the badges have classes based on time (green/amber/red).
-                
-                // Hack: Just reload the page for now? No, the requirement says "without a full page reload".
-                // So we should update the DOM.
-                // Let's reconstruct the badge HTML roughly.
-                
                 const commuteCell = row.cells[2];
                 let html = '<div class="commute-stack">';
                 
-                const getBadgeClass = (m) => {
+                const getBadgeClass = (m) => {{
                     if (m === null) return 'badge-grey';
                     if (m < 20) return 'badge-green';
                     if (m <= 40) return 'badge-amber';
                     return 'badge-red';
-                };
+                }};
                 
-                if (p.commute_time !== null) {
+                if (p.commute_time !== null) {{
                     html += `<span class="${getBadgeClass(p.commute_time)}">${p.commute_time} mins 🚆</span>`;
-                }
-                if (p.cycling_time !== null) {
+                }}
+                if (p.cycling_time !== null) {{
                     html += `<span class="${getBadgeClass(p.cycling_time)}">${p.cycling_time} mins 🚲</span>`;
-                }
+                }}
                 
-                // Timestamp
-                if (p.commute_updated_at) {
-                    const timeStr = new Date(p.commute_updated_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                if (p.commute_updated_at) {{
+                    const timeStr = new Date(p.commute_updated_at).toLocaleTimeString([], {{hour: '2-digit', minute:'2-digit'}});
                     html += `<div class="calc-timestamp">Updated: ${timeStr} <span class="refresh-icon" onclick="refreshProperty('${id}')">🔄</span></div>`;
-                }
+                }}
                 
-                // Links (re-use existing if possible, or just standard ones)
-                // We can't easily regenerate links without lat/lon logic here, but they don't change.
-                // So let's grab the old links div?
                 const oldLinks = commuteCell.querySelector('.commute-links');
                 if (oldLinks) html += oldLinks.outerHTML;
                 
                 html += '</div>';
                 commuteCell.innerHTML = html;
-            } else {
+            }} else {{
                 alert('Failed to refresh property.');
-            }
-        }
+            }}
+        }}
         
-        async function refreshAll() {
+        async function refreshAll() {{
             const btn = document.getElementById('refresh-all-btn');
             const originalText = btn.innerText;
             btn.disabled = true;
             btn.innerText = 'Refreshing...';
             
-            const rows = document.querySelectorAll('tr.prop-row'); // Select all property rows
+            const rows = document.querySelectorAll('tr.prop-row');
             const ids = Array.from(rows).map(r => r.id.replace('row-', ''));
             
             let count = 0;
-            for (const id of ids) {
-                // Skip dismissed if we want? No, refresh all means all visible probably.
-                // Check if visible?
+            for (const id of ids) {{
                 const row = document.getElementById('row-' + id);
                 if (row.classList.contains('status-dismissed')) continue;
 
                 btn.innerText = `Refreshing ${count + 1}/${ids.length}...`;
                 await refreshProperty(id);
                 count++;
-                // Small delay to be nice to UI and backend
                 await new Promise(r => setTimeout(r, 500));
-            }
+            }}
             
             btn.innerText = 'Refreshed!';
-            setTimeout(() => {
+            setTimeout(() => {{
                 btn.innerText = originalText;
                 btn.disabled = false;
-            }, 2000);
-        }
+            }}, 2000);
+        }}
 
-        function updateShortlistSummary(id, action, address) {
+        function updateShortlistSummary(id, action, address) {{
             const container = document.getElementById('summary-chips');
             if (!container) return;
             
-            // Remove existing chip if any
             const existingChip = document.getElementById('chip-' + id);
             if (existingChip) existingChip.remove();
             
-            if (action === 'shortlist') {
+            if (action === 'shortlist') {{
                 const shortAddr = (address || 'Unknown').split(',')[0].substring(0, 25);
                 const chip = document.createElement('a');
                 chip.href = '#row-' + id;
@@ -474,96 +449,89 @@ class Reporter:
                 chip.textContent = shortAddr;
                 container.appendChild(chip);
                 
-                // Clear placeholder if it's there
-                if (container.innerText.includes('No properties shortlisted')) {
+                if (container.innerText.includes('No properties shortlisted')) {{
                     container.innerHTML = '';
                     container.appendChild(chip);
-                }
-            } else if (action === 'dismiss') {
+                }}
+            }} else if (action === 'dismiss') {{
                 if (existingChip) existingChip.remove();
-                if (container.children.length === 0) {
+                if (container.children.length === 0) {{
                     container.innerHTML = '<span style="color: #a0aec0; font-size: 0.9em;">No properties shortlisted yet. Click "⭐ Shortlist" on a property to add it here.</span>';
-                }
-            }
-        }
+                }}
+            }}
+        }}
 
-        function markViewed(id, el) {
-            // Optimistic update
+        function markViewed(id, el) {{
             const row = document.getElementById('row-' + id);
-            if (row) {
+            if (row) {{
                 row.classList.remove('status-new');
-                // Only mark as viewed if not already shortlisted
-                if (!row.classList.contains('status-shortlisted')) {
+                if (!row.classList.contains('status-shortlisted')) {{
                     row.classList.add('status-viewed');
-                }
+                }}
                 const badge = row.querySelector('.badge-new');
                 if (badge) badge.remove();
-            }
-            apiCall('/api/history', {id: id, action: 'view'});
-            // Allow link to open
+            }}
+            apiCall('/api/history', {{id: id, action: 'view'}});
             return true;
-        }
+        }}
 
-        function markShortlisted(id, btn) {
+        function markShortlisted(id, btn) {{
             const row = document.getElementById('row-' + id);
-            if (row) {
+            if (row) {{
                 row.classList.remove('status-new', 'status-viewed');
                 row.classList.add('status-shortlisted');
                 const badge = row.querySelector('.badge-new');
                 if (badge) badge.remove();
                 
-                // Get address from cell (8th column, index 7)
                 const address = row.cells[7].innerText;
                 updateShortlistSummary(id, 'shortlist', address);
-            }
-            apiCall('/api/history', {id: id, action: 'shortlist'});
-        }
+            }}
+            apiCall('/api/history', {{id: id, action: 'shortlist'}});
+        }}
 
-        function unshortlistProperty(id, btn) {
+        function unshortlistProperty(id, btn) {{
             const row = document.getElementById('row-' + id);
-            if (row) {
+            if (row) {{
                 row.classList.remove('status-shortlisted');
                 row.classList.add('status-viewed');
                 updateShortlistSummary(id, 'dismiss');
-            }
-            apiCall('/api/history', {id: id, action: 'unshortlist'});
-        }
+            }}
+            apiCall('/api/history', {{id: id, action: 'unshortlist'}});
+        }}
 
-        function dismissProperty(id, btn) {
+        function dismissProperty(id, btn) {{
             const row = document.getElementById('row-' + id);
-            if (row) {
+            if (row) {{
                 row.classList.remove('status-new', 'status-viewed', 'status-shortlisted');
                 row.classList.add('status-dismissed');
                 updateShortlistSummary(id, 'dismiss');
-            }
-            apiCall('/api/history', {id: id, action: 'dismiss'});
-        }
+            }}
+            apiCall('/api/history', {{id: id, action: 'dismiss'}});
+        }}
 
-        function undoDismiss(id, btn) {
+        function undoDismiss(id, btn) {{
             const row = document.getElementById('row-' + id);
-            if (row) {
+            if (row) {{
                 row.classList.remove('status-dismissed');
-                // Could be either viewed or shortlisted. 
-                // For simplicity, default back to viewed unless we want to track prev state.
                 row.classList.add('status-viewed'); 
-            }
-            apiCall('/api/history', {id: id, action: 'undo_dismiss'});
-        }
+            }}
+            apiCall('/api/history', {{id: id, action: 'undo_dismiss'}});
+        }}
         
-        function markAllVisible() {
+        function markAllVisible() {{
             const newRows = document.querySelectorAll('tr.status-new');
-            if (!newRows.length) {
+            if (!newRows.length) {{
                 alert('No new items to mark.');
                 return;
-            }
+            }}
             
-            if (!confirm(`Mark $${newRows.length} items as seen?`)) return;
+            if (!confirm(`Mark ${newRows.length} items as seen?`)) return;
             
-            newRows.forEach(row => {
+            newRows.forEach(row => {{
                 const id = row.id.replace('row-', '');
                 markViewed(id, null);
-            });
-        }
+            }});
+        }}
     </script>
 </head>
 <body>
