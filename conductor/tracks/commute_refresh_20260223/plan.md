@@ -13,7 +13,7 @@
 ## Phase 2: Backend Support (API)
 - [x] Task: Implement `force_refresh` flag in `TflClient._fetch_journey` (TDD - Red/Green) 1019263
     - [ ] Ensure `force_refresh=True` bypasses `_load_cache` but still calls `_save_cache`.
-- [ ] Task: Update `DashboardHandler.do_POST` in `dashboard.py` to handle `/api/refresh` (TDD - Red/Green)
+- [x] Task: Update `DashboardHandler.do_POST` in `dashboard.py` to handle `/api/refresh` (TDD - Red/Green) dede488
     - [ ] Endpoint should accept `{ "id": "property_id" }`.
     - [ ] Trigger re-calculation and return the updated property data with timestamp.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Backend Support' (Protocol in workflow.md)
