@@ -64,5 +64,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Commute Stability & Force Refresh: Standardize calculations to Tue 9AM benchmark and add manual refresh UI.**
+- [x] **Track: Commute Stability & Force Refresh: Standardize calculations to Tue 9AM benchmark and add manual refresh UI.**
   *Link: [./tracks/commute_refresh_20260223/](./tracks/commute_refresh_20260223/)*
