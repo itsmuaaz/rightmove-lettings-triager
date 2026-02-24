@@ -2,7 +2,6 @@ from utils import format_date, generate_google_maps_url, generate_tfl_url
 import markdown
 import html
 from datetime import datetime
-from string import Template
 
 class Reporter:
     """Generates Markdown and HTML reports for property search results."""
@@ -232,8 +231,8 @@ class Reporter:
         tbody = f"<tbody>{rows}</tbody>"
         
         table = f"<table>{thead}{tbody}</table>"
-        template = Template(self.get_html_template())
-        return template.substitute(content=summary + table)
+        template = self.get_html_template()
+        return template.replace('$content', summary + table)
 
     def generate_markdown(self, properties, for_html=False):
         """Generates the full Markdown report."""
@@ -250,8 +249,8 @@ class Reporter:
     def convert_to_html(self, md_content):
         """Converts Markdown content to a styled HTML report."""
         html_table = markdown.markdown(md_content, extensions=['tables'])
-        template = Template(self.get_html_template())
-        return template.substitute(content=html_table)
+        template = self.get_html_template()
+        return template.replace('$content', html_table)
 
     def get_html_template(self):
         """Returns the HTML boilerplate with embedded CSS and JS."""
