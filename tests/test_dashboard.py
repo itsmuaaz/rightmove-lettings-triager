@@ -58,5 +58,43 @@ class TestDashboardHandler(unittest.TestCase):
         self.assertIn("HTTP/1.1 200 OK", response)
         self.mock_server.note_manager.save_note.assert_called_with("123", "New note")
 
+    def test_post_refresh(self):
+        """Test POST /api/refresh re-calculates commute data."""
+        prop = {
+            'id': '123',
+            'latitude': 51.5,
+            'longitude': -0.1,
+            'price': '£1500',
+            'commute_time': 30
+        }
+        self.mock_server.properties = [prop]
+        self.mock_server.tfl_client = MagicMock()
+        self.mock_server.tfl_client.get_commute_time.return_value = 25
+        self.mock_server.tfl_client.get_cycling_time.return_value = 15
+        
+        data = json.dumps({"id": "123"}).encode()
+        headers = {'Content-Length': str(len(data))}
+        
+        handler = self._make_handler(path='/api/refresh', method='POST', body=data, headers=headers)
+        handler.do_POST()
+        
+        response = handler.wfile.getvalue().decode()
+        self.assertIn("HTTP/1.1 200 OK", response)
+        
+        # Verify property updated
+        self.assertEqual(prop['commute_time'], 25)
+        self.assertEqual(prop['cycling_time'], 15)
+        self.assertIn('commute_updated_at', prop)
+        
+        # Verify client called with force_refresh=True
+        # We need to use utils.WORK_COORDS
+        from utils import WORK_COORDS
+        self.mock_server.tfl_client.get_commute_time.assert_called_with(
+            (51.5, -0.1), WORK_COORDS, force_refresh=True
+        )
+        self.mock_server.tfl_client.get_cycling_time.assert_called_with(
+            (51.5, -0.1), WORK_COORDS, force_refresh=True
+        )
+
 if __name__ == '__main__':
     unittest.main()

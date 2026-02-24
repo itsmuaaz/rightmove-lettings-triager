@@ -1,5 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
+from datetime import datetime
+from utils import WORK_COORDS
 
 class DashboardHandler(BaseHTTPRequestHandler):
     """Handles HTTP requests for the dashboard."""
@@ -93,6 +95,39 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({'status': 'success'})
                                  .encode('utf-8'))
+            except Exception as e:
+                self.send_error(500, f"Server error: {str(e)}")
+        elif self.path == '/api/refresh':
+            try:
+                content_length = int(self.headers['Content-Length'])
+                post_data = self.rfile.read(content_length)
+                data = json.loads(post_data.decode('utf-8'))
+                
+                property_id = data.get('id')
+                if not property_id or not hasattr(self.server, 'properties') or not hasattr(self.server, 'tfl_client'):
+                    self.send_error(400, "Invalid request or missing dependencies")
+                    return
+                
+                # Find the property
+                prop = next((p for p in self.server.properties if p['id'] == property_id), None)
+                if not prop:
+                    self.send_error(404, "Property not found")
+                    return
+                
+                # Re-calculate
+                origin = (prop.get('latitude'), prop.get('longitude'))
+                if origin[0] is None or origin[1] is None:
+                    self.send_error(400, "Property missing coordinates")
+                    return
+                
+                prop['commute_time'] = self.server.tfl_client.get_commute_time(origin, WORK_COORDS, force_refresh=True)
+                prop['cycling_time'] = self.server.tfl_client.get_cycling_time(origin, WORK_COORDS, force_refresh=True)
+                prop['commute_updated_at'] = datetime.now().isoformat()
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'status': 'success', 'property': prop}).encode('utf-8'))
             except Exception as e:
                 self.send_error(500, f"Server error: {str(e)}")
         else:
