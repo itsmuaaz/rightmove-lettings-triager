@@ -1,7 +1,7 @@
 # Implementation Plan - Commute Stability & Force Refresh
 
 ## Phase 1: TfL Client & Caching Enhancements
-- [ ] Task: Create `benchmark_utils.py` with `get_next_benchmark_time()` function (TDD - Red/Green)
+- [x] Task: Create `benchmark_utils.py` with `get_next_benchmark_time()` function (TDD - Red/Green) b0580c9
     - [ ] Unit tests for: Monday -> Next Tue 9AM, Tuesday 8AM -> Today 9AM, Tuesday 10AM -> Next Tue 9AM.
 - [ ] Task: Update `TflClient` in `tfl_client.py` for metadata caching (TDD - Red/Green)
     - [ ] Update `_save_cache` and `_load_cache` to handle the new JSON wrapper.
