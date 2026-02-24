@@ -23,8 +23,8 @@
     - [x] Add `.refresh-icon` (🔄) next to commute badges.
     - [x] Add `.calc-timestamp` label (e.g., "14:30") near badges.
     - [x] Add "Refresh All" button to the header.
-- [ ] Task: Implement JavaScript `refreshProperty(id)` in `reporter.py` template (TDD-like)
-    - [ ] Call `/api/refresh`, show loading state, and update cell content on success.
+- [x] Task: Implement JavaScript `refreshProperty(id)` in `reporter.py` template (TDD-like) ed4cf92
+    - [x] Call `/api/refresh`, show loading state, and update cell content on success.
 - [ ] Task: Implement JavaScript `refreshAll()` to sequentially update all properties (TDD-like)
     - [ ] Iterate through all property IDs and call `refreshProperty` for each.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Frontend Implementation' (Protocol in workflow.md)
