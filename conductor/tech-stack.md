@@ -15,7 +15,7 @@
 
 ## External Tools
 - **`curl`:** Used as the primary data fetching mechanism, configured with a browser-like User-Agent to bypass simple anti-bot measures.
-- **TfL Unified API:** Primary data source for calculating public transport commute times in London.
+- **TfL Unified API:** Primary data source for calculating public transport commute times in London. Commute times are standardized to a "Tuesday 9:00 AM" benchmark and cached with metadata to support manual data refreshes.
 - **OpenStreetMap (Overpass) API:** Used for finding nearby amenities (supermarkets, gyms, parks, etc.).
 - **`pytest` / `pytest-cov`:** For automated testing and code coverage verification.
 - **`markdown`:** Python library for converting Markdown text to HTML.
