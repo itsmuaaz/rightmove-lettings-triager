@@ -240,6 +240,7 @@ def main():
     server.history_manager = history_manager
     server.properties = all_properties
     server.reporter = reporter
+    server.tfl_client = tfl
     
     try:
         server.serve_forever()
