@@ -1,6 +1,7 @@
 from utils import format_date, generate_google_maps_url, generate_tfl_url
 import markdown
 import html
+from datetime import datetime
 from string import Template
 
 class Reporter:
@@ -62,8 +63,25 @@ class Reporter:
 
         if for_html:
             badges_html = "".join(items)
+            
+            # Timestamp and Refresh Logic
+            timestamp_html = ""
+            updated_at = p.get("commute_updated_at")
+            prop_id = p.get("id")
+            
+            if updated_at:
+                try:
+                    dt = datetime.fromisoformat(updated_at)
+                    time_str = dt.strftime("%H:%M")
+                    timestamp_html = f'<div class="calc-timestamp">Updated: {time_str} <span class="refresh-icon" onclick="refreshProperty(\'{prop_id}\')">🔄</span></div>'
+                except ValueError:
+                    pass
+            elif prop_id:
+                 # Show refresh icon even if no timestamp yet
+                 timestamp_html = f'<div class="calc-timestamp"><span class="refresh-icon" onclick="refreshProperty(\'{prop_id}\')">🔄 Refresh</span></div>'
+
             links_html = f'<div class="commute-links"><a href="{gmaps_link}" target="_blank">[GMaps]</a> <a href="{tfl_link}" target="_blank">[TfL]</a></div>'
-            return f'<div class="commute-stack">{badges_html}{links_html}</div>'
+            return f'<div class="commute-stack">{badges_html}{timestamp_html}{links_html}</div>'
         else:
             badges_md = " / ".join(items)
             links_md = f"[GMaps]({gmaps_link}) [TfL]({tfl_link})"
@@ -308,7 +326,15 @@ class Reporter:
         a { color: #007bff; text-decoration: none; }
         a:hover { text-decoration: underline; }
         
-        #mark-all-btn { margin-bottom: 10px; padding: 10px 20px; font-size: 1em; background-color: #2b6cb0; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        /* Commute Timestamp and Refresh */
+        .calc-timestamp { font-size: 0.7em; color: #718096; margin-top: 2px; }
+        .refresh-icon { cursor: pointer; font-size: 0.9em; margin-left: 4px; transition: transform 0.5s ease; display: inline-block; }
+        .refresh-icon:hover { transform: rotate(180deg); }
+        .refresh-icon.spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        #refresh-all-btn { padding: 10px 20px; font-size: 1em; background-color: #38a169; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+        #refresh-all-btn:disabled { background-color: #cbd5e0; cursor: not-allowed; }
     </style>
     <script>
         async function apiCall(endpoint, data) {
@@ -318,15 +344,117 @@ class Reporter:
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
                 });
-                return response.ok;
+                if (!response.ok) return null;
+                return await response.json();
             } catch (err) {
                 console.error('API Error:', err);
-                return false;
+                return null;
             }
         }
 
         function saveNote(propertyId, text) {
-            apiCall('/api/notes', {id: propertyId, note: text});
+            // Use fire-and-forget for notes, or handle error if needed
+            fetch('/api/notes', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: propertyId, note: text})
+            }).catch(err => console.error(err));
+        }
+
+        async function refreshProperty(id) {
+            const row = document.getElementById('row-' + id);
+            if (!row) return;
+            
+            const icon = row.querySelector('.refresh-icon');
+            if (icon) icon.classList.add('spinning');
+            
+            const result = await apiCall('/api/refresh', {id: id});
+            
+            if (icon) icon.classList.remove('spinning');
+            
+            if (result && result.status === 'success' && result.property) {
+                const p = result.property;
+                // Update commute cell content
+                // We need to regenerate the commute HTML client-side or partial reload.
+                // For simplicity, let's update the text values if structure allows, 
+                // or just reload page? Reloading page is disruptive.
+                // Let's rely on finding specific elements if possible.
+                // But our cell structure is complex. 
+                // Alternative: The API could return the HTML fragment? 
+                // Or we just update the badges we can find.
+                
+                // Let's assume we just reload the page for "Refresh All" but for single refresh we want inline.
+                // Actually, simpler to just update the text content of the badges if we can select them.
+                // But the badges have classes based on time (green/amber/red).
+                
+                // Hack: Just reload the page for now? No, the requirement says "without a full page reload".
+                // So we should update the DOM.
+                // Let's reconstruct the badge HTML roughly.
+                
+                const commuteCell = row.cells[2];
+                let html = '<div class="commute-stack">';
+                
+                const getBadgeClass = (m) => {
+                    if (m === null) return 'badge-grey';
+                    if (m < 20) return 'badge-green';
+                    if (m <= 40) return 'badge-amber';
+                    return 'badge-red';
+                };
+                
+                if (p.commute_time !== null) {
+                    html += `<span class="${getBadgeClass(p.commute_time)}">${p.commute_time} mins 🚆</span>`;
+                }
+                if (p.cycling_time !== null) {
+                    html += `<span class="${getBadgeClass(p.cycling_time)}">${p.cycling_time} mins 🚲</span>`;
+                }
+                
+                // Timestamp
+                if (p.commute_updated_at) {
+                    const timeStr = new Date(p.commute_updated_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    html += `<div class="calc-timestamp">Updated: ${timeStr} <span class="refresh-icon" onclick="refreshProperty('${id}')">🔄</span></div>`;
+                }
+                
+                // Links (re-use existing if possible, or just standard ones)
+                // We can't easily regenerate links without lat/lon logic here, but they don't change.
+                // So let's grab the old links div?
+                const oldLinks = commuteCell.querySelector('.commute-links');
+                if (oldLinks) html += oldLinks.outerHTML;
+                
+                html += '</div>';
+                commuteCell.innerHTML = html;
+            } else {
+                alert('Failed to refresh property.');
+            }
+        }
+        
+        async function refreshAll() {
+            const btn = document.getElementById('refresh-all-btn');
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Refreshing...';
+            
+            const rows = document.querySelectorAll('tr.prop-row'); // Select all property rows
+            const ids = Array.from(rows).map(r => r.id.replace('row-', ''));
+            
+            let count = 0;
+            for (const id of ids) {
+                // Skip dismissed if we want? No, refresh all means all visible probably.
+                // Check if visible?
+                const row = document.getElementById('row-' + id);
+                if (row.classList.contains('status-dismissed')) continue;
+
+                btn.innerText = `Refreshing ${count + 1}/${ids.length}...`;
+                await refreshProperty(id);
+                count++;
+                // Small delay to be nice to UI and backend
+                await new Promise(r => setTimeout(r, 500));
+            }
+            
+            btn.innerText = 'Refreshed!';
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }, 2000);
         }
 
         function updateShortlistSummary(id, action, address) {
@@ -441,7 +569,10 @@ class Reporter:
 <body>
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h1>Property Search Results</h1>
-        <button id="mark-all-btn" onclick="markAllVisible()">Mark All Visible as Seen</button>
+        <div>
+            <button id="refresh-all-btn" onclick="refreshAll()">🔄 Refresh All Commutes</button>
+            <button id="mark-all-btn" onclick="markAllVisible()">Mark All Visible as Seen</button>
+        </div>
     </div>
     <p>Generated report. Use the text areas to save notes.</p>
     <div id="content">
