@@ -33,3 +33,6 @@
 - [x] Task: Update `product.md` and `tech-stack.md` to reflect commute stability changes. c79b91e
 - [x] Task: Final End-to-End Verification (Scrape -> Refresh -> Verify Cache Metadata). 8638
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Final Polish' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions a4d3a1b
