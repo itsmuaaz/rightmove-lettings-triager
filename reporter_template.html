@@ -131,7 +131,7 @@
                 
                 if (p.commute_updated_at) {
                     const timeStr = new Date(p.commute_updated_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    html += `<div class="calc-timestamp">Updated: ${timeStr} <span class="refresh-icon" onclick="refreshProperty('${id}')">🔄</span></div>`;
+                    html += `<div class="calc-timestamp">Updated: ${timeStr} <span style="cursor:pointer" onclick="refreshProperty('${id}')"><span class="refresh-icon">🔄</span></span></div>`;
                 }
                 
                 const oldLinks = commuteCell.querySelector('.commute-links');

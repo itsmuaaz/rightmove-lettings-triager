@@ -72,12 +72,12 @@ class Reporter:
                 try:
                     dt = datetime.fromisoformat(updated_at)
                     time_str = dt.strftime("%H:%M")
-                    timestamp_html = f'<div class="calc-timestamp">Updated: {time_str} <span class="refresh-icon" onclick="refreshProperty(\'{prop_id}\')">🔄</span></div>'
+                    timestamp_html = f'<div class="calc-timestamp">Updated: {time_str} <span style="cursor:pointer" onclick="refreshProperty(\'{prop_id}\')"><span class="refresh-icon">🔄</span></span></div>'
                 except ValueError:
                     pass
             elif prop_id:
                  # Show refresh icon even if no timestamp yet
-                 timestamp_html = f'<div class="calc-timestamp"><span class="refresh-icon" onclick="refreshProperty(\'{prop_id}\')">🔄 Refresh</span></div>'
+                 timestamp_html = f'<div class="calc-timestamp"><span style="cursor:pointer" onclick="refreshProperty(\'{prop_id}\')"><span class="refresh-icon">🔄</span> Refresh</span></div>'
 
             links_html = f'<div class="commute-links"><a href="{gmaps_link}" target="_blank">[GMaps]</a> <a href="{tfl_link}" target="_blank">[TfL]</a></div>'
             return f'<div class="commute-stack">{badges_html}{timestamp_html}{links_html}</div>'
