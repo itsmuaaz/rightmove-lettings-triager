@@ -6,6 +6,7 @@ import subprocess
 import argparse
 import concurrent.futures
 from http.server import HTTPServer
+import socketserver
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from config import load_config
 from tfl_client import TflClient
@@ -232,6 +233,7 @@ def main():
     sys.stderr.write(f"Starting dashboard on http://localhost:{port}\n")
     sys.stderr.write("Press Ctrl+C to stop.\n")
     
+    socketserver.TCPServer.allow_reuse_address = True
     server = HTTPServer(('127.0.0.1', port), DashboardHandler)
     server.html_content = html_content
     server.note_manager = note_manager
