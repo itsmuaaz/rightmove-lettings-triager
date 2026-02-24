@@ -6,7 +6,7 @@
 - [x] Task: Update `TflClient` in `tfl_client.py` for metadata caching (TDD - Red/Green) 27e846b
     - [ ] Update `_save_cache` and `_load_cache` to handle the new JSON wrapper.
     - [ ] Ensure legacy files are ignored or deleted if they don't match the new structure.
-- [ ] Task: Update `TflClient.get_commute_time` to use benchmark parameters (TDD - Red/Green)
+- [x] Task: Update `TflClient.get_commute_time` to use benchmark parameters (TDD - Red/Green) 261d84d
     - [ ] Inject `date`, `time`, and `timeIs=Arriving` into the TfL API request.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Client Enhancements' (Protocol in workflow.md)
 
