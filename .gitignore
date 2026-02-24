@@ -7,3 +7,5 @@ results.md
 results.html
 test_report.md
 test_report.html
+.tfl_cache/
+.amenity_cache/
