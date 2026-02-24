@@ -30,6 +30,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Frontend Implementation' (Protocol in workflow.md) ca8b2eb
 
 ## Phase 4: Final Polish & Documentation
-- [ ] Task: Update `product.md` and `tech-stack.md` to reflect commute stability changes.
+- [~] Task: Update `product.md` and `tech-stack.md` to reflect commute stability changes.
 - [ ] Task: Final End-to-End Verification (Scrape -> Refresh -> Verify Cache Metadata).
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Polish' (Protocol in workflow.md)
