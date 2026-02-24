@@ -1,6 +1,7 @@
 import unittest
 import os
 import shutil
+from datetime import datetime
 from unittest.mock import patch, MagicMock
 from tfl_client import TflClient
 
@@ -21,8 +22,12 @@ class TestTflClient(unittest.TestCase):
         if os.path.exists(self.test_cache_dir):
             shutil.rmtree(self.test_cache_dir)
 
+    @patch("tfl_client.get_next_benchmark_time")
     @patch("urllib.request.urlopen")
-    def test_get_commute_time_success(self, mock_urlopen):
+    def test_get_commute_time_success(self, mock_urlopen, mock_benchmark_time):
+        # Mock benchmark time
+        mock_benchmark_time.return_value = datetime(2026, 3, 3, 9, 0, 0)
+
         # Mock API response
         mock_response = MagicMock()
         mock_response.status = 200
@@ -42,6 +47,12 @@ class TestTflClient(unittest.TestCase):
         self.assertIn("51.5007,-0.1246", req.full_url)
         self.assertIn("51.5349,-0.1238", req.full_url)
         self.assertEqual(req.get_header("User-agent"), "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+        
+        # Verify benchmark parameters
+        self.assertIn("timeIs=Arriving", req.full_url)
+        # Date format depends on TflClient implementation, usually YYYYMMDD
+        self.assertIn("date=20260303", req.full_url)
+        self.assertIn("time=0900", req.full_url)
 
     @patch("urllib.request.urlopen")
     def test_get_commute_time_no_journeys(self, mock_urlopen):

@@ -162,7 +162,13 @@ class TflClient:
         Returns:
             Shortest journey duration in minutes, or None if failed.
         """
-        return self._fetch_journey(from_coords, to_coords, {}, max_retries)
+        benchmark = get_next_benchmark_time()
+        params = {
+            "date": benchmark.strftime("%Y%m%d"),
+            "time": benchmark.strftime("%H%M"),
+            "timeIs": "Arriving"
+        }
+        return self._fetch_journey(from_coords, to_coords, params, max_retries)
 
     def get_cycling_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3) -> Optional[int]:
         """Fetches cycling commute time in minutes between two coordinates with retries.
