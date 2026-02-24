@@ -19,10 +19,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Backend Support' (Protocol in workflow.md) 9ad8ece
 
 ## Phase 3: Frontend Implementation (Dashboard UI)
-- [ ] Task: Update `reporter.py` CSS/HTML to include refresh icons and timestamps (TDD - Red/Green)
-    - [ ] Add `.refresh-icon` (🔄) next to commute badges.
-    - [ ] Add `.calc-timestamp` label (e.g., "14:30") near badges.
-    - [ ] Add "Refresh All" button to the header.
+- [x] Task: Update `reporter.py` CSS/HTML to include refresh icons and timestamps (TDD - Red/Green) ed4cf92
+    - [x] Add `.refresh-icon` (🔄) next to commute badges.
+    - [x] Add `.calc-timestamp` label (e.g., "14:30") near badges.
+    - [x] Add "Refresh All" button to the header.
 - [ ] Task: Implement JavaScript `refreshProperty(id)` in `reporter.py` template (TDD-like)
     - [ ] Call `/api/refresh`, show loading state, and update cell content on success.
 - [ ] Task: Implement JavaScript `refreshAll()` to sequentially update all properties (TDD-like)
