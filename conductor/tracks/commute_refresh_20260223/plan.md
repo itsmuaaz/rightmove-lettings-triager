@@ -10,13 +10,13 @@
     - [x] Inject `date`, `time`, and `timeIs=Arriving` into the TfL API request.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Client Enhancements' (Protocol in workflow.md) 4f53848
 
-## Phase 2: Backend Support (API)
+## Phase 2: Backend Support (API) [checkpoint: 9ad8ece]
 - [x] Task: Implement `force_refresh` flag in `TflClient._fetch_journey` (TDD - Red/Green) 1019263
-    - [ ] Ensure `force_refresh=True` bypasses `_load_cache` but still calls `_save_cache`.
+    - [x] Ensure `force_refresh=True` bypasses `_load_cache` but still calls `_save_cache`.
 - [x] Task: Update `DashboardHandler.do_POST` in `dashboard.py` to handle `/api/refresh` (TDD - Red/Green) dede488
-    - [ ] Endpoint should accept `{ "id": "property_id" }`.
-    - [ ] Trigger re-calculation and return the updated property data with timestamp.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Backend Support' (Protocol in workflow.md)
+    - [x] Endpoint should accept `{ "id": "property_id" }`.
+    - [x] Trigger re-calculation and return the updated property data with timestamp.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Backend Support' (Protocol in workflow.md) 9ad8ece
 
 ## Phase 3: Frontend Implementation (Dashboard UI)
 - [ ] Task: Update `reporter.py` CSS/HTML to include refresh icons and timestamps (TDD - Red/Green)
