@@ -1,14 +1,14 @@
 # Implementation Plan - Commute Stability & Force Refresh
 
-## Phase 1: TfL Client & Caching Enhancements
+## Phase 1: TfL Client & Caching Enhancements [checkpoint: 4f53848]
 - [x] Task: Create `benchmark_utils.py` with `get_next_benchmark_time()` function (TDD - Red/Green) b0580c9
-    - [ ] Unit tests for: Monday -> Next Tue 9AM, Tuesday 8AM -> Today 9AM, Tuesday 10AM -> Next Tue 9AM.
+    - [x] Unit tests for: Monday -> Next Tue 9AM, Tuesday 8AM -> Today 9AM, Tuesday 10AM -> Next Tue 9AM.
 - [x] Task: Update `TflClient` in `tfl_client.py` for metadata caching (TDD - Red/Green) 27e846b
-    - [ ] Update `_save_cache` and `_load_cache` to handle the new JSON wrapper.
-    - [ ] Ensure legacy files are ignored or deleted if they don't match the new structure.
+    - [x] Update `_save_cache` and `_load_cache` to handle the new JSON wrapper.
+    - [x] Ensure legacy files are ignored or deleted if they don't match the new structure.
 - [x] Task: Update `TflClient.get_commute_time` to use benchmark parameters (TDD - Red/Green) 261d84d
-    - [ ] Inject `date`, `time`, and `timeIs=Arriving` into the TfL API request.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Client Enhancements' (Protocol in workflow.md)
+    - [x] Inject `date`, `time`, and `timeIs=Arriving` into the TfL API request.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Client Enhancements' (Protocol in workflow.md) 4f53848
 
 ## Phase 2: Backend Support (API)
 - [ ] Task: Implement `force_refresh` flag in `TflClient._fetch_journey` (TDD - Red/Green)
