@@ -88,16 +88,17 @@ class TflClient:
         except IOError as e:
             sys.stderr.write(f"Failed to write to cache: {e}\n")
 
-    def _fetch_journey(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict, max_retries: int) -> Optional[int]:
+    def _fetch_journey(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict, max_retries: int, force_refresh: bool = False) -> Optional[int]:
         """Internal helper to fetch journey time with specific parameters."""
         # Check cache first
         cache_key = self._get_cache_key(from_coords, to_coords, params)
-        cached_data = self._load_cache(cache_key)
-        if cached_data:
-            journeys = cached_data.get('journeys', [])
-            if not journeys:
-                return None
-            return min(j.get('duration', 999) for j in journeys)
+        if not force_refresh:
+            cached_data = self._load_cache(cache_key)
+            if cached_data:
+                journeys = cached_data.get('journeys', [])
+                if not journeys:
+                    return None
+                return min(j.get('duration', 999) for j in journeys)
 
         from_str = f"{from_coords[0]},{from_coords[1]}"
         to_str = f"{to_coords[0]},{to_coords[1]}"
@@ -151,13 +152,14 @@ class TflClient:
                     return None
         return None
 
-    def get_commute_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3) -> Optional[int]:
+    def get_commute_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3, force_refresh: bool = False) -> Optional[int]:
         """Fetches public transport commute time in minutes between two coordinates with retries.
 
         Args:
             from_coords: Tuple of (lat, lon) for the origin.
             to_coords: Tuple of (lat, lon) for the destination.
             max_retries: Number of retry attempts on failure.
+            force_refresh: Whether to bypass the cache.
 
         Returns:
             Shortest journey duration in minutes, or None if failed.
@@ -168,15 +170,16 @@ class TflClient:
             "time": benchmark.strftime("%H%M"),
             "timeIs": "Arriving"
         }
-        return self._fetch_journey(from_coords, to_coords, params, max_retries)
+        return self._fetch_journey(from_coords, to_coords, params, max_retries, force_refresh=force_refresh)
 
-    def get_cycling_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3) -> Optional[int]:
+    def get_cycling_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3, force_refresh: bool = False) -> Optional[int]:
         """Fetches cycling commute time in minutes between two coordinates with retries.
 
         Args:
             from_coords: Tuple of (lat, lon) for the origin.
             to_coords: Tuple of (lat, lon) for the destination.
             max_retries: Number of retry attempts on failure.
+            force_refresh: Whether to bypass the cache.
 
         Returns:
             Shortest cycling duration in minutes, or None if failed.
@@ -186,4 +189,4 @@ class TflClient:
             'cyclePreference': 'allTheWay',
             'bikeProficiency': 'moderate'
         }
-        return self._fetch_journey(from_coords, to_coords, params, max_retries)
+        return self._fetch_journey(from_coords, to_coords, params, max_retries, force_refresh=force_refresh)

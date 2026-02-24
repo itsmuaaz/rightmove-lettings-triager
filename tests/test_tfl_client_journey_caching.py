@@ -73,5 +73,34 @@ class TestTflClientJourneyCaching(unittest.TestCase):
         self.assertEqual(duration, 15)
         mock_urlopen.assert_not_called()
 
+    @patch('urllib.request.urlopen')
+    def test_fetch_journey_force_refresh_bypasses_cache(self, mock_urlopen):
+        """Test that force_refresh=True calls API even if cache exists."""
+        from_coords = (51.5, 0.1)
+        to_coords = (51.6, 0.2)
+        params = {'mode': 'tube'}
+        
+        # Pre-populate cache
+        key = self.client._get_cache_key(from_coords, to_coords, params)
+        data = {'journeys': [{'duration': 15}]}
+        self.client._save_cache(key, data)
+        
+        # Mock API response for new fetch
+        mock_response = MagicMock()
+        mock_response.status = 200
+        mock_response.read.return_value = json.dumps({
+            'journeys': [{'duration': 20}]
+        }).encode('utf-8')
+        mock_response.__enter__.return_value = mock_response
+        mock_urlopen.return_value = mock_response
+
+        # Execute with force_refresh=True
+        # This is expected to fail initially as the parameter doesn't exist
+        duration = self.client._fetch_journey(from_coords, to_coords, params, max_retries=1, force_refresh=True)
+        
+        # Verify
+        self.assertEqual(duration, 20)
+        mock_urlopen.assert_called_once()
+
 if __name__ == '__main__':
     unittest.main()
