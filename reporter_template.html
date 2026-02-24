@@ -96,12 +96,7 @@
         }
 
         function saveNote(propertyId, text) {
-            // Use fire-and-forget for notes, or handle error if needed
-            fetch('/api/notes', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({id: propertyId, note: text})
-            }).catch(err => console.error(err));
+            apiCall('/api/notes', {id: propertyId, note: text});
         }
 
         async function refreshProperty(id) {
