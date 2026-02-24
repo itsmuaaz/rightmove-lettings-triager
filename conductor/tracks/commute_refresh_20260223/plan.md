@@ -11,7 +11,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Client Enhancements' (Protocol in workflow.md) 4f53848
 
 ## Phase 2: Backend Support (API)
-- [ ] Task: Implement `force_refresh` flag in `TflClient._fetch_journey` (TDD - Red/Green)
+- [x] Task: Implement `force_refresh` flag in `TflClient._fetch_journey` (TDD - Red/Green) 1019263
     - [ ] Ensure `force_refresh=True` bypasses `_load_cache` but still calls `_save_cache`.
 - [ ] Task: Update `DashboardHandler.do_POST` in `dashboard.py` to handle `/api/refresh` (TDD - Red/Green)
     - [ ] Endpoint should accept `{ "id": "property_id" }`.
