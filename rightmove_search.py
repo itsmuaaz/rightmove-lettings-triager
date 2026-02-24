@@ -114,7 +114,7 @@ def main():
     parser = argparse.ArgumentParser(description="Search Rightmove properties and calculate commutes/amenities.")
     parser.add_argument("url", help="The Rightmove search results URL.")
     parser.add_argument("--radius", type=int, default=1000, help="Search radius for amenities in meters (default: 1000).")
-    parser.add_argument("--port", type=int, default=8000, help="Port to run the dashboard server on (default: 8000).")
+    parser.add_argument("--port", type=int, default=8888, help="Port to run the dashboard server on (default: 8888).")
     args = parser.parse_args()
 
     base_url = args.url
