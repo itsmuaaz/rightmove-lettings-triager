@@ -1,6 +1,7 @@
 import json
 import subprocess
 import os
+import time
 from typing import Dict, List, Any
 
 class VibeClient:
@@ -47,7 +48,6 @@ class VibeClient:
             return results
 
         # Fetch missing in batches (simple implementation: one batch for now)
-        # Assuming list isn't massive. If > 50, we might need chunking.
         fetched_data = self._fetch_from_gemini(missing)
         
         # Update cache and results
@@ -57,12 +57,10 @@ class VibeClient:
         
         self._save_cache()
         
-        # Ensure we return results even for failed fetches (as None or empty?)
-        # For now, just return what we have.
         return results
 
     def _fetch_from_gemini(self, districts: List[str]) -> Dict[str, Any]:
-        """Calls Gemini CLI to analyze the given districts."""
+        """Calls Gemini CLI to analyze the given districts, with retries."""
         if not districts:
             return {}
 
@@ -88,28 +86,38 @@ Example:
   }}
 }}
 """
-        try:
-            result = subprocess.run(
-                ["gemini", prompt],
-                capture_output=True,
-                text=True,
-                check=True
-            )
-            
-            raw_output = result.stdout.strip()
-            
-            # Cleanup Markdown code blocks
-            if raw_output.startswith("```json"):
-                raw_output = raw_output[7:]
-            elif raw_output.startswith("```"):
-                raw_output = raw_output[3:]
-            
-            if raw_output.endswith("```"):
-                raw_output = raw_output[:-3]
+        max_retries = 3
+        backoff_factor = 1
+
+        for attempt in range(max_retries + 1):
+            try:
+                result = subprocess.run(
+                    ["gemini", prompt],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
                 
-            return json.loads(raw_output.strip())
+                raw_output = result.stdout.strip()
+                
+                # Cleanup Markdown code blocks
+                if raw_output.startswith("```json"):
+                    raw_output = raw_output[7:]
+                elif raw_output.startswith("```"):
+                    raw_output = raw_output[3:]
+                
+                if raw_output.endswith("```"):
+                    raw_output = raw_output[:-3]
+                    
+                return json.loads(raw_output.strip())
             
-        except (subprocess.CalledProcessError, json.JSONDecodeError, FileNotFoundError) as e:
-            # Log error if possible, or just return empty
-            # print(f"Vibe fetch error: {e}") 
-            return {}
+            except (subprocess.CalledProcessError, json.JSONDecodeError, FileNotFoundError) as e:
+                if attempt < max_retries:
+                    sleep_time = backoff_factor * (2 ** attempt)
+                    # print(f"Gemini call failed: {e}. Retrying in {sleep_time}s...")
+                    time.sleep(sleep_time)
+                else:
+                    # Log final failure
+                    # print(f"Gemini call failed after {max_retries} retries: {e}")
+                    return {}
+        return {}
