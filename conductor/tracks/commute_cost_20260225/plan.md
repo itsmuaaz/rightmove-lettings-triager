@@ -1,9 +1,9 @@
 # Implementation Plan - Commute Cost Integration
 
 ## Phase 1: TfL Client & Data Model Enhancement
-- [ ] Task: Update `TflClient` to extract fare information (peak/off-peak) from the Journey Planner API response (TDD - Red Phase)
-- [ ] Task: Implement fare extraction logic in `TflClient._parse_journey_response` or similar (TDD - Green Phase)
-- [ ] Task: Update the `TflClient` caching mechanism to include a `fares` field in the stored JSON (TDD - Green/Refactor)
+- [x] Task: Update `TflClient` to extract fare information (peak/off-peak) from the Journey Planner API response (TDD - Red Phase) [8c12a1b]
+- [x] Task: Implement fare extraction logic in `TflClient._parse_journey_response` or similar (TDD - Green Phase) [8c12a1b]
+- [x] Task: Update the `TflClient` caching mechanism to include a `fares` field in the stored JSON (TDD - Green/Refactor) [8c12a1b]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: TfL Client & Data Model Enhancement' (Protocol in workflow.md)
 
 ## Phase 2: Commute Calculator & Data Propagation
