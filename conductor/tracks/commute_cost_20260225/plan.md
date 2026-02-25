@@ -19,6 +19,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Dashboard UI Update (Jinja2)' (Protocol in workflow.md) [0b14301]
 
 ## Phase 4: Verification & Cache Migration
-- [ ] Task: Verify the full flow with a real search and ensure costs are displayed and cached (Manual)
-- [ ] Task: (Optional) Create a migration script or handle missing fare data in the existing cache gracefully (Chore)
+- [x] Task: Verify the full flow with a real search and ensure costs are displayed and cached (Manual) [0b14301]
+- [x] Task: (Optional) Create a migration script or handle missing fare data in the existing cache gracefully (Chore) [0b14301]
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Verification & Cache Migration' (Protocol in workflow.md)
