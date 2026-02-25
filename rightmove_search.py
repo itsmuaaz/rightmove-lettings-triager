@@ -116,6 +116,7 @@ def main():
     parser.add_argument("url", help="The Rightmove search results URL.")
     parser.add_argument("--radius", type=int, default=1000, help="Search radius for amenities in meters (default: 1000).")
     parser.add_argument("--port", type=int, default=8888, help="Port to run the dashboard server on (default: 8888).")
+    parser.add_argument("--no-server", action="store_true", help="Skip starting the dashboard server.")
     args = parser.parse_args()
 
     base_url = args.url
@@ -230,23 +231,26 @@ def main():
     html_content = reporter.convert_to_html(md_for_html)
     
     # Start Dashboard Server
-    sys.stderr.write(f"Starting dashboard on http://localhost:{port}\n")
-    sys.stderr.write("Press Ctrl+C to stop.\n")
-    
-    socketserver.TCPServer.allow_reuse_address = True
-    server = HTTPServer(('127.0.0.1', port), DashboardHandler)
-    server.html_content = html_content
-    server.note_manager = note_manager
-    server.history_manager = history_manager
-    server.properties = all_properties
-    server.reporter = reporter
-    server.tfl_client = tfl
-    
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print("\nStopping server.")
-        server.server_close()
+    if not args.no_server:
+        sys.stderr.write(f"Starting dashboard on http://localhost:{port}\n")
+        sys.stderr.write("Press Ctrl+C to stop.\n")
+        
+        socketserver.TCPServer.allow_reuse_address = True
+        server = HTTPServer(('127.0.0.1', port), DashboardHandler)
+        server.html_content = html_content
+        server.note_manager = note_manager
+        server.history_manager = history_manager
+        server.properties = all_properties
+        server.reporter = reporter
+        server.tfl_client = tfl
+        
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            print("\nStopping server.")
+            server.server_close()
+    else:
+        sys.stderr.write("Skipping server start. Reports generated in results.md\n")
 
 if __name__ == "__main__":
     main()
