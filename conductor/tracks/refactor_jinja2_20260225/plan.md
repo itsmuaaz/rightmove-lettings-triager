@@ -32,4 +32,4 @@
 - [x] Task: Verify shortlisting functionality manually (Verification)
 
 ## Phase: Review Fixes
-- [~] Task: Apply review suggestions
+- [x] Task: Apply review suggestions c285909
