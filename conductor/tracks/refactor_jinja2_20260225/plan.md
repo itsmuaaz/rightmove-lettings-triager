@@ -12,9 +12,15 @@
 - [x] Task: Implement the HTML layout in `templates/report.html` using Tailwind CSS, moving rendering logic out of Python
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Refactor Reporter Class' (Protocol in workflow.md)
 
-## Phase 3: Integration & Cleanup
+## Phase 3: Integration & Cleanup [checkpoint: 8e06d08]
 - [x] Task: Update `tests/test_dashboard_integration.py` and `tests/test_rightmove_search.py` reflecting the new 1-step architecture
 - [x] Task: Update `dashboard.py` to serve the new Jinja2 rendered HTML and simplify page refresh logic
 - [x] Task: Update `rightmove_search.py` to stop writing `results.md` and only handle the `results.html` report
 - [x] Task: Delete the old `reporter_template.html` and any dead CSS/Markdown helper functions
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md)
+
+## Phase 4: Bug Fix - Shortlist Feature
+- [x] Task: Investigate why the shortlist button and section are broken (Debug)
+- [x] Task: Fix the JS logic for shortlisting in `templates/report.html` and ensure it communicates with `dashboard.py` (Fix)
+- [x] Task: Fix UI regressions (Links, Layout, Price, Emojis) in `reporter.py` and `templates/report.html` (Fix)
+- [x] Task: Verify shortlisting functionality manually (Verification)
