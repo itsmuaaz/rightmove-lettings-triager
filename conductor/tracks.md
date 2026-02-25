@@ -14,7 +14,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Property Vibe: Capture safety, reputation, and prestige using LLM-based categorization.**
+- [x] **Track: Property Vibe: Capture safety, reputation, and prestige using LLM-based categorization.**
   *Link: [./tracks/vibe_integration_20260220/](./tracks/vibe_integration_20260220/)*
 
 ---
