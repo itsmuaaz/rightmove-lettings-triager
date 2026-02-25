@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Letting Search Results</h1>
+    <p class="text-gray-600">Generated on {{ generated_at }}</p>
+    {% if filters %}
+    <div class="mt-4 p-4 bg-white rounded shadow text-sm text-gray-700">
+        <p><strong>Filters Applied:</strong> {{ filters }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Triage Section (Shortlist) -->
+{% if shortlist %}
+<div class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4 text-green-700 flex items-center">
+        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+        Shortlisted Properties
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for property in shortlist %}
+            {% include "property_card.html" ignore missing %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Main Results Table -->
+<div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commute</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amenities</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Added</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for property in properties %}
+                <tr id="property-{{ property.id }}" class="hover:bg-gray-50 transition-colors duration-150 {{ 'bg-gray-100 opacity-60' if property.status == 'dismissed' else '' }}">
+                    <!-- Property Details -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-20 w-24 relative overflow-hidden rounded bg-gray-200">
+                                {% if property.images and property.images[0] %}
+                                <img class="absolute inset-0 w-full h-full object-cover" src="{{ property.images[0] }}" alt="Property Image">
+                                {% else %}
+                                <div class="flex items-center justify-center h-full text-gray-400 text-xs">No Image</div>
+                                {% endif %}
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900 truncate max-w-xs">
+                                    <a href="{{ property.link }}" target="_blank" class="hover:underline text-blue-600 visited:text-purple-600">
+                                        {{ property.address }}
+                                    </a>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">{{ property.type }}</div>
+                                <div class="flex mt-2 space-x-2">
+                                    <a href="{{ property.tfl_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">TfL Journey</a>
+                                    <a href="{{ property.google_maps_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Google Maps</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- Price -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-bold text-gray-900">£{{ property.price_pcm }} pcm</div>
+                        <div class="text-xs text-gray-500">£{{ property.price_pw }} pw</div>
+                    </td>
+
+                    <!-- Commute -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex flex-col space-y-1">
+                            <!-- Public Transport -->
+                            <div class="flex items-center text-sm {{ property.commute_color_class }}">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                                <span class="font-semibold">{{ property.commute_time }} min</span>
+                            </div>
+                            <!-- Cycling -->
+                             <div class="flex items-center text-xs text-gray-600">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                                <span>{{ property.cycling_time }} min cycle</span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- Amenities -->
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <ul class="space-y-1">
+                            {% for amenity in property.amenities %}
+                            <li class="flex items-center text-xs">
+                                <span class="w-2 h-2 rounded-full mr-2 {{ amenity.color_class }}"></span>
+                                {{ amenity.name }}: {{ amenity.distance }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+
+                    <!-- Added On -->
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ property.added_on }}
+                    </td>
+
+                    <!-- Status / Actions -->
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                         <div class="flex flex-col space-y-2">
+                            <!-- Status Badges -->
+                            {% if property.is_new %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">New</span>
+                            {% endif %}
+                            
+                            <!-- Action Buttons (using htmx or fetch calls normally, keeping consistent with current impl for now) -->
+                            <div class="flex space-x-2">
+                                <button onclick="updateStatus('{{ property.id }}', 'shortlist')" class="text-green-600 hover:text-green-900" title="Shortlist">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </button>
+                                <button onclick="updateStatus('{{ property.id }}', 'dismissed')" class="text-red-600 hover:text-red-900" title="Dismiss">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Notes Row (Expandable or always visible if content exists) -->
+                <tr class="bg-gray-50 {{ 'hidden' if not property.notes else '' }}">
+                    <td colspan="6" class="px-6 py-2">
+                        <div class="text-xs text-gray-500 italic">
+                            Notes: <span id="note-display-{{ property.id }}">{{ property.notes }}</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Placeholder for JS logic (status updates, notes, etc.)
+    // This will be populated from dashboard.py or separate JS file
+    function updateStatus(propertyId, status) {
+        fetch(`/update_status?id=${propertyId}&status=${status}`, { method: 'POST' })
+            .then(() => location.reload()); // Simple reload for now
+    }
+</script>
+{% endblock %}
