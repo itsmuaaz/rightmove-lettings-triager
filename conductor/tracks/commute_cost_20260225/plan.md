@@ -6,11 +6,11 @@
 - [x] Task: Update the `TflClient` caching mechanism to include a `fares` field in the stored JSON (TDD - Green/Refactor) [8c12a1b]
 - [x] Task: Conductor - User Manual Verification 'Phase 1: TfL Client & Data Model Enhancement' (Protocol in workflow.md) [4125d8b]
 
-## Phase 2: Commute Calculator & Data Propagation
+## Phase 2: Commute Calculator & Data Propagation [checkpoint: 25f5bf3]
 - [x] Task: Update `CommuteCalculator` to include fare data in the result dictionary returned by `calculate` (TDD - Red Phase) [3eabed3]
 - [x] Task: Implement the propagation of fare data from `TflClient` through `CommuteCalculator` (TDD - Green Phase) [3eabed3]
 - [x] Task: Ensure the `rightmove_search.py` processing loop correctly handles the updated result structure (Refactor) [3eabed3]
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Commute Calculator & Data Propagation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Commute Calculator & Data Propagation' (Protocol in workflow.md) [25f5bf3]
 
 ## Phase 3: Dashboard UI Update (Jinja2)
 - [ ] Task: Update `reporter.py` to pass the peak and off-peak fares to the template (TDD - Red Phase)
