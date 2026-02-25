@@ -171,6 +171,7 @@ class TflClient:
                     return self._extract_journey_data(data)
             except Exception as e:
                 sys.stderr.write(f"TfL API Attempt {attempt + 1} failed: {str(e)}\n")
+                sys.stderr.write(f"URL: {url}\n")
                 if attempt < max_retries - 1:
                     time.sleep(1) # Simple backoff
                 else:
@@ -228,8 +229,8 @@ class TflClient:
         """
         params = {
             'mode': 'cycle',
-            'cyclePreference': 'allTheWay',
-            'bikeProficiency': 'moderate'
+            # 'cyclePreference': 'allTheWay',
+            # 'bikeProficiency': 'moderate'
         }
         result = self._fetch_journey(from_coords, to_coords, params, max_retries, force_refresh=force_refresh)
         if result:
