@@ -8,5 +8,1205 @@
       "Prestigious",
       "Central"
     ]
+  },
+  "SE24": {
+    "score": 8,
+    "summary": "Green, affluent, village feel",
+    "safety": "High",
+    "keywords": [
+      "Parks",
+      "Village",
+      "Affluent"
+    ]
+  },
+  "HA3": {
+    "score": 5,
+    "summary": "Suburban, diverse, affordable",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Diverse",
+      "Commuter"
+    ]
+  },
+  "SW15": {
+    "score": 8,
+    "summary": "Riverside, green, affluent",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Green",
+      "Professional"
+    ]
+  },
+  "BR1": {
+    "score": 7,
+    "summary": "Suburban, busy town centre",
+    "safety": "Medium",
+    "keywords": [
+      "Shopping",
+      "Suburban",
+      "Connections"
+    ]
+  },
+  "HA7": {
+    "score": 8,
+    "summary": "Affluent, quiet, green",
+    "safety": "High",
+    "keywords": [
+      "Quiet",
+      "Affluent",
+      "Suburban"
+    ]
+  },
+  "E14": {
+    "score": 7,
+    "summary": "Modern, busy, high-rise",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Corporate",
+      "Riverside"
+    ]
+  },
+  "N4": {
+    "score": 6,
+    "summary": "Vibrant, diverse, transport hub",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Transport",
+      "Diverse"
+    ]
+  },
+  "N20": {
+    "score": 8,
+    "summary": "Suburban, green, quiet",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Family"
+    ]
+  },
+  "SE10": {
+    "score": 8,
+    "summary": "Historic, riverside, touristy",
+    "safety": "High",
+    "keywords": [
+      "Historic",
+      "Riverside",
+      "Parks"
+    ]
+  },
+  "SW14": {
+    "score": 9,
+    "summary": "Leafy, safe, riverside village",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Riverside",
+      "Quiet"
+    ]
+  },
+  "IG11": {
+    "score": 4,
+    "summary": "Urban, diverse, regenerating",
+    "safety": "Low",
+    "keywords": [
+      "Regenerating",
+      "Urban",
+      "Diverse"
+    ]
+  },
+  "EN5": {
+    "score": 7,
+    "summary": "Suburban, green, historic",
+    "safety": "High",
+    "keywords": [
+      "Historic",
+      "Green",
+      "Suburban"
+    ]
+  },
+  "HA9": {
+    "score": 6,
+    "summary": "Busy, diverse, event-focused",
+    "safety": "Medium",
+    "keywords": [
+      "Events",
+      "Busy",
+      "Regenerated"
+    ]
+  },
+  "SE18": {
+    "score": 5,
+    "summary": "Regenerating, diverse, riverside",
+    "safety": "Medium",
+    "keywords": [
+      "Regenerating",
+      "Riverside",
+      "Diverse"
+    ]
+  },
+  "HA2": {
+    "score": 6,
+    "summary": "Suburban, diverse, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Diverse",
+      "Suburban"
+    ]
+  },
+  "SE19": {
+    "score": 7,
+    "summary": "Hilly, panoramic, vibrant",
+    "safety": "Medium",
+    "keywords": [
+      "Views",
+      "Vibrant",
+      "Parks"
+    ]
+  },
+  "SE28": {
+    "score": 4,
+    "summary": "Concrete, riverside, quiet",
+    "safety": "Low",
+    "keywords": [
+      "Riverside",
+      "Concrete",
+      "Quiet"
+    ]
+  },
+  "N15": {
+    "score": 4,
+    "summary": "Urban, diverse, busy",
+    "safety": "Low",
+    "keywords": [
+      "Urban",
+      "Diverse",
+      "Busy"
+    ]
+  },
+  "E1W": {
+    "score": 8,
+    "summary": "Riverside, quiet, historic",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Historic",
+      "Quiet"
+    ]
+  },
+  "E5": {
+    "score": 6,
+    "summary": "Trendy, diverse, parks",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Parks",
+      "Diverse"
+    ]
+  },
+  "W7": {
+    "score": 7,
+    "summary": "Suburban, parks, quiet",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Quiet",
+      "Parks"
+    ]
+  },
+  "N11": {
+    "score": 6,
+    "summary": "Suburban, residential, quiet",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Quiet"
+    ]
+  },
+  "N19": {
+    "score": 6,
+    "summary": "Urban, hilly, improving",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Improving",
+      "Views"
+    ]
+  },
+  "W4": {
+    "score": 9,
+    "summary": "Affluent, riverside, village feel",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Village",
+      "Riverside"
+    ]
+  },
+  "W9": {
+    "score": 8,
+    "summary": "Leafy, canalside, affluent",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Canalside",
+      "Affluent"
+    ]
+  },
+  "SE25": {
+    "score": 5,
+    "summary": "Urban, diverse, affordable",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Affordable",
+      "Diverse"
+    ]
+  },
+  "TW9": {
+    "score": 9,
+    "summary": "Affluent, green, riverside",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Green",
+      "Riverside"
+    ]
+  },
+  "NW2": {
+    "score": 5,
+    "summary": "Urban, diverse, busy",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Busy",
+      "Diverse"
+    ]
+  },
+  "W10": {
+    "score": 7,
+    "summary": "Trendy, diverse, historic",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Diverse",
+      "Historic"
+    ]
+  },
+  "N10": {
+    "score": 9,
+    "summary": "Leafy, affluent, village feel",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Affluent",
+      "Views"
+    ]
+  },
+  "SE12": {
+    "score": 6,
+    "summary": "Suburban, quiet, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Quiet",
+      "Residential"
+    ]
+  },
+  "SE27": {
+    "score": 6,
+    "summary": "Hilly, diverse, improving",
+    "safety": "Medium",
+    "keywords": [
+      "Hilly",
+      "Diverse",
+      "Improving"
+    ]
+  },
+  "SW1V": {
+    "score": 8,
+    "summary": "Central, grid, riverside",
+    "safety": "High",
+    "keywords": [
+      "Central",
+      "Grid",
+      "Riverside"
+    ]
+  },
+  "NW6": {
+    "score": 7,
+    "summary": "Vibrant, diverse, excellent transport",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Transport",
+      "Diverse"
+    ]
+  },
+  "E11": {
+    "score": 6,
+    "summary": "Green, trendy, suburban",
+    "safety": "Medium",
+    "keywords": [
+      "Green",
+      "Trendy",
+      "Suburban"
+    ]
+  },
+  "UB6": {
+    "score": 5,
+    "summary": "Suburban, affordable, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Affordable",
+      "Diverse"
+    ]
+  },
+  "SE16": {
+    "score": 7,
+    "summary": "Riverside, regenerating, quiet",
+    "safety": "Medium",
+    "keywords": [
+      "Riverside",
+      "Regenerating",
+      "Quiet"
+    ]
+  },
+  "N2": {
+    "score": 8,
+    "summary": "Leafy, affluent, suburban",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Affluent",
+      "Suburban"
+    ]
+  },
+  "N14": {
+    "score": 7,
+    "summary": "Suburban, green, residential",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Residential"
+    ]
+  },
+  "NW11": {
+    "score": 8,
+    "summary": "Diverse, suburban, quiet",
+    "safety": "High",
+    "keywords": [
+      "Diverse",
+      "Suburban",
+      "Quiet"
+    ]
+  },
+  "E17": {
+    "score": 7,
+    "summary": "Trendy, diverse, village feel",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Diverse",
+      "Village"
+    ]
+  },
+  "TW8": {
+    "score": 6,
+    "summary": "Riverside, regenerating, industrial",
+    "safety": "Medium",
+    "keywords": [
+      "Riverside",
+      "Regenerating",
+      "Industrial"
+    ]
+  },
+  "E9": {
+    "score": 6,
+    "summary": "Trendy, urban, parks",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Urban",
+      "Parks"
+    ]
+  },
+  "SE20": {
+    "score": 5,
+    "summary": "Suburban, diverse, affordable",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Affordable",
+      "Parks"
+    ]
+  },
+  "SE13": {
+    "score": 5,
+    "summary": "Busy, transport hub, regenerating",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Transport",
+      "Regenerating"
+    ]
+  },
+  "E8": {
+    "score": 7,
+    "summary": "Trendy, vibrant, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Vibrant",
+      "Diverse"
+    ]
+  },
+  "TW7": {
+    "score": 7,
+    "summary": "Riverside, suburban, historic",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Suburban",
+      "Historic"
+    ]
+  },
+  "NW9": {
+    "score": 6,
+    "summary": "Modern, regenerating, suburban",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Regenerating",
+      "Suburban"
+    ]
+  },
+  "UB2": {
+    "score": 4,
+    "summary": "Vibrant, diverse, busy",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Diverse",
+      "Busy"
+    ]
+  },
+  "SE6": {
+    "score": 5,
+    "summary": "Urban, busy, improving",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Busy",
+      "Improving"
+    ]
+  },
+  "NW3": {
+    "score": 9,
+    "summary": "Affluent, hilly, village",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Hilly",
+      "Village"
+    ]
+  },
+  "N12": {
+    "score": 7,
+    "summary": "Suburban, residential, busy high street",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "High Street"
+    ]
+  },
+  "E7": {
+    "score": 6,
+    "summary": "Diverse, improving, green",
+    "safety": "Medium",
+    "keywords": [
+      "Diverse",
+      "Improving",
+      "Green"
+    ]
+  },
+  "SE23": {
+    "score": 7,
+    "summary": "Hilly, leafy, views",
+    "safety": "High",
+    "keywords": [
+      "Hilly",
+      "Leafy",
+      "Views"
+    ]
+  },
+  "SM4": {
+    "score": 6,
+    "summary": "Suburban, green, transport terminus",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Transport"
+    ]
+  },
+  "N6": {
+    "score": 9,
+    "summary": "Affluent, hilly, historic",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Hilly",
+      "Historic"
+    ]
+  },
+  "HA1": {
+    "score": 7,
+    "summary": "Historic, affluent, views",
+    "safety": "High",
+    "keywords": [
+      "Historic",
+      "Affluent",
+      "Views"
+    ]
+  },
+  "W14": {
+    "score": 7,
+    "summary": "Central, busy, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Central",
+      "Busy",
+      "Residential"
+    ]
+  },
+  "SW12": {
+    "score": 8,
+    "summary": "Trendy, affluent, parks",
+    "safety": "High",
+    "keywords": [
+      "Trendy",
+      "Affluent",
+      "Parks"
+    ]
+  },
+  "NW4": {
+    "score": 6,
+    "summary": "Suburban, diverse, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Diverse",
+      "Residential"
+    ]
+  },
+  "W6": {
+    "score": 7,
+    "summary": "Busy, riverside, transport hub",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Riverside",
+      "Transport"
+    ]
+  },
+  "SE17": {
+    "score": 5,
+    "summary": "Urban, regenerating, busy",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Regenerating",
+      "Busy"
+    ]
+  },
+  "N9": {
+    "score": 4,
+    "summary": "Urban, diverse, affordable",
+    "safety": "Low",
+    "keywords": [
+      "Urban",
+      "Affordable",
+      "Diverse"
+    ]
+  },
+  "E13": {
+    "score": 4,
+    "summary": "Urban, diverse, residential",
+    "safety": "Low",
+    "keywords": [
+      "Urban",
+      "Diverse",
+      "Residential"
+    ]
+  },
+  "SW16": {
+    "score": 6,
+    "summary": "Busy, diverse, commons",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Commons"
+    ]
+  },
+  "N16": {
+    "score": 8,
+    "summary": "Trendy, leafy, village feel",
+    "safety": "High",
+    "keywords": [
+      "Trendy",
+      "Leafy",
+      "Village"
+    ]
+  },
+  "SW9": {
+    "score": 6,
+    "summary": "Vibrant, diverse, busy",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Diverse",
+      "Busy"
+    ]
+  },
+  "EC1V": {
+    "score": 8,
+    "summary": "Central, trendy, historic",
+    "safety": "Medium",
+    "keywords": [
+      "Central",
+      "Trendy",
+      "Historic"
+    ]
+  },
+  "SE8": {
+    "score": 6,
+    "summary": "Trendy, regenerating, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Regenerating",
+      "Diverse"
+    ]
+  },
+  "HA8": {
+    "score": 6,
+    "summary": "Suburban, diverse, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Diverse",
+      "Residential"
+    ]
+  },
+  "N17": {
+    "score": 4,
+    "summary": "Urban, diverse, regenerating",
+    "safety": "Low",
+    "keywords": [
+      "Urban",
+      "Regenerating",
+      "Diverse"
+    ]
+  },
+  "E15": {
+    "score": 6,
+    "summary": "Modern, busy hub, regenerated",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Hub",
+      "Regenerated"
+    ]
+  },
+  "SE3": {
+    "score": 9,
+    "summary": "Affluent, village, green",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Village",
+      "Green"
+    ]
+  },
+  "HA0": {
+    "score": 5,
+    "summary": "Diverse, busy, regenerating",
+    "safety": "Medium",
+    "keywords": [
+      "Diverse",
+      "Busy",
+      "Regenerating"
+    ]
+  },
+  "IG9": {
+    "score": 8,
+    "summary": "Affluent, green, suburban",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Green",
+      "Suburban"
+    ]
+  },
+  "UB1": {
+    "score": 4,
+    "summary": "Diverse, vibrant, busy",
+    "safety": "Medium",
+    "keywords": [
+      "Diverse",
+      "Vibrant",
+      "Busy"
+    ]
+  },
+  "SE14": {
+    "score": 5,
+    "summary": "Student, vibrant, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Student",
+      "Vibrant",
+      "Diverse"
+    ]
+  },
+  "NW10": {
+    "score": 5,
+    "summary": "Urban, diverse, busy",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Diverse",
+      "Busy"
+    ]
+  },
+  "N22": {
+    "score": 5,
+    "summary": "Busy, diverse, shopping",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Shopping",
+      "Diverse"
+    ]
+  },
+  "N1": {
+    "score": 8,
+    "summary": "Central, trendy, affluent",
+    "safety": "Medium",
+    "keywords": [
+      "Central",
+      "Trendy",
+      "Affluent"
+    ]
+  },
+  "NW1": {
+    "score": 7,
+    "summary": "Vibrant, canal, touristy",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Canal",
+      "Touristy"
+    ]
+  },
+  "E3": {
+    "score": 6,
+    "summary": "Historic, regenerating, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Historic",
+      "Regenerating",
+      "Diverse"
+    ]
+  },
+  "W13": {
+    "score": 7,
+    "summary": "Suburban, quiet, residential",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Quiet",
+      "Residential"
+    ]
+  },
+  "IG8": {
+    "score": 8,
+    "summary": "Leafy, affluent, suburban",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Affluent",
+      "Suburban"
+    ]
+  },
+  "E1": {
+    "score": 5,
+    "summary": "Vibrant, diverse, busy",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Diverse",
+      "Busy"
+    ]
+  },
+  "N13": {
+    "score": 7,
+    "summary": "Suburban, green, residential",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Residential"
+    ]
+  },
+  "IG1": {
+    "score": 5,
+    "summary": "Busy, diverse, suburban",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Suburban"
+    ]
+  },
+  "IG2": {
+    "score": 6,
+    "summary": "Suburban, residential, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Diverse"
+    ]
+  },
+  "SW19": {
+    "score": 9,
+    "summary": "Affluent, green, village",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Green",
+      "Village"
+    ]
+  },
+  "CR4": {
+    "score": 5,
+    "summary": "Suburban, diverse, affordable",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Diverse",
+      "Affordable"
+    ]
+  },
+  "KT2": {
+    "score": 8,
+    "summary": "Riverside, historic, affluent",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Historic",
+      "Affluent"
+    ]
+  },
+  "SE5": {
+    "score": 6,
+    "summary": "Vibrant, diverse, artsy",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Artsy",
+      "Diverse"
+    ]
+  },
+  "E6": {
+    "score": 4,
+    "summary": "Diverse, busy, urban",
+    "safety": "Low",
+    "keywords": [
+      "Diverse",
+      "Busy",
+      "Urban"
+    ]
+  },
+  "W12": {
+    "score": 6,
+    "summary": "Busy, diverse, shopping",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Shopping"
+    ]
+  },
+  "EN2": {
+    "score": 7,
+    "summary": "Historic, suburban, green",
+    "safety": "High",
+    "keywords": [
+      "Historic",
+      "Suburban",
+      "Green"
+    ]
+  },
+  "SE4": {
+    "score": 7,
+    "summary": "Leafy, trendy, diverse",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Trendy",
+      "Diverse"
+    ]
+  },
+  "N7": {
+    "score": 6,
+    "summary": "Urban, busy, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Busy",
+      "Diverse"
+    ]
+  },
+  "SW20": {
+    "score": 8,
+    "summary": "Suburban, green, residential",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Residential"
+    ]
+  },
+  "E18": {
+    "score": 8,
+    "summary": "Suburban, leafy, affluent",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Leafy",
+      "Affluent"
+    ]
+  },
+  "SE26": {
+    "score": 6,
+    "summary": "Suburban, green, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Residential"
+    ]
+  },
+  "NW7": {
+    "score": 8,
+    "summary": "Suburban, green, quiet",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Quiet"
+    ]
+  },
+  "SE15": {
+    "score": 6,
+    "summary": "Trendy, vibrant, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Vibrant",
+      "Diverse"
+    ]
+  },
+  "E2": {
+    "score": 6,
+    "summary": "Vibrant, diverse, trendy",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Trendy",
+      "Diverse"
+    ]
+  },
+  "W3": {
+    "score": 6,
+    "summary": "Urban, busy, regenerating",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Busy",
+      "Regenerating"
+    ]
+  },
+  "SW18": {
+    "score": 8,
+    "summary": "Riverside, green, affluent",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Green",
+      "Affluent"
+    ]
+  },
+  "IG5": {
+    "score": 7,
+    "summary": "Suburban, quiet, residential",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Quiet",
+      "Residential"
+    ]
+  },
+  "SW6": {
+    "score": 8,
+    "summary": "Affluent, riverside, trendy",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Riverside",
+      "Trendy"
+    ]
+  },
+  "NW5": {
+    "score": 7,
+    "summary": "Trendy, diverse, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Diverse",
+      "Urban"
+    ]
+  },
+  "SE22": {
+    "score": 8,
+    "summary": "Leafy, affluent, trendy",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Affluent",
+      "Trendy"
+    ]
+  },
+  "E16": {
+    "score": 5,
+    "summary": "Regenerated, modern, riverside",
+    "safety": "Medium",
+    "keywords": [
+      "Regenerated",
+      "Modern",
+      "Riverside"
+    ]
+  },
+  "SE11": {
+    "score": 7,
+    "summary": "Central, historic, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Central",
+      "Historic",
+      "Residential"
+    ]
+  },
+  "SW17": {
+    "score": 7,
+    "summary": "Vibrant, diverse, trendy",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Diverse",
+      "Trendy"
+    ]
+  },
+  "SW2": {
+    "score": 6,
+    "summary": "Vibrant, diverse, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Diverse",
+      "Residential"
+    ]
+  },
+  "N8": {
+    "score": 7,
+    "summary": "Leafy, residential, trendy",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Residential",
+      "Trendy"
+    ]
+  },
+  "W5": {
+    "score": 8,
+    "summary": "Leafy, suburban, affluent",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Suburban",
+      "Affluent"
+    ]
+  },
+  "EN4": {
+    "score": 8,
+    "summary": "Affluent, green, quiet",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Green",
+      "Quiet"
+    ]
+  },
+  "BR3": {
+    "score": 8,
+    "summary": "Suburban, leafy, affluent",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Leafy",
+      "Affluent"
+    ]
+  },
+  "SE1": {
+    "score": 8,
+    "summary": "Central, riverside, cultural",
+    "safety": "Medium",
+    "keywords": [
+      "Central",
+      "Riverside",
+      "Cultural"
+    ]
+  },
+  "CR7": {
+    "score": 4,
+    "summary": "Urban, diverse, affordable",
+    "safety": "Low",
+    "keywords": [
+      "Urban",
+      "Diverse",
+      "Affordable"
+    ]
+  },
+  "SE7": {
+    "score": 6,
+    "summary": "Riverside, suburban, historic",
+    "safety": "Medium",
+    "keywords": [
+      "Riverside",
+      "Suburban",
+      "Historic"
+    ]
   }
 }
