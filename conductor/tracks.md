@@ -69,7 +69,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [x] **Track: Refactor the templating architecture to use Jinja2 instead of string generation and Markdown, focusing solely on HTML output.**
+- [~] **Track: Refactor the templating architecture to use Jinja2 instead of string generation and Markdown, focusing solely on HTML output.**
   *Link: [./tracks/refactor_jinja2_20260225/](./tracks/refactor_jinja2_20260225/)*
 
 ---

@@ -19,7 +19,9 @@
 - [x] Task: Delete the old `reporter_template.html` and any dead CSS/Markdown helper functions
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md)
 
-## Phase 5: Final Polish (User Feedback)
+## Phase 6: Restore Notes Feature
+- [x] Task: Re-implement the interactive Notes feature in `templates/report.html` (Fix)
+- [x] Task: Ensure notes are editable and autosaved (Verification)
 - [x] Task: Update Shortlist section (Jump links, Price formatting, Remove commute)
 - [x] Task: Update Commute section (Color coding for cycling)
 - [x] Task: Update Table Layout (Clickable Image, Remove View Action, Width adjustments, Larger images)
