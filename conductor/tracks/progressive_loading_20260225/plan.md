@@ -17,3 +17,6 @@
 - [x] Task: Add a manual "Refresh Results" button to the banner that reloads the page (Jinja2)
 - [x] Task: Verify that sorting behaves correctly with mixed processed/unprocessed items (Manual)
 - [x] Task: Conductor - User Manual Verification 'Phase 3: UI Feedback & Controls' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions 273f959
