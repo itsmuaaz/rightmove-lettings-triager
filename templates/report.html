@@ -18,11 +18,11 @@
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
         Shortlisted Properties
     </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for property in shortlist %}
-        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
-            <div class="flex items-center mb-2">
-                <div class="flex-shrink-0 h-24 w-32 bg-gray-200 rounded overflow-hidden">
+        <div class="bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition-shadow duration-200 border border-gray-100">
+            <div class="flex items-center mb-1">
+                <div class="flex-shrink-0 h-16 w-24 bg-gray-200 rounded overflow-hidden">
                     {% if property.images and property.images[0] %}
                     <a href="#property-{{ property.id }}">
                         <img class="w-full h-full object-cover" src="{{ property.images[0] }}" alt="Property">
@@ -40,7 +40,7 @@
                     <div class="text-xs text-gray-500 font-bold">{{ property.price_pcm }}</div>
                 </div>
             </div>
-            <div class="flex justify-end items-center mt-2">
+            <div class="flex justify-end items-center">
                  <button onclick="updateHistory('{{ property.id }}', 'unshortlist')" class="text-red-500 hover:text-red-700 text-xs font-medium">
                     Remove ⭐
                 </button>
@@ -67,7 +67,17 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 {% for property in properties %}
-                <tr id="property-{{ property.id }}" class="hover:bg-gray-50 transition-colors duration-150 {{ 'bg-gray-100 opacity-60' if property.status == 'dismissed' else '' }}">
+                <tr id="property-{{ property.id }}" 
+                    class="transition-colors duration-150 border-l-4 
+                    {% if property.status == 'dismissed' %}
+                        bg-gray-100 opacity-60 border-transparent
+                    {% elif property.status == 'shortlisted' %}
+                        bg-yellow-50 border-yellow-400
+                    {% elif property.is_new %}
+                        bg-blue-50 border-blue-400
+                    {% else %}
+                        hover:bg-gray-50 border-transparent
+                    {% endif %}">
                     
                     <!-- Actions (Moved to Start) -->
                     <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
@@ -79,6 +89,14 @@
                             
                             <!-- Action Buttons -->
                             <div class="flex space-x-2 items-center">
+                                <button onclick="toggleNotes('{{ property.id }}')" class="text-blue-500 hover:text-blue-700" title="Toggle Note">
+                                    {% if property.notes %}
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+                                    {% else %}
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                    {% endif %}
+                                </button>
+
                                 {% if property.status == 'shortlisted' %}
                                 <button onclick="updateHistory('{{ property.id }}', 'unshortlist')" class="text-yellow-500 hover:text-yellow-700" title="Unshortlist">
                                     ⭐
@@ -149,7 +167,7 @@
                                 {% endif %}
                             </div>
                             <!-- Cycling -->
-                             <div class="flex items-center text-xs {{ property.cycling_color_class }}">
+                             <div class="flex items-center text-sm {{ property.cycling_color_class }}">
                                 <span class="mr-1">🚲</span>
                                 <span>{{ property.cycling_time }} min</span>
                             </div>
@@ -173,28 +191,14 @@
                     </td>
                 </tr>
                 <!-- Notes Row -->
-                <tr class="bg-gray-50">
+                <tr id="notes-row-{{ property.id }}" class="bg-gray-50 {{ 'hidden' if not property.notes else '' }}">
                     <td colspan="6" class="px-4 py-2 border-t border-gray-100">
                         <div class="flex items-center">
                             <span class="mr-2 text-xs font-semibold text-gray-500 uppercase">Notes:</span>
                             <input type="text" 
                                    class="flex-1 bg-white border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500" 
                                    placeholder="Add a note..." 
-                                   value="{{ property.notes }}" 
-                                   onblur="saveNote('{{ property.id }}', this.value)">
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-                <!-- Notes Row (Expandable or always visible if content exists) -->
-                <tr class="bg-gray-50 {{ 'hidden' if not property.notes else '' }}">
-                    <td colspan="6" class="px-6 py-2">
-                        <div class="text-xs text-gray-500 italic flex items-center">
-                            <span class="mr-2 font-semibold">Note:</span>
-                            <input type="text" 
-                                   class="flex-1 bg-transparent border-none focus:ring-0 text-gray-700 italic placeholder-gray-400" 
-                                   placeholder="Add a note..." 
-                                   value="{{ property.notes }}" 
+                                   value="{{ property.notes or '' }}" 
                                    onblur="saveNote('{{ property.id }}', this.value)">
                         </div>
                     </td>
@@ -208,6 +212,13 @@
 
 {% block scripts %}
 <script>
+    function toggleNotes(propertyId) {
+        const row = document.getElementById('notes-row-' + propertyId);
+        if (row) {
+            row.classList.toggle('hidden');
+        }
+    }
+
     function updateHistory(propertyId, action) {
         fetch('/api/history', {
             method: 'POST',
