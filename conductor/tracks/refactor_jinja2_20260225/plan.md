@@ -30,3 +30,6 @@
 - [x] Task: Fix the JS logic for shortlisting in `templates/report.html` and ensure it communicates with `dashboard.py` (Fix)
 - [x] Task: Fix UI regressions (Links, Layout, Price, Emojis) in `reporter.py` and `templates/report.html` (Fix)
 - [x] Task: Verify shortlisting functionality manually (Verification)
+
+## Phase: Review Fixes
+- [~] Task: Apply review suggestions
