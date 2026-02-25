@@ -13,7 +13,7 @@ import hashlib
 import os
 import threading
 from datetime import datetime
-from typing import Optional, Tuple, Any
+from typing import Optional, Tuple, Any, Dict
 from benchmark_utils import get_next_benchmark_time
 
 class TflClient:
@@ -88,17 +88,46 @@ class TflClient:
         except IOError as e:
             sys.stderr.write(f"Failed to write to cache: {e}\n")
 
-    def _fetch_journey(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict, max_retries: int, force_refresh: bool = False) -> Optional[int]:
-        """Internal helper to fetch journey time with specific parameters."""
+    def _extract_journey_data(self, data: dict) -> Optional[Dict[str, Any]]:
+        """Extracts duration and fare data from the API response."""
+        journeys = data.get('journeys', [])
+        if not journeys:
+            return None
+            
+        # Find the shortest journey
+        best_journey = min(journeys, key=lambda j: j.get('duration', 999))
+        duration = best_journey.get('duration')
+        
+        # Extract fares
+        fares = {}
+        fare_data = best_journey.get('fare')
+        if fare_data:
+            total_cost = fare_data.get('totalCost')
+            if total_cost:
+                fares['total_cost'] = total_cost
+            
+            breakdown = fare_data.get('fares', [])
+            for item in breakdown:
+                if 'peak' in item:
+                    fares['peak'] = item['peak']
+                if 'offPeak' in item:
+                    fares['off_peak'] = item['offPeak']
+                if 'cost' in item and 'cost' not in fares:
+                     fares['cost'] = item['cost']
+
+        return {
+            'duration': duration,
+            'fares': fares
+        }
+
+    def _fetch_journey(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], params: dict, max_retries: int, force_refresh: bool = False) -> Optional[Dict[str, Any]]:
+        """Internal helper to fetch journey data with specific parameters."""
         # Check cache first
         cache_key = self._get_cache_key(from_coords, to_coords, params)
         if not force_refresh:
             cached_data = self._load_cache(cache_key)
             if cached_data:
-                journeys = cached_data.get('journeys', [])
-                if not journeys:
-                    return None
-                return min(j.get('duration', 999) for j in journeys)
+                return self._extract_journey_data(cached_data)
 
         from_str = f"{from_coords[0]},{from_coords[1]}"
         to_str = f"{to_coords[0]},{to_coords[1]}"
@@ -139,11 +168,7 @@ class TflClient:
                     # Save to cache
                     self._save_cache(cache_key, data)
                     
-                    journeys = data.get('journeys', [])
-                    if not journeys:
-                        return None
-                    # Return the shortest duration found
-                    return min(j.get('duration', 999) for j in journeys)
+                    return self._extract_journey_data(data)
             except Exception as e:
                 sys.stderr.write(f"TfL API Attempt {attempt + 1} failed: {str(e)}\n")
                 if attempt < max_retries - 1:
@@ -151,6 +176,26 @@ class TflClient:
                 else:
                     return None
         return None
+
+    def get_journey_data(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3, force_refresh: bool = False) -> Optional[Dict[str, Any]]:
+        """Fetches public transport journey data (duration, fares) between two coordinates.
+
+        Args:
+            from_coords: Tuple of (lat, lon) for the origin.
+            to_coords: Tuple of (lat, lon) for the destination.
+            max_retries: Number of retry attempts on failure.
+            force_refresh: Whether to bypass the cache.
+
+        Returns:
+            Dictionary with 'duration' (mins) and 'fares' (dict), or None if failed.
+        """
+        benchmark = get_next_benchmark_time()
+        params = {
+            "date": benchmark.strftime("%Y%m%d"),
+            "time": benchmark.strftime("%H%M"),
+            "timeIs": "Arriving"
+        }
+        return self._fetch_journey(from_coords, to_coords, params, max_retries, force_refresh=force_refresh)
 
     def get_commute_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3, force_refresh: bool = False) -> Optional[int]:
         """Fetches public transport commute time in minutes between two coordinates with retries.
@@ -164,13 +209,10 @@ class TflClient:
         Returns:
             Shortest journey duration in minutes, or None if failed.
         """
-        benchmark = get_next_benchmark_time()
-        params = {
-            "date": benchmark.strftime("%Y%m%d"),
-            "time": benchmark.strftime("%H%M"),
-            "timeIs": "Arriving"
-        }
-        return self._fetch_journey(from_coords, to_coords, params, max_retries, force_refresh=force_refresh)
+        result = self.get_journey_data(from_coords, to_coords, max_retries, force_refresh)
+        if result:
+            return result.get('duration')
+        return None
 
     def get_cycling_time(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3, force_refresh: bool = False) -> Optional[int]:
         """Fetches cycling commute time in minutes between two coordinates with retries.
@@ -189,4 +231,7 @@ class TflClient:
             'cyclePreference': 'allTheWay',
             'bikeProficiency': 'moderate'
         }
-        return self._fetch_journey(from_coords, to_coords, params, max_retries, force_refresh=force_refresh)
+        result = self._fetch_journey(from_coords, to_coords, params, max_retries, force_refresh=force_refresh)
+        if result:
+            return result.get('duration')
+        return None
