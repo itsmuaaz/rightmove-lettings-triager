@@ -76,3 +76,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [ ] **Track: Add the cost of commute next to the public transport commute time.**
   *Link: [./tracks/commute_cost_20260225/](./tracks/commute_cost_20260225/)*
+
+---
+
+- [ ] **Track: Progressive Results Loading: Enable users to view and interact with all properties immediately upon search completion.**
+  *Link: [./tracks/progressive_loading_20260225/](./tracks/progressive_loading_20260225/)*
