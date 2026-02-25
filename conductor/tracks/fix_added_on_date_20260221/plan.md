@@ -15,4 +15,4 @@
 ## Phase 3: Bug Fix (User Feedback)
 - [x] Task: Update `parse_property_data` to prioritize the most recent date (`max(firstVisibleDate, listingUpdateDate)`) (TDD - Red/Green)
 - [x] Task: Verify fix with reported property ID 149322863 (Manual)
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Bug Fix' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Bug Fix' (Protocol in workflow.md) [checkpoint: 07dd933]
