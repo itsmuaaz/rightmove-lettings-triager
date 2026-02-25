@@ -24,5 +24,8 @@ This plan outlines the steps to integrate LLM-based (e.g., Gemini) "vibe" catego
 
 ## Phase 4: Reliability
 - [x] Task: Implement exponential backoff retry logic for Gemini CLI calls (TDD - Red/Green) [0d54b92]
+
+## Phase 5: Address Fallback Support
+- [x] Task: Update prompt and utils to handle full addresses when postcode district is missing (TDD - Red/Green) [8e4ad26]
 - [ ] Task: Ensure code coverage for new modules is >80%
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Reporting and Validation' (Protocol in workflow.md)
