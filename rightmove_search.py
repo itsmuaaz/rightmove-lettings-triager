@@ -241,6 +241,7 @@ def main():
             res = calculator.calculate(p['_original'])
             p['distance'] = res['distance']
             p['commute_time'] = res['commute_time']
+            p['commute_fares'] = res.get('commute_fares')
             p['commute_cycling'] = res.get('commute_cycling')
             
             # Amenity calculation

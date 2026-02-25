@@ -10,7 +10,7 @@ class TestCommuteCalculator(unittest.TestCase):
 
     def test_calculate_commute_success(self):
         # Mock TflClient success
-        self.mock_tfl_client.get_commute_time.return_value = 25
+        self.mock_tfl_client.get_journey_data.return_value = {'duration': 25, 'fares': {}}
         self.mock_tfl_client.get_cycling_time.return_value = 15
         
         prop = {'location': {'latitude': 51.5007, 'longitude': -0.1246}}
@@ -22,7 +22,7 @@ class TestCommuteCalculator(unittest.TestCase):
 
     def test_calculate_commute_fallback(self):
         # Mock TflClient failure (None)
-        self.mock_tfl_client.get_commute_time.return_value = None
+        self.mock_tfl_client.get_journey_data.return_value = None
         self.mock_tfl_client.get_cycling_time.return_value = None
         
         prop = {'location': {'latitude': 51.5007, 'longitude': -0.1246}}
@@ -33,7 +33,7 @@ class TestCommuteCalculator(unittest.TestCase):
 
     def test_calculate_partial_failure(self):
         # Mock public transport failure, cycling success
-        self.mock_tfl_client.get_commute_time.return_value = None
+        self.mock_tfl_client.get_journey_data.return_value = None
         self.mock_tfl_client.get_cycling_time.return_value = 20
         
         prop = {'location': {'latitude': 51.5007, 'longitude': -0.1246}}
