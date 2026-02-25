@@ -74,7 +74,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Add the cost of commute next to the public transport commute time.**
+- [x] **Track: Add the cost of commute next to the public transport commute time.**
   *Link: [./tracks/commute_cost_20260225/](./tracks/commute_cost_20260225/)*
 
 ---
