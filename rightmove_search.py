@@ -18,13 +18,22 @@ from notes_manager import NoteManager
 from dashboard import DashboardHandler
 from history_manager import HistoryManager
 from search_state import SearchState
+from vibe_client import VibeClient
 import threading
 import time
-from utils import get_sort_key
+from utils import get_sort_key, extract_postcode_district
 
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+
+# Global references for testing purposes (in a real app, use dependency injection)
+calculator = None
+amenity_calculator = None
+note_manager = None
+history_manager = None
+search_state = None
+vibe_client = None
 
 def fetch_data(url):
     """Fetch the page HTML using curl."""
@@ -119,8 +128,52 @@ def parse_property_data(p):
         '_original': p # Keep raw data for calculator
     }
 
+def process_property(p, i, total):
+    """Process a single property: calculate metrics, amenities, and vibe."""
+    # Use global dependencies (not ideal but works for this script structure)
+    global calculator, amenity_calculator, note_manager, history_manager, search_state, vibe_client
+    
+    sys.stderr.write(f"[{i+1}/{total}] Processing: {p['address'][:40]}...\n")
+    try:
+        # CommuteCalculator.calculate now parallelizes public/cycling calls
+        if calculator:
+            res = calculator.calculate(p['_original'])
+            p['distance'] = res['distance']
+            p['commute_time'] = res['commute_time']
+            p['commute_fares'] = res.get('commute_fares')
+            p['commute_cycling'] = res.get('commute_cycling')
+        
+        # Amenity calculation
+        if amenity_calculator:
+            p['nearby_amenities'] = amenity_calculator.calculate(p.get('latitude'), p.get('longitude'))
+        
+        # Vibe calculation
+        if vibe_client:
+            district = extract_postcode_district(p['address'])
+            if district:
+                vibes = vibe_client.get_vibes([district])
+                p['vibe'] = vibes.get(district)
+        
+        # Inject notes
+        if note_manager:
+            p['note'] = note_manager.get_note(p['id'])
+        
+        # Inject history status
+        if history_manager:
+            p['history_status'] = history_manager.get_status(p['id'])
+    except Exception as e:
+        sys.stderr.write(f"Error processing property {p.get('id')}: {e}\n")
+    finally:
+        if search_state:
+            search_state.processed += 1
+    
+    return p
+
 def main():
     """Main execution function to search properties and generate reports."""
+    # Define globals
+    global calculator, amenity_calculator, note_manager, history_manager, search_state, vibe_client
+
     parser = argparse.ArgumentParser(description="Search Rightmove properties and calculate commutes/amenities.")
     parser.add_argument("url", help="The Rightmove search results URL.")
     parser.add_argument("--radius", type=int, default=1000, help="Search radius for amenities in meters (default: 1000).")
@@ -193,6 +246,8 @@ def main():
     note_manager = NoteManager()
     history_manager = HistoryManager()
     
+    vibe_client = VibeClient()
+
     # Initialize history for new properties
     history_manager.initialize_properties(all_properties)
 
@@ -232,30 +287,17 @@ def main():
         sys.stderr.write("Dashboard running. Search continues in background...\n")
 
     sys.stderr.write(f"Calculating metrics for {len(all_properties)} properties...\n")
-
-    # Calculate commute, distance and amenities in parallel
-    def process_property(p, i, total):
-        sys.stderr.write(f"[{i+1}/{total}] Processing: {p['address'][:40]}...\n")
-        try:
-            # CommuteCalculator.calculate now parallelizes public/cycling calls
-            res = calculator.calculate(p['_original'])
-            p['distance'] = res['distance']
-            p['commute_time'] = res['commute_time']
-            p['commute_fares'] = res.get('commute_fares')
-            p['commute_cycling'] = res.get('commute_cycling')
-            
-            # Amenity calculation
-            p['nearby_amenities'] = amenity_calculator.calculate(p.get('latitude'), p.get('longitude'))
-            
-            # Inject notes
-            p['note'] = note_manager.get_note(p['id'])
-            
-            # Inject history status
-            p['history_status'] = history_manager.get_status(p['id'])
-        finally:
-            search_state.processed += 1
-        
-        return p
+    
+    # Pre-fetch Vibes for all districts to batch API calls
+    districts = set()
+    for p in all_properties:
+        d = extract_postcode_district(p['address'])
+        if d:
+            districts.add(d)
+    
+    if districts:
+        sys.stderr.write(f"Prefetching vibes for {len(districts)} districts...\n")
+        vibe_client.get_vibes(list(districts))
 
     # Using 3 workers to stay well within TfL's 50 req/min limit and Overpass limits
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:

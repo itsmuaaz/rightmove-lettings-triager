@@ -93,6 +93,26 @@ def generate_tfl_url(origin_address: str, origin_coords: tuple[float, float] = N
     query = urllib.parse.urlencode(params)
     return f"https://tfl.gov.uk/plan-a-journey/results?{query}"
 
+def extract_postcode_district(address: str) -> str | None:
+    """Extracts the postcode district (e.g., 'SW14', 'E1') from an address string.
+
+    Args:
+        address: The address string.
+
+    Returns:
+        The postcode district string, or None if not found.
+    """
+    if not address:
+        return None
+    
+    # Regex for UK postcode districts (Outward Code)
+    import re
+    # Matches: SW14 7AB -> SW14, E1 8AB -> E1, N1C 4AG -> N1C
+    match = re.search(r'\b([A-Z]{1,2}\d[A-Z\d]?)\b', address.upper())
+    if match:
+        return match.group(1)
+    return None
+
 def get_sort_key(p):
     """Determine the sort key for a property based on shortest commute."""
     commute = p.get('commute_time')
