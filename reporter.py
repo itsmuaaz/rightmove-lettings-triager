@@ -75,6 +75,13 @@ class Reporter:
         if p.get('latitude') and p.get('longitude'):
             origin_coords = (p.get('latitude'), p.get('longitude'))
         
+        # Ensure absolute link
+        raw_url = p.get('url', '')
+        if raw_url.startswith('http'):
+            p['link'] = raw_url
+        else:
+            p['link'] = f"https://www.rightmove.co.uk{raw_url}"
+
         p['google_maps_link'] = generate_google_maps_url(origin_address)
         p['tfl_link'] = generate_tfl_url(origin_address, origin_coords)
         
@@ -85,13 +92,11 @@ class Reporter:
         p['added_on'] = format_date(p.get("published_on"))
         
         # Prices
-        # Assuming price is already formatted or we might need to split it
-        # p['price'] is usually string like "£2,000 pcm"
-        # We can keep it or parse it if template needs separate pcm/pw
-        # Template uses price_pcm and price_pw if available.
-        if 'price' in p and 'price_pcm' not in p:
-             p['price_pcm'] = p['price'] # Fallback
-             p['price_pw'] = "N/A" # Fallback
+        # Rightmove usually provides formatted strings like "£2,000 pcm"
+        if 'price' in p:
+             p['price_pcm'] = p['price'] # Use as is
+             p['price_pw'] = "N/A" # Default if not split
+
 
         # Status
         history = p.get('history_status', {}) or {}
