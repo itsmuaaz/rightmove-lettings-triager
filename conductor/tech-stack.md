@@ -18,7 +18,7 @@
 - **TfL Unified API:** Primary data source for calculating public transport commute times in London. Commute times are standardized to a "Tuesday 9:00 AM" benchmark and cached with metadata to support manual data refreshes.
 - **OpenStreetMap (Overpass) API:** Used for finding nearby amenities (supermarkets, gyms, parks, etc.).
 - **`pytest` / `pytest-cov`:** For automated testing and code coverage verification.
-- **`markdown`:** Python library for converting Markdown text to HTML.
+- **`jinja2`:** Templating engine for generating the HTML report.
 
 ## Output Format
-- **Rich Markdown & HTML:** Search results are formatted as an enriched Markdown table (`results.md`) and a styled HTML dashboard (`results.html`) for browser viewing.
+- **Rich HTML:** Search results are formatted as a styled HTML dashboard (`results.html`) using **Jinja2** templates and **Tailwind CSS**.
