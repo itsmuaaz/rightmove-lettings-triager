@@ -74,7 +74,12 @@ Evaluate each location based on:
 - General Reputation & Prestige
 
 For each location, provide a JSON object with:
-1. "score": An aggregate integer (1-10) reflecting all the above factors (10 = Excellent).
+1. "score": An aggregate integer (1-10) reflecting all the above factors.
+   IMPORTANT: Avoid grade inflation. Use the full 1-10 range:
+   - 1-3: Poor (High crime, dirty, no amenities)
+   - 4-6: Average (Standard, functional, some issues)
+   - 7-8: Good (Desirable, safe, good amenities)
+   - 9-10: Excellent (Prestigious, beautiful, perfect location)
 2. "summary": A concise 3-5 word description highlighting the dominant traits.
 3. "safety": One of ["High", "Medium", "Low"].
 4. "keywords": A list of 3 strings (e.g., ["Leafy", "Quiet", "Riverside"]).
