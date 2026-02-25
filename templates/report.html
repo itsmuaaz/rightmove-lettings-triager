@@ -87,6 +87,7 @@
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider max-w-[250px]">Property</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vibe</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commute</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amenities</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Added</th>
@@ -180,6 +181,14 @@
                         {% if property.price_pw != "N/A" %}
                         <div class="text-xs text-gray-500">{{ property.price_pw }}</div>
                         {% endif %}
+                    </td>
+
+                    <!-- Vibe -->
+                    <td class="px-4 py-4 whitespace-normal max-w-[150px]">
+                        <div class="flex items-center space-x-2">
+                             <span class="text-xl font-bold {{ property.vibe_color_class }}">{{ property.vibe_score }}</span>
+                             <span class="text-xs text-gray-500 leading-tight">{{ property.vibe_summary }}</span>
+                        </div>
                     </td>
 
                     <!-- Commute -->

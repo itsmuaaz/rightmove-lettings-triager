@@ -157,6 +157,27 @@ class Reporter:
         if 'image_url' in p and 'images' not in p:
             p['images'] = [p['image_url']]
         
+        # Vibe
+        vibe = p.get('vibe')
+        if vibe:
+            score = vibe.get('score')
+            p['vibe_score'] = score
+            p['vibe_summary'] = vibe.get('summary', 'Unknown')
+            
+            if score:
+                if score >= 8:
+                    p['vibe_color_class'] = "text-green-600"
+                elif score >= 5:
+                    p['vibe_color_class'] = "text-yellow-600"
+                else:
+                    p['vibe_color_class'] = "text-red-600"
+            else:
+                p['vibe_color_class'] = "text-gray-400"
+        else:
+             p['vibe_score'] = "N/A"
+             p['vibe_summary'] = "Unknown"
+             p['vibe_color_class'] = "text-gray-400"
+        
         return p
 
     def generate_report(self, properties, shortlist=None, filters=None, processed_count=None, total_count=None):
