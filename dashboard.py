@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler
 import socketserver
 import json
 from datetime import datetime
-from utils import WORK_COORDS
+from utils import WORK_COORDS, get_sort_key
 
 class DashboardHandler(BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -17,20 +17,46 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self.end_headers()
             
             # Regenerate HTML if possible to show latest notes
-            has_reqs = (hasattr(self.server, 'properties') and 
-                        hasattr(self.server, 'reporter') and 
+            has_reqs = (hasattr(self.server, 'reporter') and 
                         hasattr(self.server, 'note_manager'))
             
             if has_reqs:
+                # Determine source of properties
+                properties = []
+                processed_count = 0
+                total_count = 0
+                
+                if hasattr(self.server, 'search_state'):
+                    properties = self.server.search_state.properties
+                    processed_count = self.server.search_state.processed
+                    total_count = self.server.search_state.total
+                elif hasattr(self.server, 'properties'):
+                    properties = self.server.properties
+                    processed_count = len(properties)
+                    total_count = len(properties)
+
+                # Create sorted list for display
+                display_properties = sorted(properties, key=get_sort_key)
+
                 # Refresh notes and history
-                for p in self.server.properties:
+                for p in display_properties:
                     p['note'] = self.server.note_manager.get_note(p['id'])
                     if hasattr(self.server, 'history_manager'):
                         p['history_status'] = \
                             self.server.history_manager.get_status(p['id'])
                 
-                html_content = \
-                    self.server.reporter.generate_report(self.server.properties)
+                # Check if generate_report accepts counts (it will after update)
+                # For now, pass them as kwargs if supported, or just properties
+                try:
+                    html_content = self.server.reporter.generate_report(
+                        display_properties, 
+                        processed_count=processed_count, 
+                        total_count=total_count
+                    )
+                except TypeError:
+                    # Fallback for old signature
+                    html_content = self.server.reporter.generate_report(display_properties)
+
                 self.wfile.write(html_content.encode('utf-8'))
             # Fallback to static content
             elif hasattr(self.server, 'html_content'):

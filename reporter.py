@@ -60,15 +60,28 @@ class Reporter:
     def _enrich_property(self, p):
         """Enriches a property dict with display-ready fields."""
         # Clone to avoid mutating original if needed, but here we modify for display
+        p = p.copy()
         
         # Commute
+        # Check if keys exist to distinguish between 'pending' and 'failed/no route'
+        is_processed = 'commute_time' in p
+        
         commute_mins = p.get("commute_time")
-        p['commute_color_class'] = self._get_commute_class(commute_mins)
-        p['commute_time'] = commute_mins if commute_mins is not None else "N/A"
+        
+        if not is_processed:
+            p['commute_time'] = "Loading..."
+            p['commute_color_class'] = "text-gray-400 italic"
+        else:
+            p['commute_color_class'] = self._get_commute_class(commute_mins)
+            p['commute_time'] = commute_mins if commute_mins is not None else "N/A"
         
         cycling_mins = p.get("commute_cycling")
-        p['cycling_color_class'] = self._get_commute_class(cycling_mins)
-        p['cycling_time'] = cycling_mins if cycling_mins is not None else "N/A"
+        if not is_processed:
+             p['cycling_time'] = "Loading..."
+             p['cycling_color_class'] = "text-gray-400 italic"
+        else:
+             p['cycling_color_class'] = self._get_commute_class(cycling_mins)
+             p['cycling_time'] = cycling_mins if cycling_mins is not None else "N/A"
 
         # Links
         origin_address = p.get('address', '')
@@ -87,7 +100,11 @@ class Reporter:
         p['tfl_link'] = generate_tfl_url(origin_address, origin_coords)
         
         # Amenities
-        p['amenities'] = self._process_amenities(p.get('nearby_amenities'))
+        # Only process amenities if they exist (processed)
+        if 'nearby_amenities' in p:
+            p['amenities'] = self._process_amenities(p.get('nearby_amenities'))
+        else:
+            p['amenities'] = [] # Or could be a loading indicator
 
         # Dates/Formatting
         p['added_on'] = format_date(p.get("published_on"))
@@ -118,7 +135,7 @@ class Reporter:
         
         return p
 
-    def generate_report(self, properties, shortlist=None, filters=None):
+    def generate_report(self, properties, shortlist=None, filters=None, processed_count=None, total_count=None):
         """Generates the HTML report."""
         template = self.env.get_template("report.html")
         
@@ -135,5 +152,7 @@ class Reporter:
             properties=enriched_properties,
             shortlist=enriched_shortlist,
             filters=filters,
+            processed_count=processed_count,
+            total_count=total_count,
             generated_at=datetime.now().strftime("%Y-%m-%d %H:%M")
         )

@@ -1,6 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% if processed_count is not none and total_count is not none and processed_count < total_count %}
+<div class="fixed bottom-4 right-4 z-50 animate-bounce-subtle">
+    <div class="bg-blue-600 text-white rounded-lg shadow-lg p-4 flex items-center space-x-4 max-w-sm">
+        <div class="flex-shrink-0">
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium">
+                Processing: {{ processed_count }}/{{ total_count }}
+            </p>
+            <p class="text-xs text-blue-200">
+                Refresh to see latest data
+            </p>
+        </div>
+        <div>
+            <button onclick="location.reload()" class="bg-white text-blue-600 text-xs font-bold py-2 px-3 rounded hover:bg-blue-50 transition-colors">
+                Refresh
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <div class="mb-8">
     <h1 class="text-3xl font-bold mb-2">Letting Search Results</h1>
     <p class="text-gray-600">Generated on {{ generated_at }}</p>

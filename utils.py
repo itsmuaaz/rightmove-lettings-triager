@@ -92,3 +92,19 @@ def generate_tfl_url(origin_address: str, origin_coords: tuple[float, float] = N
         
     query = urllib.parse.urlencode(params)
     return f"https://tfl.gov.uk/plan-a-journey/results?{query}"
+
+def get_sort_key(p):
+    """Determine the sort key for a property based on shortest commute."""
+    commute = p.get('commute_time')
+    cycling = p.get('commute_cycling')
+    
+    if commute is None and cycling is None:
+        return float('inf')
+    
+    if commute is None:
+        return cycling
+    
+    if cycling is None:
+        return commute
+        
+    return min(commute, cycling)

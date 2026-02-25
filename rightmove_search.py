@@ -17,6 +17,10 @@ from amenity_calculator import AmenityCalculator
 from notes_manager import NoteManager
 from dashboard import DashboardHandler
 from history_manager import HistoryManager
+from search_state import SearchState
+import threading
+import time
+from utils import get_sort_key
 
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
@@ -115,22 +119,6 @@ def parse_property_data(p):
         '_original': p # Keep raw data for calculator
     }
 
-def get_sort_key(p):
-    """Determine the sort key for a property based on shortest commute."""
-    commute = p.get('commute_time')
-    cycling = p.get('commute_cycling')
-    
-    if commute is None and cycling is None:
-        return float('inf')
-    
-    if commute is None:
-        return cycling
-    
-    if cycling is None:
-        return commute
-        
-    return min(commute, cycling)
-
 def main():
     """Main execution function to search properties and generate reports."""
     parser = argparse.ArgumentParser(description="Search Rightmove properties and calculate commutes/amenities.")
@@ -208,25 +196,63 @@ def main():
     # Initialize history for new properties
     history_manager.initialize_properties(all_properties)
 
+    # Initialize Shared Search State
+    search_state = SearchState(
+        properties=all_properties,
+        total=len(all_properties),
+        processed=0,
+        status="processing"
+    )
+    
+    reporter = Reporter()
+    server_thread = None
+
+    # Start Server in Background Thread
+    if not args.no_server:
+        sys.stderr.write(f"Starting dashboard on http://localhost:{port}\n")
+        
+        def run_server():
+            socketserver.TCPServer.allow_reuse_address = True
+            try:
+                server = HTTPServer(('127.0.0.1', port), DashboardHandler)
+                # Inject dependencies
+                server.search_state = search_state
+                server.note_manager = note_manager
+                server.history_manager = history_manager
+                server.reporter = reporter
+                server.tfl_client = tfl
+                server.serve_forever()
+            except OSError as e:
+                sys.stderr.write(f"Error starting server: {e}\n")
+            except Exception as e:
+                sys.stderr.write(f"Server runtime error: {e}\n")
+
+        server_thread = threading.Thread(target=run_server, daemon=True)
+        server_thread.start()
+        sys.stderr.write("Dashboard running. Search continues in background...\n")
+
     sys.stderr.write(f"Calculating metrics for {len(all_properties)} properties...\n")
 
     # Calculate commute, distance and amenities in parallel
     def process_property(p, i, total):
         sys.stderr.write(f"[{i+1}/{total}] Processing: {p['address'][:40]}...\n")
-        # CommuteCalculator.calculate now parallelizes public/cycling calls
-        res = calculator.calculate(p['_original'])
-        p['distance'] = res['distance']
-        p['commute_time'] = res['commute_time']
-        p['commute_cycling'] = res.get('commute_cycling')
-        
-        # Amenity calculation
-        p['nearby_amenities'] = amenity_calculator.calculate(p.get('latitude'), p.get('longitude'))
-        
-        # Inject notes
-        p['note'] = note_manager.get_note(p['id'])
-        
-        # Inject history status
-        p['history_status'] = history_manager.get_status(p['id'])
+        try:
+            # CommuteCalculator.calculate now parallelizes public/cycling calls
+            res = calculator.calculate(p['_original'])
+            p['distance'] = res['distance']
+            p['commute_time'] = res['commute_time']
+            p['commute_cycling'] = res.get('commute_cycling')
+            
+            # Amenity calculation
+            p['nearby_amenities'] = amenity_calculator.calculate(p.get('latitude'), p.get('longitude'))
+            
+            # Inject notes
+            p['note'] = note_manager.get_note(p['id'])
+            
+            # Inject history status
+            p['history_status'] = history_manager.get_status(p['id'])
+        finally:
+            search_state.processed += 1
         
         return p
 
@@ -239,36 +265,26 @@ def main():
     
     # Sort by shortest commute (default)
     all_properties.sort(key=get_sort_key)
+    
+    # Mark as complete
+    search_state.status = "complete"
 
     # Generate HTML Report for Dashboard
-    reporter = Reporter()
-    html_content = reporter.generate_report(all_properties)
+    html_content = reporter.generate_report(all_properties, processed_count=len(all_properties), total_count=len(all_properties))
     
     # Save HTML report to file (useful for debugging/offline)
     with open('results.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
     
-    # Start Dashboard Server
-    if not args.no_server:
-        sys.stderr.write(f"Starting dashboard on http://localhost:{port}\n")
-        sys.stderr.write("Press Ctrl+C to stop.\n")
-        
-        socketserver.TCPServer.allow_reuse_address = True
-        server = HTTPServer(('127.0.0.1', port), DashboardHandler)
-        server.html_content = html_content
-        server.note_manager = note_manager
-        server.history_manager = history_manager
-        server.properties = all_properties
-        server.reporter = reporter
-        server.tfl_client = tfl
-        
+    # Keep server running if requested
+    if not args.no_server and server_thread:
+        sys.stderr.write("Processing complete. Server still running. Press Ctrl+C to stop.\n")
         try:
-            server.serve_forever()
+            server_thread.join()
         except KeyboardInterrupt:
-            print("\nStopping server.")
-            server.server_close()
+             print("\nStopping.")
     else:
-        sys.stderr.write("Skipping server start. Reports generated in results.md\n")
+        sys.stderr.write("Reports generated in results.html\n")
 
 if __name__ == "__main__":
     main()
