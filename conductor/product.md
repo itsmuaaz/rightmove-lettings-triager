@@ -13,6 +13,7 @@ People who are looking for rental properties in London and want to quickly compa
 - **Auto-Pagination:** Automatically browses through all available result pages.
 - **Progressive Loading:** Immediate display of search results with incremental updates for commute and amenity data, allowing users to browse properties while background processing continues.
 - **Commute calculation:** Calculates real-world commute times (Public Transport & Cycling) using the TfL API, with straight-line distance as a fallback.
+- **Commute Cost:** Estimates the single journey cost (Peak/Off-Peak) using TfL fare data.
 - **Commute Stability:** Standardizes commute calculations to a consistent benchmark (Next Tuesday at 9:00 AM) to ensure fair comparison across properties, with an option to manually force-refresh data.
 - **Amenity Proximity:** Identifies nearby supermarkets, gyms, parks, and healthcare facilities using OpenStreetMap data.
 - **Rich Reporting:** Generates a styled HTML dashboard with property images, color-coded metrics, and direct navigation links (Google Maps, TfL).
