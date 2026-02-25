@@ -107,13 +107,23 @@ class TflClient:
                 fares['total_cost'] = total_cost
             
             breakdown = fare_data.get('fares', [])
+            total_peak = 0
+            total_off_peak = 0
+            has_breakdown = False
+            
             for item in breakdown:
-                if 'peak' in item:
-                    fares['peak'] = item['peak']
-                if 'offPeak' in item:
-                    fares['off_peak'] = item['offPeak']
-                if 'cost' in item and 'cost' not in fares:
-                     fares['cost'] = item['cost']
+                has_breakdown = True
+                cost = item.get('cost', 0)
+                # Use peak/offPeak if available, otherwise fallback to cost (e.g. for Bus)
+                peak = item.get('peak', cost)
+                off_peak = item.get('offPeak', cost)
+                
+                total_peak += peak
+                total_off_peak += off_peak
+            
+            if has_breakdown:
+                fares['peak'] = total_peak
+                fares['off_peak'] = total_off_peak
 
         return {
             'duration': duration,
