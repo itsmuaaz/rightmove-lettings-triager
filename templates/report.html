@@ -22,26 +22,25 @@
         {% for property in shortlist %}
         <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
             <div class="flex items-center mb-2">
-                <div class="flex-shrink-0 h-16 w-20 bg-gray-200 rounded overflow-hidden">
+                <div class="flex-shrink-0 h-24 w-32 bg-gray-200 rounded overflow-hidden">
                     {% if property.images and property.images[0] %}
-                    <img class="w-full h-full object-cover" src="{{ property.images[0] }}" alt="Property">
+                    <a href="#property-{{ property.id }}">
+                        <img class="w-full h-full object-cover" src="{{ property.images[0] }}" alt="Property">
+                    </a>
                     {% else %}
                     <div class="flex items-center justify-center h-full text-xs text-gray-400">N/A</div>
                     {% endif %}
                 </div>
                 <div class="ml-3 flex-1 min-w-0">
                     <div class="text-sm font-medium text-gray-900 truncate">
-                        <a href="{{ property.link }}" target="_blank" class="hover:underline text-blue-600">
+                        <a href="#property-{{ property.id }}" class="hover:underline text-blue-600">
                             {{ property.address }}
                         </a>
                     </div>
-                    <div class="text-xs text-gray-500 font-bold">£{{ property.price_pcm }} pcm</div>
+                    <div class="text-xs text-gray-500 font-bold">{{ property.price_pcm }}</div>
                 </div>
             </div>
-            <div class="flex justify-between items-center mt-2">
-                <div class="text-xs font-semibold {{ property.commute_color_class }}">
-                    {{ property.commute_time }} mins 🚆
-                </div>
+            <div class="flex justify-end items-center mt-2">
                  <button onclick="updateHistory('{{ property.id }}', 'unshortlist')" class="text-red-500 hover:text-red-700 text-xs font-medium">
                     Remove ⭐
                 </button>
@@ -59,7 +58,7 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider max-w-[250px]">Property</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commute</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amenities</th>
@@ -80,10 +79,6 @@
                             
                             <!-- Action Buttons -->
                             <div class="flex space-x-2 items-center">
-                                <a href="{{ property.link }}" target="_blank" onclick="updateHistory('{{ property.id }}', 'view')" class="text-blue-600 hover:text-blue-800 font-semibold text-xs" title="View on Rightmove">
-                                    View
-                                </a>
-
                                 {% if property.status == 'shortlisted' %}
                                 <button onclick="updateHistory('{{ property.id }}', 'unshortlist')" class="text-yellow-500 hover:text-yellow-700" title="Unshortlist">
                                     ⭐
@@ -108,11 +103,13 @@
                     </td>
 
                     <!-- Property Details -->
-                    <td class="px-4 py-4 whitespace-normal">
+                    <td class="px-4 py-4 whitespace-normal max-w-[300px]">
                         <div class="flex items-start">
-                            <div class="flex-shrink-0 h-20 w-24 relative overflow-hidden rounded bg-gray-200">
+                            <div class="flex-shrink-0 h-24 w-32 relative overflow-hidden rounded bg-gray-200">
                                 {% if property.images and property.images[0] %}
-                                <img class="absolute inset-0 w-full h-full object-cover" src="{{ property.images[0] }}" alt="Property Image">
+                                <a href="{{ property.link }}" target="_blank" onclick="updateHistory('{{ property.id }}', 'view')">
+                                    <img class="absolute inset-0 w-full h-full object-cover hover:opacity-90 transition-opacity" src="{{ property.images[0] }}" alt="Property Image">
+                                </a>
                                 {% else %}
                                 <div class="flex items-center justify-center h-full text-gray-400 text-xs">No Image</div>
                                 {% endif %}
@@ -152,7 +149,7 @@
                                 {% endif %}
                             </div>
                             <!-- Cycling -->
-                             <div class="flex items-center text-xs text-gray-600">
+                             <div class="flex items-center text-xs {{ property.cycling_color_class }}">
                                 <span class="mr-1">🚲</span>
                                 <span>{{ property.cycling_time }} min</span>
                             </div>

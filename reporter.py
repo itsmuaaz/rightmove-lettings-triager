@@ -67,6 +67,7 @@ class Reporter:
         p['commute_time'] = commute_mins if commute_mins is not None else "N/A"
         
         cycling_mins = p.get("commute_cycling")
+        p['cycling_color_class'] = self._get_commute_class(cycling_mins)
         p['cycling_time'] = cycling_mins if cycling_mins is not None else "N/A"
 
         # Links
