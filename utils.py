@@ -113,6 +113,25 @@ def extract_postcode_district(address: str) -> str | None:
         return match.group(1)
     return None
 
+def extract_location_for_vibe(address: str) -> str | None:
+    """Extracts a location key for vibe lookup (postcode district or full address).
+
+    Args:
+        address: The address string.
+
+    Returns:
+        The postcode district if found, otherwise the full address, or None.
+    """
+    district = extract_postcode_district(address)
+    if district:
+        return district
+    
+    if address and address.strip():
+        # Clean address slightly (remove extra whitespace)
+        return address.strip()
+    
+    return None
+
 def get_sort_key(p):
     """Determine the sort key for a property based on shortest commute."""
     commute = p.get('commute_time')

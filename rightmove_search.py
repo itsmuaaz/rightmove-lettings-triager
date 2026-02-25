@@ -21,7 +21,7 @@ from search_state import SearchState
 from vibe_client import VibeClient
 import threading
 import time
-from utils import get_sort_key, extract_postcode_district
+from utils import get_sort_key, extract_postcode_district, extract_location_for_vibe
 
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
@@ -149,10 +149,10 @@ def process_property(p, i, total):
         
         # Vibe calculation
         if vibe_client:
-            district = extract_postcode_district(p['address'])
-            if district:
-                vibes = vibe_client.get_vibes([district])
-                p['vibe'] = vibes.get(district)
+            location_key = extract_location_for_vibe(p['address'])
+            if location_key:
+                vibes = vibe_client.get_vibes([location_key])
+                p['vibe'] = vibes.get(location_key)
         
         # Inject notes
         if note_manager:
@@ -288,16 +288,16 @@ def main():
 
     sys.stderr.write(f"Calculating metrics for {len(all_properties)} properties...\n")
     
-    # Pre-fetch Vibes for all districts to batch API calls
-    districts = set()
+    # Pre-fetch Vibes for all locations to batch API calls
+    locations = set()
     for p in all_properties:
-        d = extract_postcode_district(p['address'])
-        if d:
-            districts.add(d)
+        loc = extract_location_for_vibe(p['address'])
+        if loc:
+            locations.add(loc)
     
-    if districts:
-        sys.stderr.write(f"Prefetching vibes for {len(districts)} districts...\n")
-        vibe_client.get_vibes(list(districts))
+    if locations:
+        sys.stderr.write(f"Prefetching vibes for {len(locations)} locations...\n")
+        vibe_client.get_vibes(list(locations))
 
     # Using 3 workers to stay well within TfL's 50 req/min limit and Overpass limits
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:

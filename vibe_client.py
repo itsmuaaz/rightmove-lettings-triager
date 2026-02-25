@@ -59,22 +59,22 @@ class VibeClient:
         
         return results
 
-    def _fetch_from_gemini(self, districts: List[str]) -> Dict[str, Any]:
-        """Calls Gemini CLI to analyze the given districts, with retries."""
-        if not districts:
+    def _fetch_from_gemini(self, locations: List[str]) -> Dict[str, Any]:
+        """Calls Gemini CLI to analyze the given locations (postcodes or addresses), with retries."""
+        if not locations:
             return {}
 
         prompt = f"""
 You are a London property market expert.
-Analyze the 'vibe' of the following London postcode districts: {districts}.
+Analyze the 'vibe' of the following London locations (postcode districts or full addresses): {locations}.
 
-For each district, provide a JSON object with:
+For each location, provide a JSON object with:
 1. "score": An integer (1-10) reflecting safety, prestige, and amenities (10 = Excellent).
 2. "summary": A concise 3-5 word description (e.g., "Affluent, green, family-friendly").
 3. "safety": One of ["High", "Medium", "Low"].
 4. "keywords": A list of 3 strings (e.g., ["Leafy", "Quiet", "Riverside"]).
 
-Return ONLY a valid JSON object mapping the district to the data. 
+Return ONLY a valid JSON object mapping the location string to the data. 
 Do not include any markdown formatting (like ```json ... ```).
 Example: 
 {{
@@ -83,6 +83,12 @@ Example:
     "summary": "Leafy, safe, riverside village",
     "safety": "High",
     "keywords": ["Leafy", "Riverside", "Quiet"]
+  }},
+  "123 Example Street, London": {{
+    "score": 6,
+    "summary": "Busy, central, urban",
+    "safety": "Medium",
+    "keywords": ["Urban", "Busy", "Central"]
   }}
 }}
 """
