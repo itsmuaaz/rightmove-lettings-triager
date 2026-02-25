@@ -58,12 +58,12 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">Actions</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commute</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-64">Amenities</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Added</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commute</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amenities</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Added</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -71,7 +71,7 @@
                 <tr id="property-{{ property.id }}" class="hover:bg-gray-50 transition-colors duration-150 {{ 'bg-gray-100 opacity-60' if property.status == 'dismissed' else '' }}">
                     
                     <!-- Actions (Moved to Start) -->
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
                          <div class="flex flex-col space-y-2">
                             <!-- Status Badges -->
                             {% if property.is_new %}
@@ -79,9 +79,9 @@
                             {% endif %}
                             
                             <!-- Action Buttons -->
-                            <div class="flex space-x-2">
-                                <a href="{{ property.link }}" target="_blank" onclick="updateHistory('{{ property.id }}', 'view')" class="text-blue-500 hover:text-blue-700" title="View on Rightmove">
-                                    ↗
+                            <div class="flex space-x-2 items-center">
+                                <a href="{{ property.link }}" target="_blank" onclick="updateHistory('{{ property.id }}', 'view')" class="text-blue-600 hover:text-blue-800 font-semibold text-xs" title="View on Rightmove">
+                                    View
                                 </a>
 
                                 {% if property.status == 'shortlisted' %}
@@ -95,7 +95,7 @@
                                 {% endif %}
 
                                 {% if property.status == 'dismissed' %}
-                                <button onclick="updateHistory('{{ property.id }}', 'undo_dismiss')" class="text-gray-500 hover:text-blue-600" title="Undo Dismiss">
+                                <button onclick="updateHistory('{{ property.id }}', 'undo_dismiss')" class="text-gray-500 hover:text-blue-600 text-xs" title="Undo Dismiss">
                                     Undo
                                 </button>
                                 {% else %}
@@ -108,7 +108,7 @@
                     </td>
 
                     <!-- Property Details -->
-                    <td class="px-6 py-4 whitespace-normal min-w-[300px]">
+                    <td class="px-4 py-4 whitespace-normal">
                         <div class="flex items-start">
                             <div class="flex-shrink-0 h-20 w-24 relative overflow-hidden rounded bg-gray-200">
                                 {% if property.images and property.images[0] %}
@@ -117,23 +117,23 @@
                                 <div class="flex items-center justify-center h-full text-gray-400 text-xs">No Image</div>
                                 {% endif %}
                             </div>
-                            <div class="ml-4 flex-1">
-                                <div class="text-sm font-medium text-gray-900">
+                            <div class="ml-4 flex-1 min-w-[150px]">
+                                <div class="text-sm font-medium text-gray-900 leading-snug">
                                     <a href="{{ property.link }}" target="_blank" class="hover:underline text-blue-600 visited:text-purple-600" onclick="updateHistory('{{ property.id }}', 'view')">
                                         {{ property.address }}
                                     </a>
                                 </div>
                                 <div class="text-xs text-gray-500 mt-1">{{ property.type }}</div>
-                                <div class="flex mt-2 space-x-2">
-                                    <a href="{{ property.tfl_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">TfL Journey</a>
-                                    <a href="{{ property.google_maps_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Google Maps</a>
+                                <div class="flex flex-wrap mt-2 gap-2">
+                                    <a href="{{ property.tfl_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 whitespace-nowrap">TfL Journey</a>
+                                    <a href="{{ property.google_maps_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 whitespace-nowrap">Google Maps</a>
                                 </div>
                             </div>
                         </div>
                     </td>
 
                     <!-- Price -->
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-4 py-4 whitespace-nowrap">
                         <div class="text-sm font-bold text-gray-900">{{ property.price_pcm }}</div>
                         {% if property.price_pw != "N/A" %}
                         <div class="text-xs text-gray-500">{{ property.price_pw }}</div>
@@ -141,7 +141,7 @@
                     </td>
 
                     <!-- Commute -->
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-4 py-4 whitespace-nowrap">
                         <div class="flex flex-col space-y-1">
                             <!-- Public Transport -->
                             <div class="flex items-center text-sm {{ property.commute_color_class }}">
@@ -160,7 +160,7 @@
                     </td>
 
                     <!-- Amenities -->
-                    <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                    <td class="px-4 py-4 whitespace-normal text-sm text-gray-500 max-w-xs">
                         <ul class="space-y-1">
                             {% for amenity in property.amenities %}
                             <li class="flex items-center text-xs">
@@ -171,7 +171,7 @@
                     </td>
 
                     <!-- Added On -->
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                         {{ property.added_on }}
                     </td>
                 </tr>
