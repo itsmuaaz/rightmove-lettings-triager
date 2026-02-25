@@ -71,3 +71,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [ ] **Track: Refactor the templating architecture to use Jinja2 instead of string generation and Markdown, focusing solely on HTML output.**
   *Link: [./tracks/refactor_jinja2_20260225/](./tracks/refactor_jinja2_20260225/)*
+
+---
+
+- [ ] **Track: Add the cost of commute next to the public transport commute time.**
+  *Link: [./tracks/commute_cost_20260225/](./tracks/commute_cost_20260225/)*
