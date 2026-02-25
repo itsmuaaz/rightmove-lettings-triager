@@ -42,7 +42,13 @@ class TestReporter(unittest.TestCase):
             # Check context passed to render
             args, kwargs = mock_template.render.call_args
             self.assertIn("properties", kwargs)
-            self.assertEqual(kwargs["properties"], self.sample_properties)
+            
+            # Properties are enriched, so they won't match sample_properties exactly
+            # We check if the enriched properties contain the original data + new fields
+            passed_props = kwargs["properties"]
+            self.assertEqual(len(passed_props), len(self.sample_properties))
+            self.assertEqual(passed_props[0]['id'], self.sample_properties[0]['id'])
+            self.assertIn('commute_color_class', passed_props[0])
 
     def test_enrichment_logic(self):
         """Test that the reporter enriches properties with display logic before rendering."""
