@@ -18,7 +18,7 @@
 - [x] Task: Implement CSS styling for the cost text to ensure it is readable but secondary to the duration (Style) [105fede]
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Dashboard UI Update (Jinja2)' (Protocol in workflow.md) [0b14301]
 
-## Phase 4: Verification & Cache Migration [checkpoint: 5219cf3]
-- [x] Task: Verify the full flow with a real search and ensure costs are displayed and cached (Manual) [0b14301]
+## Phase 4: Verification & Cache Migration [checkpoint: b6d5bfe]
+- [x] Task: Verify the full flow with a real search and ensure costs are displayed and cached (Manual) [b6d5bfe]
 - [x] Task: (Optional) Create a migration script or handle missing fare data in the existing cache gracefully (Chore) [0b14301]
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Verification & Cache Migration' (Protocol in workflow.md) [5219cf3]
