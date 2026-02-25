@@ -36,10 +36,10 @@ class TestTflClientJourneyCaching(unittest.TestCase):
         params = {'mode': 'tube'}
 
         # Execute
-        duration = self.client._fetch_journey(from_coords, to_coords, params, max_retries=1)
+        result = self.client._fetch_journey(from_coords, to_coords, params, max_retries=1)
 
         # Verify
-        self.assertEqual(duration, 25)
+        self.assertEqual(result['duration'], 25)
         mock_urlopen.assert_called_once()
         
         # Verify cache file exists
@@ -67,10 +67,10 @@ class TestTflClientJourneyCaching(unittest.TestCase):
         self.client._save_cache(key, data)
         
         # Execute
-        duration = self.client._fetch_journey(from_coords, to_coords, params, max_retries=1)
+        result = self.client._fetch_journey(from_coords, to_coords, params, max_retries=1)
         
         # Verify
-        self.assertEqual(duration, 15)
+        self.assertEqual(result['duration'], 15)
         mock_urlopen.assert_not_called()
 
     @patch('urllib.request.urlopen')
@@ -96,10 +96,10 @@ class TestTflClientJourneyCaching(unittest.TestCase):
 
         # Execute with force_refresh=True
         # This is expected to fail initially as the parameter doesn't exist
-        duration = self.client._fetch_journey(from_coords, to_coords, params, max_retries=1, force_refresh=True)
+        result = self.client._fetch_journey(from_coords, to_coords, params, max_retries=1, force_refresh=True)
         
         # Verify
-        self.assertEqual(duration, 20)
+        self.assertEqual(result['duration'], 20)
         mock_urlopen.assert_called_once()
 
 if __name__ == '__main__':

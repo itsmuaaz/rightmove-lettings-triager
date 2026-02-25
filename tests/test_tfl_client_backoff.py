@@ -30,7 +30,7 @@ class TestTflClientBackoff(unittest.TestCase):
         
         mock_response_200 = MagicMock()
         mock_response_200.status = 200
-        mock_response_200.read.return_value = b'{"journeys": [{"duration": 15}]}'
+        mock_response_200.read.return_value = b'{"journeys": [{"duration": 15, "fare": {"fares": []}}]}'
         mock_response_200.__enter__.return_value = mock_response_200
         
         # urlopen returns 429 first, then 200
@@ -39,7 +39,7 @@ class TestTflClientBackoff(unittest.TestCase):
         duration = self.client._fetch_journey((51.5, 0.1), (51.6, 0.2), {}, 3)
         
         # Verify result
-        self.assertEqual(duration, 15)
+        self.assertEqual(duration.get('duration'), 15)
         
         # Verify backoff was called with 20s
         mock_sleep.assert_any_call(20)
