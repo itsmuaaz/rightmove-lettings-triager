@@ -32,5 +32,8 @@ This plan outlines the steps to integrate LLM-based (e.g., Gemini) "vibe" catego
 
 ## Phase 6: Prompt Refinement
 - [x] Task: Enhance Gemini prompt for consistency and comprehensive criteria (Safety, Fun, Amenities, Cleanliness, Greenery, Prestige) (TDD - Red/Green) [46eb8d9]
+
+## Phase 7: Scoring Calibration
+- [x] Task: Adjust prompt to enforce a stricter, full-range scoring distribution (1-10) to avoid grade inflation (TDD - Red/Green) [10a0867]
 - [ ] Task: Ensure code coverage for new modules is >80%
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Reporting and Validation' (Protocol in workflow.md)
