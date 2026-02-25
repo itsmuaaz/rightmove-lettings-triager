@@ -21,6 +21,7 @@ People who are looking for rental properties in London and want to quickly compa
 - **History Manager:** Tracks 'New', 'Viewed', 'Shortlisted', and 'Dismissed' property states across search sessions to prevent redundant analysis.
 - **Triage Workflow:** Features a high-visibility 'Shortlist' state and a top-level summary section for quick navigation to favorite properties.
 - **TfL Client Optimization:** Implements robust caching and rate limiting to ensure reliable and efficient commute time calculations, preventing API throttling.
+- **Property Vibe:** Uses AI (Gemini) to categorize the "vibe" of a property's area (e.g., "Safe", "Trendy", "Quiet") and assign a score (1-10) for easier decision-making.
 
 ## Architecture
 A standalone Python script that uses `curl` for fetching data and standard libraries for processing. It relies on the Next.js JSON blob found within Rightmove's HTML source for its data extraction.

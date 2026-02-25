@@ -20,6 +20,7 @@
 - **OpenStreetMap (Overpass) API:** Used for finding nearby amenities (supermarkets, gyms, parks, etc.).
 - **`pytest` / `pytest-cov`:** For automated testing and code coverage verification.
 - **`jinja2`:** Templating engine for generating the HTML report.
+- **Google Gemini CLI:** Used to fetch AI-generated "vibe" insights for property locations.
 
 ## Output Format
 - **Rich HTML:** Search results are formatted as a styled HTML dashboard (`results.html`) using **Jinja2** templates and **Tailwind CSS**.
