@@ -110,7 +110,7 @@ class Reporter:
              p['id'] = str(hash(p['url']))
 
         # Notes
-        p['notes'] = p.get('note', '')
+        p['notes'] = p.get('note') or ''
 
         # Images
         if 'image_url' in p and 'images' not in p:

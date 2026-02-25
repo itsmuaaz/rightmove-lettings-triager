@@ -19,7 +19,7 @@
 - [x] Task: Delete the old `reporter_template.html` and any dead CSS/Markdown helper functions
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md)
 
-## Phase 6: Restore Notes Feature
+## Phase 6: Restore Notes Feature [checkpoint: 009b786]
 - [x] Task: Re-implement the interactive Notes feature in `templates/report.html` (Fix)
 - [x] Task: Ensure notes are editable and autosaved (Verification)
 - [x] Task: Update Shortlist section (Jump links, Price formatting, Remove commute)
