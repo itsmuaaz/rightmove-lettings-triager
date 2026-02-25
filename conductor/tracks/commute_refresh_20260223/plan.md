@@ -36,3 +36,8 @@
 
 ## Phase: Review Fixes
 - [x] Task: Apply review suggestions a4d3a1b
+- [x] Task: Separate HTML template, fix syntax errors, and resolve server port conflict.
+- [x] Task: Fix `tfl_client` missing dependency in `DashboardHandler` (attach to server).
+- [x] Task: Improve UI refresh button to only rotate the icon (not the text).
+- [x] Task: Add `--no-server` flag to `rightmove_search.py` for verification.
+- [x] Task: Final review adjustments 5f75645
