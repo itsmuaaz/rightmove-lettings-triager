@@ -189,6 +189,9 @@
                             <div class="flex items-center text-sm {{ property.commute_color_class }}">
                                 <span class="mr-1">🚆</span>
                                 <span class="font-semibold">{{ property.commute_time }} min</span>
+                                {% if property.commute_cost_display %}
+                                <span class="ml-1 text-xs text-gray-500" title="Peak / Off-Peak Fares">({{ property.commute_cost_display }})</span>
+                                {% endif %}
                                 {% if property.commute_updated_at %}
                                 <button onclick="refreshCommute('{{ property.id }}')" class="ml-1 text-gray-400 hover:text-blue-500" title="Refresh Commute">🔄</button>
                                 {% endif %}

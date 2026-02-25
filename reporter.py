@@ -74,6 +74,30 @@ class Reporter:
         else:
             p['commute_color_class'] = self._get_commute_class(commute_mins)
             p['commute_time'] = commute_mins if commute_mins is not None else "N/A"
+            
+            # Commute Cost Display
+            commute_fares = p.get('commute_fares')
+            if commute_fares:
+                peak = commute_fares.get('peak')
+                off_peak = commute_fares.get('off_peak')
+                total_cost = commute_fares.get('total_cost')
+                cost = commute_fares.get('cost')
+                
+                cost_str = None
+                
+                if peak and off_peak:
+                    cost_str = f"£{peak/100:.2f} / £{off_peak/100:.2f}"
+                elif total_cost:
+                    cost_str = f"£{total_cost/100:.2f}"
+                elif cost:
+                    cost_str = f"£{cost/100:.2f}"
+                elif peak:
+                     cost_str = f"£{peak/100:.2f}"
+                elif off_peak:
+                     cost_str = f"£{off_peak/100:.2f}"
+                
+                if cost_str:
+                    p['commute_cost_display'] = cost_str
         
         cycling_mins = p.get("commute_cycling")
         if not is_processed:
