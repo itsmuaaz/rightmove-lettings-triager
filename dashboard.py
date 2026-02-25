@@ -20,6 +20,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
             has_reqs = (hasattr(self.server, 'reporter') and 
                         hasattr(self.server, 'note_manager'))
             
+            content_to_send = b"No report generated."
+            
             if has_reqs:
                 # Determine source of properties
                 properties = []
@@ -57,12 +59,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     # Fallback for old signature
                     html_content = self.server.reporter.generate_report(display_properties)
 
-                self.wfile.write(html_content.encode('utf-8'))
+                content_to_send = html_content.encode('utf-8')
             # Fallback to static content
             elif hasattr(self.server, 'html_content'):
-                self.wfile.write(self.server.html_content.encode('utf-8'))
-            else:
-                self.wfile.write(b"No report generated.")
+                content_to_send = self.server.html_content.encode('utf-8')
+            
+            try:
+                self.wfile.write(content_to_send)
+            except (BrokenPipeError, ConnectionResetError):
+                pass # Client disconnected
         else:
             self.send_error(404, "File not found")
 
@@ -84,12 +89,18 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     self.send_response(200)
                     self.send_header('Content-type', 'application/json')
                     self.end_headers()
-                    self.wfile.write(json.dumps({'status': 'success'})
-                                     .encode('utf-8'))
+                    try:
+                        self.wfile.write(json.dumps({'status': 'success'})
+                                         .encode('utf-8'))
+                    except (BrokenPipeError, ConnectionResetError):
+                        pass
                 else:
                     self.send_error(400, "Invalid request or missing NoteManager")
             except Exception as e:
-                self.send_error(500, f"Server error: {str(e)}")
+                try:
+                    self.send_error(500, f"Server error: {str(e)}")
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
         elif self.path == '/api/history':
             try:
                 content_length = int(self.headers['Content-Length'])
@@ -122,10 +133,16 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({'status': 'success'})
-                                 .encode('utf-8'))
+                try:
+                    self.wfile.write(json.dumps({'status': 'success'})
+                                     .encode('utf-8'))
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
             except Exception as e:
-                self.send_error(500, f"Server error: {str(e)}")
+                try:
+                    self.send_error(500, f"Server error: {str(e)}")
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
         elif self.path == '/api/refresh':
             try:
                 content_length = int(self.headers['Content-Length'])
@@ -156,9 +173,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({'status': 'success', 'property': prop}).encode('utf-8'))
+                try:
+                    self.wfile.write(json.dumps({'status': 'success', 'property': prop}).encode('utf-8'))
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
             except Exception as e:
-                self.send_error(500, f"Server error: {str(e)}")
+                try:
+                    self.send_error(500, f"Server error: {str(e)}")
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
         else:
             self.send_error(404, "Endpoint not found")
 
