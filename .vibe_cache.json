@@ -1208,5 +1208,1455 @@
       "Suburban",
       "Historic"
     ]
+  },
+  "Old Kent Road, Bermondsey": {
+    "score": 5,
+    "summary": "Busy, central, urban regeneration",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Busy",
+      "Regeneration"
+    ]
+  },
+  "Garratt Lane, Earlsfield": {
+    "score": 7,
+    "summary": "Popular, suburban, well-connected",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Popular",
+      "Connected"
+    ]
+  },
+  "Riverdale House, Lewisham": {
+    "score": 6,
+    "summary": "Developing, vibrant, well-connected",
+    "safety": "Medium",
+    "keywords": [
+      "Developing",
+      "Vibrant",
+      "Connected"
+    ]
+  },
+  "Hindes Road, Harrow": {
+    "score": 7,
+    "summary": "Quiet, suburban, family-oriented",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Quiet",
+      "Family"
+    ]
+  },
+  "Laugan Walk, London": {
+    "score": 6,
+    "summary": "Urban, residential, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Residential",
+      "Connected"
+    ]
+  },
+  "Avenue Crescent, Acton": {
+    "score": 6,
+    "summary": "Suburban, diverse, developing",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Diverse",
+      "Developing"
+    ]
+  },
+  "Castelnau, Barnes": {
+    "score": 9,
+    "summary": "Affluent, leafy, village-feel",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Leafy",
+      "Village"
+    ]
+  },
+  "Kensington Olympia": {
+    "score": 8,
+    "summary": "Upscale, cultural, bustling",
+    "safety": "High",
+    "keywords": [
+      "Upscale",
+      "Cultural",
+      "Bustling"
+    ]
+  },
+  "West Court, Eltham, London": {
+    "score": 6,
+    "summary": "Suburban, green, quiet",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Quiet"
+    ]
+  },
+  "Lavender Hill, Battersea": {
+    "score": 8,
+    "summary": "Trendy, lively, popular",
+    "safety": "High",
+    "keywords": [
+      "Trendy",
+      "Lively",
+      "Popular"
+    ]
+  },
+  "Lombard Square": {
+    "score": 7,
+    "summary": "Modern, development, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Development",
+      "Residential"
+    ]
+  },
+  "Merevale House, Wembley Park": {
+    "score": 7,
+    "summary": "Modern, entertainment-hub, busy",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Hub",
+      "Busy"
+    ]
+  },
+  "Evan Cook Close, Peckham": {
+    "score": 6,
+    "summary": "Trendy, diverse, gentrifying",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Diverse",
+      "Gentrifying"
+    ]
+  },
+  "Kingmaker House": {
+    "score": 6,
+    "summary": "Residential, modern, convenient",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Modern",
+      "Convenient"
+    ]
+  },
+  "Colindale \u2013 1 Bedroom Flat": {
+    "score": 6,
+    "summary": "Suburban, developing, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Developing",
+      "Residential"
+    ]
+  },
+  "Kilburn High Road, LONDON": {
+    "score": 5,
+    "summary": "Bustling, diverse, lively",
+    "safety": "Medium",
+    "keywords": [
+      "Bustling",
+      "Diverse",
+      "Lively"
+    ]
+  },
+  "Chaplin Road, Wembley": {
+    "score": 6,
+    "summary": "Suburban, residential, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Diverse"
+    ]
+  },
+  "Church Road, LONDON": {
+    "score": 6,
+    "summary": "Varied, residential, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Varied",
+      "Residential",
+      "Urban"
+    ]
+  },
+  "Earsby Street, West Kensington": {
+    "score": 7,
+    "summary": "Central, established, residential",
+    "safety": "High",
+    "keywords": [
+      "Central",
+      "Established",
+      "Residential"
+    ]
+  },
+  "Alpha Road, New Cross": {
+    "score": 5,
+    "summary": "Student-hub, creative, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Student",
+      "Creative",
+      "Urban"
+    ]
+  },
+  "Corringway, Ealing": {
+    "score": 8,
+    "summary": "Leafy, suburban, affluent",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Suburban",
+      "Affluent"
+    ]
+  },
+  "Henry Doulton Drive, Tooting Bec": {
+    "score": 7,
+    "summary": "Popular, green, residential",
+    "safety": "High",
+    "keywords": [
+      "Popular",
+      "Green",
+      "Residential"
+    ]
+  },
+  "Gallions Road, Gallions Reach": {
+    "score": 6,
+    "summary": "Riverside, modern, developing",
+    "safety": "Medium",
+    "keywords": [
+      "Riverside",
+      "Modern",
+      "Developing"
+    ]
+  },
+  "Proton Tower, East India, London": {
+    "score": 7,
+    "summary": "Modern, high-rise, commuter-friendly",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "High-rise",
+      "Commuter"
+    ]
+  },
+  "1 bed, 1st floor, Kingfisher, The Halcyon in Fresh Wharf": {
+    "score": 6,
+    "summary": "Modern, development, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Development",
+      "Residential"
+    ]
+  },
+  "Wiltern Building, Dawlish Avenue East, Perivale, Ealing": {
+    "score": 6,
+    "summary": "Suburban, modern, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Modern",
+      "Residential"
+    ]
+  },
+  "St. Benedicts Close, Tooting": {
+    "score": 7,
+    "summary": "Quiet, residential, well-connected",
+    "safety": "High",
+    "keywords": [
+      "Quiet",
+      "Residential",
+      "Connected"
+    ]
+  },
+  "Brigstock Road, Thornton Heath": {
+    "score": 5,
+    "summary": "Busy, diverse, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Urban"
+    ]
+  },
+  "Brixton Hill Court, Brixton Hill": {
+    "score": 6,
+    "summary": "Vibrant, busy, well-connected",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Busy",
+      "Connected"
+    ]
+  },
+  "Graham Lodge, Graham Road, Hendon": {
+    "score": 7,
+    "summary": "Suburban, quiet, residential",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Quiet",
+      "Residential"
+    ]
+  },
+  "Jewel Square, Wapping": {
+    "score": 8,
+    "summary": "Riverside, affluent, quiet",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Affluent",
+      "Quiet"
+    ]
+  },
+  "86 Northolt Road, Harrow": {
+    "score": 6,
+    "summary": "Busy, suburban, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Suburban",
+      "Connected"
+    ]
+  },
+  "South Street, Middlesex": {
+    "score": 6,
+    "summary": "Suburban, residential, standard",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Standard"
+    ]
+  },
+  "Montana Road, Tooting": {
+    "score": 7,
+    "summary": "Residential, popular, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Popular",
+      "Connected"
+    ]
+  },
+  "Manstone Road, Cricklewood": {
+    "score": 6,
+    "summary": "Suburban, residential, improving",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Improving"
+    ]
+  },
+  "Wilton Road, London": {
+    "score": 7,
+    "summary": "Central, busy, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Central",
+      "Busy",
+      "Connected"
+    ]
+  },
+  "Clare Alexander, Walden Street, Whitechapel, London": {
+    "score": 5,
+    "summary": "Urban, diverse, central",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Diverse",
+      "Central"
+    ]
+  },
+  "Sienna Alto, 2 Cornmill Lane, London": {
+    "score": 6,
+    "summary": "Modern, development, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Development",
+      "Residential"
+    ]
+  },
+  "Kilburn High Road, Kilburn": {
+    "score": 5,
+    "summary": "Bustling, diverse, lively",
+    "safety": "Medium",
+    "keywords": [
+      "Bustling",
+      "Diverse",
+      "Lively"
+    ]
+  },
+  "Latitude Court, London,": {
+    "score": 6,
+    "summary": "Modern, residential, development",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Residential",
+      "Development"
+    ]
+  },
+  "Bedford Road, Clapham": {
+    "score": 8,
+    "summary": "Trendy, lively, popular",
+    "safety": "High",
+    "keywords": [
+      "Trendy",
+      "Lively",
+      "Popular"
+    ]
+  },
+  "Kingsleigh Close, Brentford": {
+    "score": 6,
+    "summary": "Suburban, riverside, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Riverside",
+      "Residential"
+    ]
+  },
+  "Bains Apartments, High Road, Ilford, Essex": {
+    "score": 5,
+    "summary": "Busy, suburban, commercial",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Suburban",
+      "Commercial"
+    ]
+  },
+  "Chiswick High Road, Chiswick": {
+    "score": 8,
+    "summary": "Affluent, bustling, leafy",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Bustling",
+      "Leafy"
+    ]
+  },
+  "Latitude Court, Gallions Reach, London": {
+    "score": 6,
+    "summary": "Riverside, modern, developing",
+    "safety": "Medium",
+    "keywords": [
+      "Riverside",
+      "Modern",
+      "Developing"
+    ]
+  },
+  "Great West Road, Brentford": {
+    "score": 6,
+    "summary": "Commercial, busy, accessible",
+    "safety": "Medium",
+    "keywords": [
+      "Commercial",
+      "Busy",
+      "Accessible"
+    ]
+  },
+  "Flat C, 520 Hornsey Road, Archway": {
+    "score": 6,
+    "summary": "Urban, residential, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Residential",
+      "Connected"
+    ]
+  },
+  "High Street, Barnet": {
+    "score": 7,
+    "summary": "Suburban, historic, green",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Historic",
+      "Green"
+    ]
+  },
+  "Flat 44 Ellington Court": {
+    "score": 6,
+    "summary": "Residential, standard, apartment",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Standard",
+      "Apartment"
+    ]
+  },
+  "Mazenod Avenue, West Hampstead, London": {
+    "score": 8,
+    "summary": "Affluent, residential, well-connected",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Residential",
+      "Connected"
+    ]
+  },
+  "Bowmans Mews, Holloway, London": {
+    "score": 6,
+    "summary": "Urban, residential, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Residential",
+      "Diverse"
+    ]
+  },
+  "Bains Mansions, Philpot Street, Whitechapel, London": {
+    "score": 5,
+    "summary": "Central, diverse, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Central",
+      "Diverse",
+      "Urban"
+    ]
+  },
+  "Chadbourn Street, Langdon Park": {
+    "score": 6,
+    "summary": "Developing, residential, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Developing",
+      "Residential",
+      "Connected"
+    ]
+  },
+  "Cavendish Road, London": {
+    "score": 7,
+    "summary": "Residential, established, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Established",
+      "Urban"
+    ]
+  },
+  "Craven Avenue, Ealing": {
+    "score": 8,
+    "summary": "Leafy, suburban, affluent",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Suburban",
+      "Affluent"
+    ]
+  },
+  "Cumberland Place, Catford": {
+    "score": 6,
+    "summary": "Suburban, diverse, improving",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Diverse",
+      "Improving"
+    ]
+  },
+  "Pilgrims Close, Palmers Green": {
+    "score": 7,
+    "summary": "Suburban, green, family-oriented",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Family"
+    ]
+  },
+  "Tavistock Avenue, London": {
+    "score": 6,
+    "summary": "Residential, suburban, standard",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Suburban",
+      "Standard"
+    ]
+  },
+  "Preston Close, Elephant and Castle": {
+    "score": 5,
+    "summary": "Central, regeneration, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Central",
+      "Regeneration",
+      "Urban"
+    ]
+  },
+  "Kingsbury Road, London": {
+    "score": 6,
+    "summary": "Suburban, busy, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Busy",
+      "Diverse"
+    ]
+  },
+  "New Park Road, Brixton": {
+    "score": 6,
+    "summary": "Vibrant, diverse, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Diverse",
+      "Urban"
+    ]
+  },
+  "BEAUTIFUL OPEN PLAN FLAT WITH WOOD FLOORS": {
+    "score": 6,
+    "summary": "Modern, standard, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Standard",
+      "Residential"
+    ]
+  },
+  "West Green Road, London": {
+    "score": 5,
+    "summary": "Urban, diverse, bustling",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Diverse",
+      "Bustling"
+    ]
+  },
+  "Schoolbank Road, Greenwich": {
+    "score": 7,
+    "summary": "Historic, leafy, residential",
+    "safety": "High",
+    "keywords": [
+      "Historic",
+      "Leafy",
+      "Residential"
+    ]
+  },
+  "7 Valentia Place, Brixton": {
+    "score": 6,
+    "summary": "Vibrant, urban, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Urban",
+      "Connected"
+    ]
+  },
+  "White City Estate, Shepherds Bush": {
+    "score": 4,
+    "summary": "Estate, urban, regenerating",
+    "safety": "Low",
+    "keywords": [
+      "Estate",
+      "Urban",
+      "Regenerating"
+    ]
+  },
+  "1 bed, 7th floor, Coot, The Halcyon in Fresh Wharf": {
+    "score": 6,
+    "summary": "Modern, development, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Development",
+      "Residential"
+    ]
+  },
+  "Lewis Road, Richmond": {
+    "score": 9,
+    "summary": "Affluent, leafy, suburban",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Leafy",
+      "Suburban"
+    ]
+  },
+  "Chartley House, 26 Horn Lane, Acton": {
+    "score": 6,
+    "summary": "Suburban, busy, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Busy",
+      "Residential"
+    ]
+  },
+  "1 bed, 4th floor, Teal, Pelican House in Fresh Wharf": {
+    "score": 6,
+    "summary": "Modern, development, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Development",
+      "Residential"
+    ]
+  },
+  ", Coombe Hill House, Beverley Way, London": {
+    "score": 7,
+    "summary": "Suburban, accessible, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Accessible",
+      "Residential"
+    ]
+  },
+  "The Grainstore, 4 Western Gateway, London": {
+    "score": 7,
+    "summary": "Modern, docks, business-hub",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Docks",
+      "Hub"
+    ]
+  },
+  "Wapping Lane, London": {
+    "score": 8,
+    "summary": "Riverside, historic, quiet",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Historic",
+      "Quiet"
+    ]
+  },
+  "Chapter Road, Willesden Green": {
+    "score": 7,
+    "summary": "Suburban, residential, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Diverse"
+    ]
+  },
+  "Hazel Way, Bermondsey": {
+    "score": 5,
+    "summary": "Urban, residential, regenerating",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Residential",
+      "Regenerating"
+    ]
+  },
+  "Windlesham Grove, LONDON": {
+    "score": 6,
+    "summary": "Residential, suburban, quiet",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Suburban",
+      "Quiet"
+    ]
+  },
+  "Brixton Hill Court, Brixton": {
+    "score": 6,
+    "summary": "Vibrant, urban, well-connected",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Urban",
+      "Connected"
+    ]
+  },
+  "Camden Road, Holloway, London": {
+    "score": 6,
+    "summary": "Busy, urban, well-connected",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Urban",
+      "Connected"
+    ]
+  },
+  "Jacks Farm Way, Highams Park": {
+    "score": 7,
+    "summary": "Suburban, green, family-oriented",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Family"
+    ]
+  },
+  "Edith Cavell Way, Shooters Hill": {
+    "score": 7,
+    "summary": "Leafy, elevated, quiet",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Elevated",
+      "Quiet"
+    ]
+  },
+  "Willesden Lane, Willesden Green": {
+    "score": 7,
+    "summary": "Busy, diverse, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Residential"
+    ]
+  },
+  "Dairyman Close, Cricklewood, London": {
+    "score": 6,
+    "summary": "Suburban, residential, improving",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Improving"
+    ]
+  },
+  "Holberton Gardens, College Park, London": {
+    "score": 6,
+    "summary": "Residential, urban, accessible",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Urban",
+      "Accessible"
+    ]
+  },
+  "Tollington Park, London": {
+    "score": 6,
+    "summary": "Urban, residential, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Residential",
+      "Diverse"
+    ]
+  },
+  "Thames Avenue, Perivale, Greenford": {
+    "score": 6,
+    "summary": "Suburban, quiet, residential",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Quiet",
+      "Residential"
+    ]
+  },
+  "Humber Road": {
+    "score": 7,
+    "summary": "Residential, quiet, suburban",
+    "safety": "High",
+    "keywords": [
+      "Residential",
+      "Quiet",
+      "Suburban"
+    ]
+  },
+  "Jamaica Road, Bermondsey": {
+    "score": 5,
+    "summary": "Busy, central, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Central",
+      "Urban"
+    ]
+  },
+  "Temple Fortune Mansions, Finchley Road, Temple Fortune": {
+    "score": 8,
+    "summary": "Affluent, suburban, established",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Suburban",
+      "Established"
+    ]
+  },
+  "Horn Lane, LONDON": {
+    "score": 6,
+    "summary": "Busy, diverse, accessible",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Accessible"
+    ]
+  },
+  "2 Pilkington Terrace, Woolwich": {
+    "score": 6,
+    "summary": "Regenerating, historic, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Regenerating",
+      "Historic",
+      "Urban"
+    ]
+  },
+  "Staverton Road, Willesden Green": {
+    "score": 7,
+    "summary": "Suburban, residential, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Diverse"
+    ]
+  },
+  "Chaucer Drive, Bermondsey": {
+    "score": 6,
+    "summary": "Urban, residential, developing",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Residential",
+      "Developing"
+    ]
+  },
+  "Acton Lane, Chiswick, London": {
+    "score": 8,
+    "summary": "Affluent, lively, accessible",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Lively",
+      "Accessible"
+    ]
+  },
+  "Nutcroft Road, Peckham": {
+    "score": 6,
+    "summary": "Trendy, diverse, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Diverse",
+      "Urban"
+    ]
+  },
+  "Preston Road, Wembley": {
+    "score": 6,
+    "summary": "Suburban, residential, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Connected"
+    ]
+  },
+  "Macleod Street, Walworth Road, London": {
+    "score": 5,
+    "summary": "Urban, busy, central",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Busy",
+      "Central"
+    ]
+  },
+  "Edith Road, London": {
+    "score": 7,
+    "summary": "Residential, established, central",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Established",
+      "Central"
+    ]
+  },
+  "Woodmill Close, Putney": {
+    "score": 8,
+    "summary": "Riverside, leafy, affluent",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Leafy",
+      "Affluent"
+    ]
+  },
+  "Chiswick High Road, Chiswick, London": {
+    "score": 8,
+    "summary": "Affluent, bustling, leafy",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Bustling",
+      "Leafy"
+    ]
+  },
+  "1 bed, 3rd floor, Coot, The Halcyon in Fresh Wharf": {
+    "score": 6,
+    "summary": "Modern, development, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Development",
+      "Residential"
+    ]
+  },
+  "St. Peter's Close, Tooting": {
+    "score": 7,
+    "summary": "Quiet, residential, well-connected",
+    "safety": "High",
+    "keywords": [
+      "Quiet",
+      "Residential",
+      "Connected"
+    ]
+  },
+  "Brownlow Road": {
+    "score": 6,
+    "summary": "Residential, standard, suburban",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Standard",
+      "Suburban"
+    ]
+  },
+  "Chase Side, Southgate, London": {
+    "score": 7,
+    "summary": "Suburban, green, pleasant",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Pleasant"
+    ]
+  },
+  "Coombe Hill House, Beverley Way, London": {
+    "score": 7,
+    "summary": "Suburban, accessible, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Accessible",
+      "Residential"
+    ]
+  },
+  "Glaisher Street, Greenwich": {
+    "score": 8,
+    "summary": "Riverside, historic, desirable",
+    "safety": "High",
+    "keywords": [
+      "Riverside",
+      "Historic",
+      "Desirable"
+    ]
+  },
+  "Gloucester Place, Gloucester Place": {
+    "score": 9,
+    "summary": "Central, upscale, historic",
+    "safety": "High",
+    "keywords": [
+      "Central",
+      "Upscale",
+      "Historic"
+    ]
+  },
+  "Wells House Road, London": {
+    "score": 6,
+    "summary": "Residential, suburban, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Suburban",
+      "Connected"
+    ]
+  },
+  "Westbury Lane, Buckhurst Hill": {
+    "score": 8,
+    "summary": "Suburban, leafy, affluent",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Leafy",
+      "Affluent"
+    ]
+  },
+  "Victoria Mews, Kilburn": {
+    "score": 6,
+    "summary": "Urban, diverse, tucked-away",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Diverse",
+      "Tucked-away"
+    ]
+  },
+  "Streatham Common North, Streatham": {
+    "score": 7,
+    "summary": "Green, suburban, residential",
+    "safety": "High",
+    "keywords": [
+      "Green",
+      "Suburban",
+      "Residential"
+    ]
+  },
+  "Viewfield Close, Harrow": {
+    "score": 7,
+    "summary": "Quiet, suburban, family-friendly",
+    "safety": "High",
+    "keywords": [
+      "Quiet",
+      "Suburban",
+      "Family"
+    ]
+  },
+  "Glen Albyn Road, London": {
+    "score": 6,
+    "summary": "Suburban, residential, standard",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Residential",
+      "Standard"
+    ]
+  },
+  "West Gate, Hanger Lane": {
+    "score": 6,
+    "summary": "Busy, accessible, suburban",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Accessible",
+      "Suburban"
+    ]
+  },
+  "Holdernesse Road, Tooting": {
+    "score": 7,
+    "summary": "Residential, popular, well-connected",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Popular",
+      "Connected"
+    ]
+  },
+  "London Road, London": {
+    "score": 5,
+    "summary": "Busy, urban, central",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Urban",
+      "Central"
+    ]
+  },
+  "Wandsworth Road, Clapham": {
+    "score": 7,
+    "summary": "Trendy, lively, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Lively",
+      "Urban"
+    ]
+  },
+  "Hudson Way, Gallions Reach": {
+    "score": 6,
+    "summary": "Riverside, modern, developing",
+    "safety": "Medium",
+    "keywords": [
+      "Riverside",
+      "Modern",
+      "Developing"
+    ]
+  },
+  "Oaklands Grove, London": {
+    "score": 6,
+    "summary": "Residential, urban, standard",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Urban",
+      "Standard"
+    ]
+  },
+  "Aldrington Road, Furzedown, Streatham": {
+    "score": 7,
+    "summary": "Suburban, green, family-oriented",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Family"
+    ]
+  },
+  "Blackheath Hill, Greenwich, London": {
+    "score": 8,
+    "summary": "Historic, leafy, desirable",
+    "safety": "High",
+    "keywords": [
+      "Historic",
+      "Leafy",
+      "Desirable"
+    ]
+  },
+  "Bethwin Road, Elephant & Castle": {
+    "score": 5,
+    "summary": "Urban, regenerating, central",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Regenerating",
+      "Central"
+    ]
+  },
+  "Tooley Street, London": {
+    "score": 8,
+    "summary": "Central, historic, bustling",
+    "safety": "High",
+    "keywords": [
+      "Central",
+      "Historic",
+      "Bustling"
+    ]
+  },
+  "London Road, Tooting": {
+    "score": 6,
+    "summary": "Busy, diverse, well-connected",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Connected"
+    ]
+  },
+  "1 bedroom flat - Dalston": {
+    "score": 7,
+    "summary": "Trendy, vibrant, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Vibrant",
+      "Urban"
+    ]
+  },
+  "West Gate, Ealing": {
+    "score": 7,
+    "summary": "Leafy, suburban, accessible",
+    "safety": "High",
+    "keywords": [
+      "Leafy",
+      "Suburban",
+      "Accessible"
+    ]
+  },
+  "Lovely, Spacious 1 Bed with Communal Roof Terrace": {
+    "score": 6,
+    "summary": "Modern, residential, appealing",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Residential",
+      "Appealing"
+    ]
+  },
+  "Sunninghill Road, London": {
+    "score": 6,
+    "summary": "Residential, urban, standard",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Urban",
+      "Standard"
+    ]
+  },
+  "Crescent Grove, LONDON": {
+    "score": 8,
+    "summary": "Historic, leafy, desirable",
+    "safety": "High",
+    "keywords": [
+      "Historic",
+      "Leafy",
+      "Desirable"
+    ]
+  },
+  "415 Roman Road, London": {
+    "score": 6,
+    "summary": "East-end, vibrant, urban",
+    "safety": "Medium",
+    "keywords": [
+      "East-end",
+      "Vibrant",
+      "Urban"
+    ]
+  },
+  "High Road, London": {
+    "score": 5,
+    "summary": "Busy, commercial, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Commercial",
+      "Urban"
+    ]
+  },
+  "Bertie Road, Willesden": {
+    "score": 6,
+    "summary": "Suburban, diverse, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Diverse",
+      "Residential"
+    ]
+  },
+  "Ritherdon Road, Balham": {
+    "score": 8,
+    "summary": "Affluent, leafy, popular",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Leafy",
+      "Popular"
+    ]
+  },
+  "Eloise House, Portland Road, South Norwood, Croydon, London": {
+    "score": 5,
+    "summary": "Suburban, busy, diverse",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Busy",
+      "Diverse"
+    ]
+  },
+  "Golders Green Road, Golders Green": {
+    "score": 7,
+    "summary": "Suburban, busy, family-oriented",
+    "safety": "High",
+    "keywords": [
+      "Suburban",
+      "Busy",
+      "Family"
+    ]
+  },
+  "York Road, Battersea, London": {
+    "score": 7,
+    "summary": "Riverside, developing, popular",
+    "safety": "Medium",
+    "keywords": [
+      "Riverside",
+      "Developing",
+      "Popular"
+    ]
+  },
+  "Queens Road, London": {
+    "score": 6,
+    "summary": "Urban, busy, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Busy",
+      "Connected"
+    ]
+  },
+  "High Street, Wealdstone, Harrow": {
+    "score": 5,
+    "summary": "Busy, suburban, commercial",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Suburban",
+      "Commercial"
+    ]
+  },
+  "Windmill Drive, Cricklewood, London": {
+    "score": 6,
+    "summary": "Suburban, green, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Green",
+      "Residential"
+    ]
+  },
+  "Flat B, 520 Hornsey Road, Archway": {
+    "score": 6,
+    "summary": "Urban, residential, connected",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Residential",
+      "Connected"
+    ]
+  },
+  "Laval House, Ealing Road,Great West Quarter ,Brentford": {
+    "score": 7,
+    "summary": "Modern, development, convenient",
+    "safety": "Medium",
+    "keywords": [
+      "Modern",
+      "Development",
+      "Convenient"
+    ]
+  },
+  "Park Hill House, Brentford": {
+    "score": 6,
+    "summary": "Suburban, convenient, residential",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Convenient",
+      "Residential"
+    ]
+  },
+  "Westcombe Court, 32 Somerton Road, London": {
+    "score": 6,
+    "summary": "Residential, standard, urban",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Standard",
+      "Urban"
+    ]
+  },
+  "The Vale, Acton": {
+    "score": 6,
+    "summary": "Busy, diverse, accessible",
+    "safety": "Medium",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Accessible"
+    ]
+  },
+  "Chiswick Road, LONDON": {
+    "score": 8,
+    "summary": "Affluent, leafy, popular",
+    "safety": "High",
+    "keywords": [
+      "Affluent",
+      "Leafy",
+      "Popular"
+    ]
+  },
+  "Erlanger Road, New Cross": {
+    "score": 6,
+    "summary": "Urban, historic, vibrant",
+    "safety": "Medium",
+    "keywords": [
+      "Urban",
+      "Historic",
+      "Vibrant"
+    ]
   }
 }
