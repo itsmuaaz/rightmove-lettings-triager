@@ -59,23 +59,30 @@ class VibeClient:
         
         return results
 
-    def _fetch_from_gemini(self, locations: List[str]) -> Dict[str, Any]:
-        """Calls Gemini CLI to analyze the given locations (postcodes or addresses), with retries."""
-        if not locations:
-            return {}
-
-        prompt = f"""
+    def _generate_prompt(self, locations: List[str]) -> str:
+        return f"""
 You are a London property market expert.
 Analyze the 'vibe' of the following London locations (postcode districts or full addresses): {locations}.
 
+Evaluate each location based on:
+- Safety & Crime
+- Fun & Nightlife
+- Amenities (Supermarkets, Gyms, Cafes)
+- Cleanliness & Street Appeal
+- Quality of Life
+- Access to Greenery (Parks, Commons)
+- General Reputation & Prestige
+
 For each location, provide a JSON object with:
-1. "score": An integer (1-10) reflecting safety, prestige, and amenities (10 = Excellent).
-2. "summary": A concise 3-5 word description (e.g., "Affluent, green, family-friendly").
+1. "score": An aggregate integer (1-10) reflecting all the above factors (10 = Excellent).
+2. "summary": A concise 3-5 word description highlighting the dominant traits.
 3. "safety": One of ["High", "Medium", "Low"].
 4. "keywords": A list of 3 strings (e.g., ["Leafy", "Quiet", "Riverside"]).
 
-Return ONLY a valid JSON object mapping the location string to the data. 
+Use a consistent scoring rubric across similar London areas.
+Return ONLY a valid JSON object mapping the input location string exactly to the data. 
 Do not include any markdown formatting (like ```json ... ```).
+
 Example: 
 {{
   "SW14": {{
@@ -92,6 +99,13 @@ Example:
   }}
 }}
 """
+
+    def _fetch_from_gemini(self, locations: List[str]) -> Dict[str, Any]:
+        """Calls Gemini CLI to analyze the given locations (postcodes or addresses), with retries."""
+        if not locations:
+            return {}
+
+        prompt = self._generate_prompt(locations)
         max_retries = 3
         backoff_factor = 1
 
