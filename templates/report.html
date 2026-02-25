@@ -172,6 +172,20 @@
                         {{ property.added_on }}
                     </td>
                 </tr>
+                <!-- Notes Row -->
+                <tr class="bg-gray-50">
+                    <td colspan="6" class="px-4 py-2 border-t border-gray-100">
+                        <div class="flex items-center">
+                            <span class="mr-2 text-xs font-semibold text-gray-500 uppercase">Notes:</span>
+                            <input type="text" 
+                                   class="flex-1 bg-white border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500" 
+                                   placeholder="Add a note..." 
+                                   value="{{ property.notes }}" 
+                                   onblur="saveNote('{{ property.id }}', this.value)">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
                 <!-- Notes Row (Expandable or always visible if content exists) -->
                 <tr class="bg-gray-50 {{ 'hidden' if not property.notes else '' }}">
                     <td colspan="6" class="px-6 py-2">
