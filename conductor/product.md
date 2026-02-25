@@ -11,6 +11,7 @@ People who are looking for rental properties in London and want to quickly compa
 ## Core Features
 - **Search Automation:** Fetches search results directly from a Rightmove URL.
 - **Auto-Pagination:** Automatically browses through all available result pages.
+- **Progressive Loading:** Immediate display of search results with incremental updates for commute and amenity data, allowing users to browse properties while background processing continues.
 - **Commute calculation:** Calculates real-world commute times (Public Transport & Cycling) using the TfL API, with straight-line distance as a fallback.
 - **Commute Stability:** Standardizes commute calculations to a consistent benchmark (Next Tuesday at 9:00 AM) to ensure fair comparison across properties, with an option to manually force-refresh data.
 - **Amenity Proximity:** Identifies nearby supermarkets, gyms, parks, and healthcare facilities using OpenStreetMap data.

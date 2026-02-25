@@ -5,6 +5,7 @@
 
 ## Core Libraries (Python Standard Library)
 - **`json`:** Used for parsing the JSON data found within Rightmove's HTML structure.
+- **`threading`:** For running the dashboard server concurrently with the data processing loop.
 - **`re`:** For regular expression matching to extract the embedded script tags.
 - **`math`:** To perform geographical distance calculations (Haversine formula).
 - **`subprocess`:** To execute external commands like `curl`.
