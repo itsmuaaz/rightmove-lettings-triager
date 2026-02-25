@@ -1,9 +1,12 @@
 from http.server import BaseHTTPRequestHandler
+import socketserver
 import json
 from datetime import datetime
 from utils import WORK_COORDS
 
 class DashboardHandler(BaseHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     """Handles HTTP requests for the dashboard."""
 
     def do_GET(self):

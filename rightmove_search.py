@@ -230,6 +230,10 @@ def main():
     md_for_html = reporter.generate_markdown(all_properties, for_html=True)
     html_content = reporter.convert_to_html(md_for_html)
     
+    # Save HTML report to file (useful for debugging/offline)
+    with open('results.html', 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    
     # Start Dashboard Server
     if not args.no_server:
         sys.stderr.write(f"Starting dashboard on http://localhost:{port}\n")
