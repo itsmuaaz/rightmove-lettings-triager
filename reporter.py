@@ -163,6 +163,7 @@ class Reporter:
             score = vibe.get('score')
             p['vibe_score'] = score
             p['vibe_summary'] = vibe.get('summary', 'Unknown')
+            p['vibe_safety'] = vibe.get('safety', 'Unknown')
             
             if score:
                 if score >= 8:
@@ -176,6 +177,7 @@ class Reporter:
         else:
              p['vibe_score'] = "N/A"
              p['vibe_summary'] = "Unknown"
+             p['vibe_safety'] = "Unknown"
              p['vibe_color_class'] = "text-gray-400"
         
         return p

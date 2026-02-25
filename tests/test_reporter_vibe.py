@@ -20,6 +20,7 @@ class TestReporterVibe(unittest.TestCase):
         self.assertIn('vibe', enriched)
         self.assertEqual(enriched['vibe_score'], 8)
         self.assertEqual(enriched['vibe_summary'], 'Nice place')
+        self.assertEqual(enriched['vibe_safety'], 'High')
         self.assertEqual(enriched['vibe_color_class'], 'text-green-600')  # Check color mapping
 
     def test_enrich_property_without_vibe(self):
@@ -34,6 +35,7 @@ class TestReporterVibe(unittest.TestCase):
         # Verify fallback behavior
         self.assertIn('vibe_score', enriched)
         self.assertEqual(enriched['vibe_score'], 'N/A')
+        self.assertEqual(enriched['vibe_safety'], 'Unknown')
         self.assertEqual(enriched['vibe_color_class'], 'text-gray-400')
 
 if __name__ == '__main__':

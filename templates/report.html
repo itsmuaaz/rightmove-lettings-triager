@@ -185,9 +185,12 @@
 
                     <!-- Vibe -->
                     <td class="px-4 py-4 whitespace-normal max-w-[150px]">
-                        <div class="flex items-center space-x-2">
-                             <span class="text-xl font-bold {{ property.vibe_color_class }}">{{ property.vibe_score }}</span>
-                             <span class="text-xs text-gray-500 leading-tight">{{ property.vibe_summary }}</span>
+                        <div class="flex items-start space-x-2">
+                             <span class="text-xl font-bold {{ property.vibe_color_class }} mt-0.5">{{ property.vibe_score }}</span>
+                             <div class="flex flex-col">
+                                 <span class="text-xs text-gray-700 font-medium leading-tight">{{ property.vibe_summary }}</span>
+                                 <span class="text-[10px] text-gray-500 mt-0.5">Safety: {{ property.vibe_safety }}</span>
+                             </div>
                         </div>
                     </td>
 
