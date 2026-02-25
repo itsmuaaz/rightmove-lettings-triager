@@ -44,7 +44,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Fix 'Added On' date column showing 'Unknown'**
+- [x] **Track: Fix 'Added On' date column showing 'Unknown'**
   *Link: [./tracks/fix_added_on_date_20260221/](./tracks/fix_added_on_date_20260221/)*
 
 ---
