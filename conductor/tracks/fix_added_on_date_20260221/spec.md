@@ -7,7 +7,8 @@ The "Added On" column currently displays "Unknown" for all properties. This trac
 
 ### 1. Data Analysis
 - Inspect the raw JSON structure from Rightmove to identify the correct field for the listing date.
-- Potential candidates: `addedOn`, `listingUpdate.listingUpdateDate`, `firstVisibleDate`.
+- Confirmed field: `firstVisibleDate` (e.g., "2026-01-22T09:06:28Z").
+- Secondary field: `listingUpdate.listingUpdateDate` (e.g., "2026-02-19T15:50:34Z") or `addedOrReduced` string.
 
 ### 2. Parser Update
 - Update `parse_property_data` in `rightmove_search.py` to extract the identified date field.

@@ -71,7 +71,14 @@ def parse_property_data(p):
         image_url = images[0].get('srcUrl')
         
     bedrooms = p.get('bedrooms', 0)
-    published_on = p.get('firstPublishedDate')
+    
+    # Date extraction logic: firstVisibleDate > listingUpdateDate > firstPublishedDate
+    published_on = p.get('firstVisibleDate')
+    if not published_on:
+        published_on = p.get('listingUpdate', {}).get('listingUpdateDate')
+    if not published_on:
+        published_on = p.get('firstPublishedDate')
+        
     summary = p.get('summary', '')
     
     location = p.get('location', {})
