@@ -72,12 +72,26 @@ def parse_property_data(p):
         
     bedrooms = p.get('bedrooms', 0)
     
-    # Date extraction logic: firstVisibleDate > listingUpdateDate > firstPublishedDate
-    published_on = p.get('firstVisibleDate')
-    if not published_on:
-        published_on = p.get('listingUpdate', {}).get('listingUpdateDate')
-    if not published_on:
-        published_on = p.get('firstPublishedDate')
+    # Date extraction logic: Collect all potential dates and pick the latest one
+    potential_dates = []
+    
+    fv_date = p.get('firstVisibleDate')
+    if fv_date:
+        potential_dates.append(fv_date)
+        
+    lu_date = p.get('listingUpdate', {}).get('listingUpdateDate')
+    if lu_date:
+        potential_dates.append(lu_date)
+        
+    fp_date = p.get('firstPublishedDate')
+    if fp_date:
+        potential_dates.append(fp_date)
+        
+    if potential_dates:
+        # Sort descending (latest first)
+        published_on = sorted(potential_dates, reverse=True)[0]
+    else:
+        published_on = None
         
     summary = p.get('summary', '')
     
