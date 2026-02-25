@@ -19,7 +19,11 @@
 - [x] Task: Delete the old `reporter_template.html` and any dead CSS/Markdown helper functions
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md)
 
-## Phase 4: Bug Fix - Shortlist Feature
+## Phase 5: Final Polish (User Feedback)
+- [x] Task: Update Shortlist section (Jump links, Price formatting, Remove commute)
+- [x] Task: Update Commute section (Color coding for cycling)
+- [x] Task: Update Table Layout (Clickable Image, Remove View Action, Width adjustments, Larger images)
+- [x] Task: Verify final polish manually (Verification)
 - [x] Task: Investigate why the shortlist button and section are broken (Debug)
 - [x] Task: Fix the JS logic for shortlisting in `templates/report.html` and ensure it communicates with `dashboard.py` (Fix)
 - [x] Task: Fix UI regressions (Links, Layout, Price, Emojis) in `reporter.py` and `templates/report.html` (Fix)
