@@ -11,10 +11,10 @@ This plan outlines the steps to integrate LLM-based (e.g., Gemini) "vibe" catego
 - [x] Task: Conductor - User Manual Verification 'Phase 1: LLM Client and Prompt Engineering' (Protocol in workflow.md) [checkpoint: 5e46622]
 
 ## Phase 2: Vibe Scoring and Integration
-- [ ] Task: Update the property processing loop to call the `VibeClient` for each unique postcode (TDD - Red/Green)
-- [ ] Task: Implement logic to calculate the aggregate "Vibe Score" (1-10) based on LLM attributes (TDD - Red/Green)
-- [ ] Task: Add a short summary tag generator based on the vibe scores (TDD - Red/Green)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Vibe Scoring and Integration' (Protocol in workflow.md)
+- [x] Task: Update the property processing loop to call the `VibeClient` for each unique postcode (TDD - Red/Green) [cd3aea0]
+- [x] Task: Implement logic to calculate the aggregate "Vibe Score" (1-10) based on LLM attributes (TDD - Red/Green) [cd3aea0]
+- [x] Task: Add a short summary tag generator based on the vibe scores (TDD - Red/Green) [cd3aea0]
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Vibe Scoring and Integration' (Protocol in workflow.md) [checkpoint: cd3aea0]
 
 ## Phase 3: Reporting and Validation
 - [ ] Task: Update the Markdown table generator to include the "Vibe Score & Summary" column (TDD - Red/Green)
