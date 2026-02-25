@@ -10,7 +10,8 @@ class TestDashboardHandler(unittest.TestCase):
             pass
         self.mock_server = MockServer()
         self.mock_server.note_manager = MagicMock()
-        self.mock_server.html_content = "<html>Test</html>"
+        self.mock_server.html_content = "<html>Fallback</html>"
+        self.mock_server.properties = [] # Add this to test fallback properly or dynamic path
 
     def _make_handler(self, path='/', method='GET', body=None, headers=None):
         handler = DashboardHandler.__new__(DashboardHandler)
@@ -37,14 +38,41 @@ class TestDashboardHandler(unittest.TestCase):
         
         return handler
 
-    def test_get_root(self):
-        """Test GET / returns the HTML content."""
+    def test_get_root_fallback(self):
+        """Test GET / returns fallback HTML when reporter/properties not set."""
+        # Unset properties or reporter to trigger fallback
+        if hasattr(self.mock_server, 'properties'):
+             del self.mock_server.properties
+        
         handler = self._make_handler(path='/')
         handler.do_GET()
         
         response = handler.wfile.getvalue().decode()
         self.assertIn("HTTP/1.1 200 OK", response)
-        self.assertIn("<html>Test</html>", response)
+        self.assertIn("<html>Fallback</html>", response)
+
+    def test_get_root_dynamic(self):
+        """Test GET / returns generated HTML when reporter is present."""
+        self.mock_server.properties = [{'id': '1', 'note': 'old'}]
+        self.mock_server.reporter = MagicMock()
+        self.mock_server.reporter.generate_report.return_value = "<html>Generated</html>"
+        self.mock_server.note_manager.get_note.return_value = "new note"
+        
+        # history manager is optional in do_GET logic but let's mock it
+        self.mock_server.history_manager = MagicMock()
+        self.mock_server.history_manager.get_status.return_value = 'seen'
+
+        handler = self._make_handler(path='/')
+        handler.do_GET()
+        
+        response = handler.wfile.getvalue().decode()
+        self.assertIn("HTTP/1.1 200 OK", response)
+        self.assertIn("<html>Generated</html>", response)
+        
+        # Verify enrichment calls
+        self.mock_server.note_manager.get_note.assert_called_with('1')
+        self.mock_server.history_manager.get_status.assert_called_with('1')
+        self.mock_server.reporter.generate_report.assert_called()
 
     def test_post_note(self):
         """Test POST /api/notes saves the note."""
@@ -87,7 +115,6 @@ class TestDashboardHandler(unittest.TestCase):
         self.assertIn('commute_updated_at', prop)
         
         # Verify client called with force_refresh=True
-        # We need to use utils.WORK_COORDS
         from utils import WORK_COORDS
         self.mock_server.tfl_client.get_commute_time.assert_called_with(
             (51.5, -0.1), WORK_COORDS, force_refresh=True

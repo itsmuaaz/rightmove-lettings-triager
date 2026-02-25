@@ -30,7 +30,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
                             self.server.history_manager.get_status(p['id'])
                 
                 html_content = \
-                    self.server.reporter.generate_html_report(self.server.properties)
+                    self.server.reporter.generate_report(self.server.properties)
                 self.wfile.write(html_content.encode('utf-8'))
             # Fallback to static content
             elif hasattr(self.server, 'html_content'):

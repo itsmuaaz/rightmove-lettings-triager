@@ -240,16 +240,9 @@ def main():
     # Sort by shortest commute (default)
     all_properties.sort(key=get_sort_key)
 
-    # Generate Markdown Report (Still useful for quick viewing)
-    reporter = Reporter()
-    md_content = reporter.generate_markdown(all_properties, for_html=False)
-    
-    with open('results.md', 'w') as f:
-        f.write(md_content)
-        
     # Generate HTML Report for Dashboard
-    md_for_html = reporter.generate_markdown(all_properties, for_html=True)
-    html_content = reporter.convert_to_html(md_for_html)
+    reporter = Reporter()
+    html_content = reporter.generate_report(all_properties)
     
     # Save HTML report to file (useful for debugging/offline)
     with open('results.html', 'w', encoding='utf-8') as f:
