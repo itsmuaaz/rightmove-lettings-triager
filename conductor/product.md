@@ -14,7 +14,7 @@ People who are looking for rental properties in London and want to quickly compa
 - **Commute calculation:** Calculates real-world commute times (Public Transport & Cycling) using the TfL API, with straight-line distance as a fallback.
 - **Commute Stability:** Standardizes commute calculations to a consistent benchmark (Next Tuesday at 9:00 AM) to ensure fair comparison across properties, with an option to manually force-refresh data.
 - **Amenity Proximity:** Identifies nearby supermarkets, gyms, parks, and healthcare facilities using OpenStreetMap data.
-- **Rich Reporting:** Generates a consolidated Markdown report and a styled HTML dashboard with property images, color-coded metrics, and direct navigation links (Google Maps, TfL).
+- **Rich Reporting:** Generates a styled HTML dashboard with property images, color-coded metrics, and direct navigation links (Google Maps, TfL).
 - **Interactive Dashboard:** Serves a local web interface where users can add persistent notes, shortlist favorites, and dismiss unwanted properties.
 - **History Manager:** Tracks 'New', 'Viewed', 'Shortlisted', and 'Dismissed' property states across search sessions to prevent redundant analysis.
 - **Triage Workflow:** Features a high-visibility 'Shortlist' state and a top-level summary section for quick navigation to favorite properties.
