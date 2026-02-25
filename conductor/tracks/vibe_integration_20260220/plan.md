@@ -17,7 +17,9 @@ This plan outlines the steps to integrate LLM-based (e.g., Gemini) "vibe" catego
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Vibe Scoring and Integration' (Protocol in workflow.md) [checkpoint: cd3aea0]
 
 ## Phase 3: Reporting and Validation
-- [ ] Task: Update the Markdown table generator to include the "Vibe Score & Summary" column (TDD - Red/Green)
-- [ ] Task: Verify the end-to-end flow with real search results for disparate London areas (e.g., Richmond vs. Newham)
+- [x] Task: Update the Markdown table generator to include the "Vibe Score & Summary" column (TDD - Red/Green) [ebaa0a4]
+- [x] Task: Verify the end-to-end flow with real search results for disparate London areas (e.g., Richmond vs. Newham) [ebaa0a4]
+- [x] Task: Ensure code coverage for new modules is >80% [ebaa0a4]
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Reporting and Validation' (Protocol in workflow.md)
 - [ ] Task: Ensure code coverage for new modules is >80%
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Reporting and Validation' (Protocol in workflow.md)
