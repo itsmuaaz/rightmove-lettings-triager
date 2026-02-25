@@ -57,6 +57,8 @@ class TestTflClientFares(unittest.TestCase):
                         "fares": [
                             {
                                 "cost": 175,
+                                "peak": 0,
+                                "offPeak": 0,
                                 "description": "Bus"
                             },
                             {

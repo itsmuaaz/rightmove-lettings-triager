@@ -114,9 +114,14 @@ class TflClient:
             for item in breakdown:
                 has_breakdown = True
                 cost = item.get('cost', 0)
-                # Use peak/offPeak if available, otherwise fallback to cost (e.g. for Bus)
-                peak = item.get('peak', cost)
-                off_peak = item.get('offPeak', cost)
+                # Use peak/offPeak if available and non-zero
+                peak = item.get('peak')
+                if not peak and cost > 0:
+                    peak = cost
+                
+                off_peak = item.get('offPeak')
+                if not off_peak and cost > 0:
+                    off_peak = cost
                 
                 total_peak += peak
                 total_off_peak += off_peak
