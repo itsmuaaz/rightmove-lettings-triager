@@ -2748,5 +2748,15 @@
       "Peaceful",
       "Modern"
     ]
+  },
+  "Holloway Road, Holloway": {
+    "score": 6,
+    "summary": "Bustling, convenient, gritty urban",
+    "safety": "Medium",
+    "keywords": [
+      "Bustling",
+      "Convenient",
+      "Gritty"
+    ]
   }
 }
