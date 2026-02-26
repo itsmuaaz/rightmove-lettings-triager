@@ -7,6 +7,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Logic and Data Preparation' (Protocol in workflow.md) [checkpoint: c3c0a52]
 
 ## Phase 2: UI Integration
-- [ ] Task: Update `templates/report.html` to render the colored circular marker next to the price (TDD - Red/Green)
-- [ ] Task: Ensure code coverage for modified modules remains >80%
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Integration' (Protocol in workflow.md)
+- [x] Task: Update `templates/report.html` to render the colored circular marker next to the price (TDD - Red/Green) [842ceaf]
+- [x] Task: Ensure code coverage for modified modules remains >80% [842ceaf]
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Integration' (Protocol in workflow.md) [checkpoint: 842ceaf]
