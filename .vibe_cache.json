@@ -2648,5 +2648,105 @@
       "Green",
       "Riverside"
     ]
+  },
+  "Stroud Green Road, Finsbury Park": {
+    "score": 6,
+    "summary": "Bustling, diverse, foodie hotspot",
+    "safety": "Medium",
+    "keywords": [
+      "Bustling",
+      "Diverse",
+      "Foodie"
+    ]
+  },
+  "Macmillan Way, Tooting": {
+    "score": 7,
+    "summary": "Vibrant, trendy, community feel",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Trendy",
+      "Community"
+    ]
+  },
+  "Lee High Road, Lee": {
+    "score": 5,
+    "summary": "Busy, functional, traffic-heavy",
+    "safety": "Medium",
+    "keywords": [
+      "Functional",
+      "Busy",
+      "Urban"
+    ]
+  },
+  "Musard Road, Barons Court, London": {
+    "score": 8,
+    "summary": "Quiet, affluent, well-connected",
+    "safety": "High",
+    "keywords": [
+      "Quiet",
+      "Affluent",
+      "Prestigious"
+    ]
+  },
+  "Deauville Close, Canary Wharf": {
+    "score": 7,
+    "summary": "Modern, secure, corporate",
+    "safety": "High",
+    "keywords": [
+      "Modern",
+      "Secure",
+      "Corporate"
+    ]
+  },
+  "Sheen Road, Richmond": {
+    "score": 9,
+    "summary": "Prestigious, leafy, affluent",
+    "safety": "High",
+    "keywords": [
+      "Prestigious",
+      "Leafy",
+      "Affluent"
+    ]
+  },
+  "EC1M": {
+    "score": 8,
+    "summary": "Trendy, central, culinary hub",
+    "safety": "Medium",
+    "keywords": [
+      "Trendy",
+      "Gastronomic",
+      "Central"
+    ]
+  },
+  "Gosport Road": {
+    "score": 7,
+    "summary": "Gentrified, residential, near greenery",
+    "safety": "Medium",
+    "keywords": [
+      "Residential",
+      "Green",
+      "Gentrified"
+    ]
+  },
+  "Seven Sisters Road, London": {
+    "score": 4,
+    "summary": "Busy, diverse, gritty, connected",
+    "safety": "Low",
+    "keywords": [
+      "Busy",
+      "Diverse",
+      "Gritty"
+    ]
+  },
+  "Onega Gate, Canada Water": {
+    "score": 7,
+    "summary": "Modern, waterside, peaceful residential",
+    "safety": "High",
+    "keywords": [
+      "Waterside",
+      "Peaceful",
+      "Modern"
+    ]
   }
 }
