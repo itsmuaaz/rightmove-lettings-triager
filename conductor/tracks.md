@@ -96,3 +96,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Smart Scoring System: A weighted aggregate score (0-100) for properties based on Price, Commute, Vibe, and Freshness.**
   *Link: [./tracks/smart_scoring_20260226/](./tracks/smart_scoring_20260226/)*
+
+---
+
+- [x] **Track: User-Configurable Score Breakdown: Allow users to customize scoring weights via an interactive prompt with persistence.**
+  *Link: [./tracks/configurable_scoring_20260226/](./tracks/configurable_scoring_20260226/)*
