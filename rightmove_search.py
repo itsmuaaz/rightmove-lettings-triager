@@ -21,7 +21,8 @@ from search_state import SearchState
 from vibe_client import VibeClient
 import threading
 import time
-from utils import get_sort_key, extract_postcode_district, extract_location_for_vibe
+from utils import get_sort_key, extract_postcode_district, extract_location_for_vibe, extract_numeric_price
+from scoring import SmartScorer
 
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
@@ -169,6 +170,41 @@ def process_property(p, i, total):
     
     return p
 
+def post_process_properties(properties):
+    """
+    Enrich properties with Smart Score.
+    1. Calculate global Min/Max Price.
+    2. Calculate Score for each property.
+    3. Sort properties by Score (Descending).
+    """
+    if not properties:
+        return properties
+
+    # 1. Global Stats
+    valid_prices = []
+    for p in properties:
+        val = extract_numeric_price(p.get('price'))
+        if val is not None:
+            valid_prices.append(val)
+    
+    global_stats = {
+        "min_price": min(valid_prices) if valid_prices else None,
+        "max_price": max(valid_prices) if valid_prices else None
+    }
+
+    # 2. Scoring
+    scorer = SmartScorer()
+    for p in properties:
+        score_result = scorer.calculate_score(p, global_stats)
+        p['smart_score'] = score_result['total']
+        p['score_breakdown'] = score_result['breakdown']
+
+    # 3. Sorting
+    # Default to smart_score descending
+    properties.sort(key=lambda x: x.get('smart_score', 0), reverse=True)
+
+    return properties
+
 def main():
     """Main execution function to search properties and generate reports."""
     # Define globals
@@ -306,8 +342,9 @@ def main():
         # Wait for all to complete
         concurrent.futures.wait(futures)
     
-    # Sort by shortest commute (default)
-    all_properties.sort(key=get_sort_key)
+    # Calculate Smart Scores and Sort
+    sys.stderr.write("Calculating Smart Scores...\n")
+    all_properties = post_process_properties(all_properties)
     
     # Mark as complete
     search_state.status = "complete"
