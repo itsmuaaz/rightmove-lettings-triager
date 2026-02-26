@@ -1,6 +1,7 @@
 """Utility module for geographical calculations."""
 
 import math
+import re
 import urllib.parse
 from datetime import datetime
 
@@ -106,7 +107,6 @@ def extract_postcode_district(address: str) -> str | None:
         return None
     
     # Regex for UK postcode districts (Outward Code)
-    import re
     # Matches: SW14 7AB -> SW14, E1 8AB -> E1, N1C 4AG -> N1C
     match = re.search(r'\b([A-Z]{1,2}\d[A-Z\d]?)\b', address.upper())
     if match:
@@ -160,7 +160,6 @@ def extract_numeric_price(price_str: str) -> float | None:
     if not price_str or "POA" in price_str.upper() or "CONTACT" in price_str.upper():
         return None
         
-    import re
     # Remove everything except digits and decimal points
     cleaned = re.sub(r'[^\d.]', '', price_str)
     

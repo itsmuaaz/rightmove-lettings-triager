@@ -1,8 +1,7 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from utils import format_date, generate_google_maps_url, generate_tfl_url
+from utils import format_date, generate_google_maps_url, generate_tfl_url, extract_numeric_price
 from datetime import datetime
 import os
-from utils import extract_numeric_price
 
 class Reporter:
     """Generates HTML reports for property search results using Jinja2."""
