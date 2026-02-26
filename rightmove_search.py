@@ -37,6 +37,46 @@ history_manager = None
 search_state = None
 vibe_client = None
 
+def print_dashboard_banner(url, stage="startup"):
+    """Prints a decorated banner for the dashboard URL."""
+    CYAN = '\033[96m'
+    BOLD = '\033[1m'
+    RESET = '\033[0m'
+    
+    w = 52 # Inner width
+    
+    print(f"\n  {CYAN}╔{'═' * w}╗{RESET}")
+    print(f"  {CYAN}║{' ' * w}║{RESET}")
+    
+    if stage == "startup":
+        title = "🚀  DASHBOARD RUNNING"
+        # Adjust padding for emoji visual width (2 chars vs len 1)
+        pad = w - len(title) - 3 - 1 
+        print(f"  {CYAN}║{RESET}   {BOLD}{title}{RESET}{' ' * pad}{CYAN}║{RESET}")
+        
+        print(f"  {CYAN}║{' ' * w}║{RESET}")
+        msg = "Access your results at:"
+        print(f"  {CYAN}║{RESET}   {msg.ljust(w-3)}{CYAN}║{RESET}")
+        
+        print(f"  {CYAN}║{RESET}   {BOLD}{url}{RESET}{' ' * (w - 3 - len(url))}{CYAN}║{RESET}")
+        
+        print(f"  {CYAN}║{' ' * w}║{RESET}")
+        print(f"  {CYAN}║{RESET}   {'(Press Ctrl+C to stop)'.ljust(w-3)}{CYAN}║{RESET}")
+
+    else:
+        title = "✅  PROCESSING COMPLETE"
+        pad = w - len(title) - 3 - 1
+        print(f"  {CYAN}║{RESET}   {BOLD}{title}{RESET}{' ' * pad}{CYAN}║{RESET}")
+        
+        print(f"  {CYAN}║{' ' * w}║{RESET}")
+        msg = "View final results at:"
+        print(f"  {CYAN}║{RESET}   {msg.ljust(w-3)}{CYAN}║{RESET}")
+        
+        print(f"  {CYAN}║{RESET}   {BOLD}{url}{RESET}{' ' * (w - 3 - len(url))}{CYAN}║{RESET}")
+
+    print(f"  {CYAN}║{' ' * w}║{RESET}")
+    print(f"  {CYAN}╚{'═' * w}╝{RESET}\n")
+
 def fetch_data(url):
     """Fetch the page HTML using curl."""
     try:
@@ -360,7 +400,8 @@ def main():
 
         server_thread = threading.Thread(target=run_server, daemon=True)
         server_thread.start()
-        sys.stderr.write("Dashboard running. Search continues in background...\n")
+        print_dashboard_banner(f"http://localhost:{port}", "startup")
+        sys.stderr.write("Search continues in background...\n")
 
     sys.stderr.write(f"Calculating metrics for {len(all_properties)} properties...\n")
     
@@ -388,6 +429,8 @@ def main():
     
     # Mark as complete
     search_state.status = "complete"
+    
+    print_dashboard_banner(f"http://localhost:{port}", "completion")
 
     # Generate HTML Report for Dashboard
     html_content = reporter.generate_report(all_properties, processed_count=len(all_properties), total_count=len(all_properties))
