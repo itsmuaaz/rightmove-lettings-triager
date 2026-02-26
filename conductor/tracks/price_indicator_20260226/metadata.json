@@ -1,0 +1,8 @@
+{
+  "track_id": "price_indicator_20260226",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-26T00:00:00Z",
+  "updated_at": "2026-02-26T00:00:00Z",
+  "description": "implement the colored price indicator based on relative min/max pricing"
+}

@@ -81,3 +81,4 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Progressive Results Loading: Enable users to view and interact with all properties immediately upon search completion.**
   *Link: [./tracks/progressive_loading_20260225/](./tracks/progressive_loading_20260225/)*
+\n---\n\n- [ ] **Track: Relative Price Indicator: Add colored marker based on min/max search prices.**\n  *Link: [./tracks/price_indicator_20260226/](./tracks/price_indicator_20260226/)*
