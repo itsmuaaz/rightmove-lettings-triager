@@ -98,13 +98,13 @@
                 <tr id="property-{{ property.id }}" 
                     class="transition-colors duration-150 border-l-4 
                     {% if property.status == 'dismissed' %}
-                        bg-gray-100 opacity-60 border-transparent
+                        bg-gray-200 opacity-50 border-gray-400
                     {% elif property.status == 'shortlisted' %}
-                        bg-yellow-50 border-yellow-400
+                        bg-yellow-100 border-yellow-500
                     {% elif property.is_new %}
-                        bg-blue-50 border-blue-400
+                        bg-blue-100 border-blue-500
                     {% else %}
-                        hover:bg-gray-50 border-transparent
+                        bg-white hover:bg-gray-50 border-transparent
                     {% endif %}">
                     
                     <!-- Actions (Moved to Start) -->
