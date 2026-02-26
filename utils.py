@@ -171,3 +171,27 @@ def extract_numeric_price(price_str: str) -> float | None:
     except ValueError:
         return None
 
+def get_days_since(iso_date: str) -> int | None:
+    """Calculates the number of days between an ISO date and today.
+
+    Args:
+        iso_date: ISO 8601 date string (e.g., '2023-10-27T10:00:00Z').
+
+    Returns:
+        The number of days (int) or None if the date is invalid.
+    """
+    if not iso_date:
+        return None
+    
+    try:
+        # Handle simplified ISO format often used by APIs
+        # Extract just the date part (YYYY-MM-DD)
+        date_part = iso_date.split('T')[0]
+        dt = datetime.strptime(date_part, '%Y-%m-%d')
+        now = datetime.now()
+        
+        # We compare dates only (ignoring time)
+        diff = now.date() - dt.date()
+        return diff.days
+    except ValueError:
+        return None
