@@ -89,11 +89,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Implement a CLI flag for the script that allows me to change the sorting from `min(transport, cycling)` to `transport` or `cycling`.**
-  *Link: [./tracks/commute_sort_20260226/](./tracks/commute_sort_20260226/)*
-
----
-
 - [x] **Track: Smart Scoring System: A weighted aggregate score (0-100) for properties based on Price, Commute, Vibe, and Freshness.**
   *Link: [./tracks/smart_scoring_20260226/](./tracks/smart_scoring_20260226/)*
 
