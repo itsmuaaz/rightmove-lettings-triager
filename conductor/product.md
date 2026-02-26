@@ -24,6 +24,7 @@ People who are looking for rental properties in London and want to quickly compa
 - **Property Vibe:** Uses AI (Gemini) to categorize the "vibe" of a property's area (e.g., "Safe", "Trendy", "Quiet") and assign a score (1-10) for easier decision-making.
 - **Smart Scoring System:** Evaluates properties with a 0-100 score based on weighted factors (Price, Commute, Vibe, Freshness) to highlight the best overall options. (Weights are user-configurable via the CLI).
 - **Relative Price Indicator:** Visually maps property prices onto a Green-to-Red color scale relative to the current search results, allowing for immediate identification of the cheapest and most expensive options.
+- **Interactive Sorting:** Enables users to sort property results by Price, Smart Score, Vibe, Commute Time (Transport/Cycling/Min), and Date Added, with state persistence across refreshes.
 
 ## Architecture
 A standalone Python script that uses `curl` for fetching data and standard libraries for processing. It relies on the Next.js JSON blob found within Rightmove's HTML source for its data extraction.
