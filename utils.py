@@ -147,3 +147,28 @@ def get_sort_key(p):
         return commute
         
     return min(commute, cycling)
+
+def extract_numeric_price(price_str: str) -> float | None:
+    """Extracts the numeric value from a price string (e.g., '£2,000 pcm').
+    
+    Args:
+        price_str: The raw price string.
+        
+    Returns:
+        The extracted numeric value as a float, or None if invalid.
+    """
+    if not price_str or "POA" in price_str.upper() or "CONTACT" in price_str.upper():
+        return None
+        
+    import re
+    # Remove everything except digits and decimal points
+    cleaned = re.sub(r'[^\d.]', '', price_str)
+    
+    if not cleaned:
+        return None
+        
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+

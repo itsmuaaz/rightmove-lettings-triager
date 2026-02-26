@@ -2,6 +2,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from utils import format_date, generate_google_maps_url, generate_tfl_url
 from datetime import datetime
 import os
+from utils import extract_numeric_price
 
 class Reporter:
     """Generates HTML reports for property search results using Jinja2."""
@@ -11,6 +12,19 @@ class Reporter:
             loader=FileSystemLoader(template_dir),
             autoescape=select_autoescape(['html', 'xml'])
         )
+
+    def _calculate_price_boundaries(self, properties):
+        """Calculates the minimum and maximum numeric prices in the result set."""
+        valid_prices = []
+        for p in properties:
+            num = extract_numeric_price(p.get('price'))
+            if num is not None:
+                valid_prices.append(num)
+        
+        if not valid_prices:
+            return None, None
+            
+        return min(valid_prices), max(valid_prices)
 
     def _get_commute_class(self, minutes):
         """Returns the Tailwind color class for the commute badge."""
@@ -57,11 +71,28 @@ class Reporter:
                 pass
         return processed
 
-    def _enrich_property(self, p):
+    def _enrich_property(self, p, min_price=None, max_price=None):
         """Enriches a property dict with display-ready fields."""
         # Clone to avoid mutating original if needed, but here we modify for display
         p = p.copy()
         
+        # Price Indicator
+        if min_price is not None and max_price is not None:
+            price_val = extract_numeric_price(p.get('price'))
+            if price_val is not None:
+                if min_price == max_price:
+                    # Default to yellow if all prices are the same
+                    hue = 60
+                else:
+                    # Map price to 0-1 range (0 = min, 1 = max)
+                    ratio = (price_val - min_price) / (max_price - min_price)
+                    # Clamp ratio just in case
+                    ratio = max(0.0, min(1.0, ratio))
+                    # Map to hue: 120 (Green) is cheapest, 0 (Red) is most expensive
+                    hue = int(120 * (1 - ratio))
+                
+                p['price_indicator_color'] = f"hsl({hue}, 100%, 45%)"
+
         # Commute
         # Check if keys exist to distinguish between 'pending' and 'failed/no route'
         is_processed = 'commute_time' in p
@@ -186,11 +217,13 @@ class Reporter:
         """Generates the HTML report."""
         template = self.env.get_template("report.html")
         
-        enriched_properties = [self._enrich_property(p) for p in properties]
+        min_price, max_price = self._calculate_price_boundaries(properties)
+        
+        enriched_properties = [self._enrich_property(p, min_price=min_price, max_price=max_price) for p in properties]
         
         enriched_shortlist = []
         if shortlist:
-             enriched_shortlist = [self._enrich_property(p) for p in shortlist]
+             enriched_shortlist = [self._enrich_property(p, min_price=min_price, max_price=max_price) for p in shortlist]
         elif shortlist is None:
              # Auto-derive shortlist from properties if not provided separately
              enriched_shortlist = [p for p in enriched_properties if p.get('status') == 'shortlisted']
