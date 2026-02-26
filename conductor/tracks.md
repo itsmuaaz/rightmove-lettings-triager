@@ -81,4 +81,13 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Progressive Results Loading: Enable users to view and interact with all properties immediately upon search completion.**
   *Link: [./tracks/progressive_loading_20260225/](./tracks/progressive_loading_20260225/)*
-\n---\n\n- [x] **Track: Relative Price Indicator: Add colored marker based on min/max search prices.**\n  *Link: [./tracks/price_indicator_20260226/](./tracks/price_indicator_20260226/)*
+
+---
+
+- [x] **Track: Relative Price Indicator: Add colored marker based on min/max search prices.**
+  *Link: [./tracks/price_indicator_20260226/](./tracks/price_indicator_20260226/)*
+
+---
+
+- [ ] **Track: Implement a CLI flag for the script that allows me to change the sorting from `min(transport, cycling)` to `transport` or `cycling`.**
+  *Link: [./tracks/commute_sort_20260226/](./tracks/commute_sort_20260226/)*

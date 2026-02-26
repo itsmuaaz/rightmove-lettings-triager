@@ -1,0 +1,8 @@
+{
+  "track_id": "commute_sort_20260226",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-26T00:00:00Z",
+  "updated_at": "2026-02-26T00:00:00Z",
+  "description": "Implement a CLI flag for the script that allows me to change the sorting from `min(transport, cycling)` to `transport` or `cycling`."
+}
