@@ -86,12 +86,76 @@
                 <tr>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider max-w-[400px]">Property</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vibe</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commute</th>
+                    
+                    <!-- Smart Score -->
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <a href="?sort=smart_score&order={{ 'asc' if sort_by == 'smart_score' and order == 'desc' else 'desc' }}&mode={{ mode }}" class="group flex items-center w-full h-full">
+                            Score
+                            <span class="ml-1 text-gray-400">
+                                {% if sort_by == 'smart_score' %}
+                                    {{ '&#x25B2;'|safe if order == 'asc' else '&#x25BC;'|safe }}
+                                {% endif %}
+                            </span>
+                        </a>
+                    </th>
+
+                    <!-- Price -->
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <a href="?sort=price&order={{ 'asc' if sort_by == 'price' and order == 'desc' else 'desc' }}&mode={{ mode }}" class="group flex items-center w-full h-full">
+                            Price
+                            <span class="ml-1 text-gray-400">
+                                {% if sort_by == 'price' %}
+                                    {{ '&#x25B2;'|safe if order == 'asc' else '&#x25BC;'|safe }}
+                                {% endif %}
+                            </span>
+                        </a>
+                    </th>
+
+                    <!-- Vibe -->
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <a href="?sort=vibe_score&order={{ 'asc' if sort_by == 'vibe_score' and order == 'desc' else 'desc' }}&mode={{ mode }}" class="group flex items-center w-full h-full">
+                            Vibe
+                            <span class="ml-1 text-gray-400">
+                                {% if sort_by == 'vibe_score' %}
+                                    {{ '&#x25B2;'|safe if order == 'asc' else '&#x25BC;'|safe }}
+                                {% endif %}
+                            </span>
+                        </a>
+                    </th>
+
+                    <!-- Commute -->
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div class="flex items-center space-x-2">
+                            <a href="?sort=commute&order={{ 'asc' if sort_by == 'commute' and order == 'desc' else 'desc' }}&mode={{ mode }}" class="group flex items-center hover:text-gray-700">
+                                Commute
+                                <span class="ml-1 text-gray-400">
+                                    {% if sort_by == 'commute' %}
+                                        {{ '&#x25B2;'|safe if order == 'asc' else '&#x25BC;'|safe }}
+                                    {% endif %}
+                                </span>
+                            </a>
+                            <select onchange="window.location.href='?sort=commute&order={{ order }}&mode=' + this.value" 
+                                    class="text-[10px] border-gray-300 rounded p-0.5 bg-white shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="min" {% if mode == 'min' %}selected{% endif %}>Min</option>
+                                <option value="transport" {% if mode == 'transport' %}selected{% endif %}>Public</option>
+                                <option value="cycling" {% if mode == 'cycling' %}selected{% endif %}>Cycle</option>
+                            </select>
+                        </div>
+                    </th>
+
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amenities</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Added</th>
+                    
+                    <!-- Added On -->
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <a href="?sort=added_on&order={{ 'asc' if sort_by == 'added_on' and order == 'desc' else 'desc' }}&mode={{ mode }}" class="group flex items-center w-full h-full">
+                            Added
+                            <span class="ml-1 text-gray-400">
+                                {% if sort_by == 'added_on' %}
+                                    {{ '&#x25B2;'|safe if order == 'asc' else '&#x25BC;'|safe }}
+                                {% endif %}
+                            </span>
+                        </a>
+                    </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">

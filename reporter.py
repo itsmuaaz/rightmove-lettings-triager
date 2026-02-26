@@ -228,7 +228,7 @@ class Reporter:
 
         return p
 
-    def generate_report(self, properties, shortlist=None, filters=None, processed_count=None, total_count=None):
+    def generate_report(self, properties, shortlist=None, filters=None, processed_count=None, total_count=None, sort_by='smart_score', order='desc', mode='min'):
         """Generates the HTML report."""
         template = self.env.get_template("report.html")
         
@@ -249,5 +249,8 @@ class Reporter:
             filters=filters,
             processed_count=processed_count,
             total_count=total_count,
+            sort_by=sort_by,
+            order=order,
+            mode=mode,
             generated_at=datetime.now().strftime("%Y-%m-%d %H:%M")
         )
