@@ -15,5 +15,14 @@ class TestConfig(unittest.TestCase):
         config = load_config()
         self.assertEqual(config.get("GOOGLE_MAPS_API_KEY"), "google_key")
 
+    def test_load_config_scoring_defaults(self):
+        """Test that default scoring configuration is loaded."""
+        config = load_config()
+        weights = config.get("SCORING_WEIGHTS")
+        self.assertIsNotNone(weights)
+        self.assertAlmostEqual(sum(weights.values()), 1.0)
+        self.assertEqual(config.get("MAX_COMMUTE_MINS"), 60)
+        self.assertEqual(config.get("FRESHNESS_DECAY_DAYS"), 7)
+
 if __name__ == "__main__":
     unittest.main()

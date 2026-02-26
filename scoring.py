@@ -1,24 +1,16 @@
 from typing import Dict, Any, Optional
 from utils import get_days_since, extract_numeric_price
-
-# Default Configuration (will be moved to config.py later in Phase 1)
-DEFAULT_WEIGHTS = {
-    "price": 0.3,
-    "commute": 0.4,
-    "vibe": 0.2,
-    "freshness": 0.1
-}
-
-MAX_COMMUTE_MINS = 60
-FRESHNESS_DECAY_DAYS = 7
+from config import load_config
 
 class SmartScorer:
     """Calculates a 'Smart Score' (0-100) for a property based on weighted criteria."""
 
     def __init__(self, weights: Optional[Dict[str, float]] = None):
-        self.weights = weights or DEFAULT_WEIGHTS
-        self.max_commute = MAX_COMMUTE_MINS
-        self.freshness_decay = FRESHNESS_DECAY_DAYS
+        config = load_config()
+        
+        self.weights = weights or config.get("SCORING_WEIGHTS")
+        self.max_commute = config.get("MAX_COMMUTE_MINS", 60)
+        self.freshness_decay = config.get("FRESHNESS_DECAY_DAYS", 7)
 
     def calculate_score(self, property_data: Dict[str, Any], global_stats: Dict[str, float]) -> Dict[str, Any]:
         """Calculates the weighted score for a property.
