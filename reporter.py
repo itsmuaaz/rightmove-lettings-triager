@@ -210,6 +210,22 @@ class Reporter:
              p['vibe_safety'] = "Unknown"
              p['vibe_color_class'] = "text-gray-400"
         
+        # Smart Score
+        smart_score = p.get('smart_score')
+        if smart_score is not None:
+            score_val = round(smart_score)
+            p['smart_score'] = score_val
+            
+            if score_val >= 90:
+                p['smart_score_badge_class'] = "bg-green-600 text-white"
+            elif score_val >= 70:
+                p['smart_score_badge_class'] = "bg-yellow-500 text-white"
+            else:
+                p['smart_score_badge_class'] = "bg-gray-400 text-white"
+        else:
+            p['smart_score'] = "N/A"
+            p['smart_score_badge_class'] = "bg-gray-300 text-gray-600"
+
         return p
 
     def generate_report(self, properties, shortlist=None, filters=None, processed_count=None, total_count=None):
