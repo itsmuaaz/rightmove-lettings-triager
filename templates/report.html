@@ -86,6 +86,7 @@
                 <tr>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider max-w-[400px]">Property</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vibe</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commute</th>
@@ -171,6 +172,42 @@
                                     <a href="{{ property.tfl_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 whitespace-nowrap">TfL Journey</a>
                                     <a href="{{ property.google_maps_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 whitespace-nowrap">Google Maps</a>
                                 </div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- Smart Score -->
+                    <td class="px-4 py-4 whitespace-nowrap">
+                         <div class="relative group cursor-help">
+                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold shadow-sm {{ property.smart_score_badge_class }}">
+                                {{ property.smart_score }}
+                            </span>
+                            
+                            <!-- Tooltip -->
+                            <div class="hidden group-hover:block absolute left-full top-0 ml-2 w-48 bg-gray-900 text-white text-xs rounded p-2 z-50 shadow-xl border border-gray-700">
+                                <div class="font-bold mb-1 border-b border-gray-600 pb-1 text-gray-300">Score Breakdown</div>
+                                {% if property.score_breakdown %}
+                                <div class="space-y-1">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Price:</span> 
+                                        <span class="font-mono">{{ property.score_breakdown.price|round(1) if property.score_breakdown.price is not none else 'N/A' }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Commute:</span> 
+                                        <span class="font-mono">{{ property.score_breakdown.commute|round(1) if property.score_breakdown.commute is not none else 'N/A' }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Vibe:</span> 
+                                        <span class="font-mono">{{ property.score_breakdown.vibe|round(1) if property.score_breakdown.vibe is not none else 'N/A' }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Freshness:</span> 
+                                        <span class="font-mono">{{ property.score_breakdown.freshness|round(1) if property.score_breakdown.freshness is not none else 'N/A' }}</span>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="italic text-gray-500">Breakdown unavailable</div>
+                                {% endif %}
                             </div>
                         </div>
                     </td>
