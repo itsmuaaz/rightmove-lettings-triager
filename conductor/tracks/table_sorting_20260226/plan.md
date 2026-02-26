@@ -18,9 +18,9 @@
     - [x] Sub-task: Implement Feature (Ensure selection updates URL `mode` parameter)
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Frontend Implementation' (Protocol in workflow.md)
 
-## Phase 3: Integration & Verification
-- [ ] Task: Verify Sorting Behavior
-    - [ ] Sub-task: Manual Verification (Click all headers, verify order)
-    - [ ] Sub-task: Manual Verification (Verify persistence on refresh)
-    - [ ] Sub-task: Manual Verification (Verify default state is Smart Score Descending)
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Verification' (Protocol in workflow.md)
+## Phase 3: Integration & Verification [checkpoint: 82a2572]
+- [x] Task: Verify Sorting Behavior
+    - [x] Sub-task: Manual Verification (Click all headers, verify order)
+    - [x] Sub-task: Manual Verification (Verify persistence on refresh)
+    - [x] Sub-task: Manual Verification (Verify default state is Smart Score Descending)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Verification' (Protocol in workflow.md)
