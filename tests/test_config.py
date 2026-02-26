@@ -24,5 +24,19 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.get("MAX_COMMUTE_MINS"), 60)
         self.assertEqual(config.get("FRESHNESS_DECAY_DAYS"), 7)
 
+    @patch('config.ConfigManager')
+    def test_load_config_uses_config_manager(self, MockConfigManager):
+        # Mock instance
+        mock_instance = MockConfigManager.return_value
+        expected_weights = {"price": 0.5, "commute": 0.5, "vibe": 0.0, "freshness": 0.0}
+        mock_instance.load_config.return_value = expected_weights
+        
+        config = load_config()
+        self.assertEqual(config["SCORING_WEIGHTS"], expected_weights)
+        # Ensure it was initialized with correct file
+        MockConfigManager.assert_called()
+        args, kwargs = MockConfigManager.call_args
+        self.assertIn('.scoring_config.json', kwargs.get('config_file', args[0] if args else ''))
+
 if __name__ == "__main__":
     unittest.main()
