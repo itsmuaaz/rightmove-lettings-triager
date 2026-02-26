@@ -24,3 +24,6 @@
     - [x] Sub-task: Manual Verification (Verify persistence on refresh)
     - [x] Sub-task: Manual Verification (Verify default state is Smart Score Descending)
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Verification' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions 9c6a9f5
