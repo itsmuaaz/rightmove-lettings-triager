@@ -99,5 +99,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Enable table sorting by column headers (Price, Smart Score, Vibe, Commute, Added On)**
+- [x] **Track: Enable table sorting by column headers (Price, Smart Score, Vibe, Commute, Added On)**
   *Link: [./tracks/table_sorting_20260226/](./tracks/table_sorting_20260226/)*
