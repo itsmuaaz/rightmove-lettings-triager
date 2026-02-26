@@ -297,6 +297,16 @@
         </table>
     </div>
 </div>
+
+<!-- Scroll to Top Button -->
+<button id="scrollToTopBtn" 
+        class="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition-opacity duration-300 opacity-0 pointer-events-none"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        aria-label="Scroll to top">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+    </svg>
+</button>
 {% endblock %}
 
 {% block scripts %}
@@ -366,6 +376,21 @@
             }
         })
         .catch(error => console.error('Error:', error));
+    }
+
+    // Scroll to Top Logic
+    const scrollBtn = document.getElementById('scrollToTopBtn');
+    
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
+                scrollBtn.classList.add('opacity-100');
+            } else {
+                scrollBtn.classList.remove('opacity-100');
+                scrollBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
     }
 </script>
 {% endblock %}
