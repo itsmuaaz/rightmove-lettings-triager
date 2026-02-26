@@ -23,8 +23,15 @@ class TestUtilsSortKey(unittest.TestCase):
         self.assertEqual(key, 85.0)
 
     def test_sort_by_vibe(self):
-        key = create_sort_key(self.prop_base, sort_by='vibe_score')
+        # Raw data has nested vibe dict
+        prop = {'id': '123', 'vibe': {'score': 7.5}}
+        key = create_sort_key(prop, sort_by='vibe_score')
         self.assertEqual(key, 7.5)
+        
+        # Fallback for flat structure (if enriched)
+        prop_flat = {'id': '123', 'vibe_score': 8.0}
+        key_flat = create_sort_key(prop_flat, sort_by='vibe_score')
+        self.assertEqual(key_flat, 8.0)
 
     def test_sort_by_added_on(self):
         key = create_sort_key(self.prop_base, sort_by='added_on')

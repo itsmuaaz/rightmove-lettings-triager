@@ -156,7 +156,14 @@ def create_sort_key(property_data: dict, sort_by: str = 'smart_score', mode: str
         return val if val is not None else -1.0
 
     elif sort_by == 'vibe_score':
-        val = property_data.get('vibe_score')
+        # Vibe is usually a dict in raw data: {'score': 5, ...}
+        # In enriched data it might be flat, but we sort raw data.
+        vibe = property_data.get('vibe')
+        if isinstance(vibe, dict):
+             val = vibe.get('score')
+        else:
+             val = property_data.get('vibe_score') # Fallback if already enriched or flat
+             
         return val if val is not None else -1.0
 
     elif sort_by == 'added_on':
