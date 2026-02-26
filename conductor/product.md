@@ -22,7 +22,7 @@ People who are looking for rental properties in London and want to quickly compa
 - **Triage Workflow:** Features a high-visibility 'Shortlist' state and a top-level summary section for quick navigation to favorite properties.
 - **TfL Client Optimization:** Implements robust caching and rate limiting to ensure reliable and efficient commute time calculations, preventing API throttling.
 - **Property Vibe:** Uses AI (Gemini) to categorize the "vibe" of a property's area (e.g., "Safe", "Trendy", "Quiet") and assign a score (1-10) for easier decision-making.
-- **Smart Scoring System:** Evaluates properties with a 0-100 score based on weighted factors (Price, Commute, Vibe, Freshness) to highlight the best overall options.
+- **Smart Scoring System:** Evaluates properties with a 0-100 score based on weighted factors (Price, Commute, Vibe, Freshness) to highlight the best overall options. (Weights are user-configurable via the CLI).
 - **Relative Price Indicator:** Visually maps property prices onto a Green-to-Red color scale relative to the current search results, allowing for immediate identification of the cheapest and most expensive options.
 
 ## Architecture
