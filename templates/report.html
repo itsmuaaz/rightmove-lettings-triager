@@ -85,7 +85,7 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider max-w-[250px]">Property</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider max-w-[400px]">Property</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vibe</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commute</th>
@@ -108,15 +108,15 @@
                     {% endif %}">
                     
                     <!-- Actions (Moved to Start) -->
-                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                         <div class="flex flex-col space-y-2">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium w-12">
+                         <div class="flex flex-col space-y-4 items-center">
                             <!-- Status Badges -->
                             {% if property.is_new %}
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 w-min">New</span>
                             {% endif %}
                             
                             <!-- Action Buttons -->
-                            <div class="flex space-x-2 items-center">
+                            <div class="flex flex-col space-y-4 items-center">
                                 <button onclick="toggleNotes('{{ property.id }}')" class="text-blue-500 hover:text-blue-700" title="Toggle Note">
                                     {% if property.notes %}
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
@@ -149,7 +149,7 @@
                     </td>
 
                     <!-- Property Details -->
-                    <td class="px-4 py-4 whitespace-normal max-w-[300px]">
+                    <td class="px-4 py-4 whitespace-normal max-w-[400px]">
                         <div class="flex items-start">
                             <div class="flex-shrink-0 h-36 w-48 relative overflow-hidden rounded bg-gray-200">
                                 {% if property.images and property.images[0] %}
@@ -217,7 +217,7 @@
                     </td>
 
                     <!-- Amenities -->
-                    <td class="px-4 py-4 whitespace-normal text-sm text-gray-500 max-w-xs">
+                    <td class="px-4 py-4 whitespace-normal text-sm text-gray-500 max-w-[200px]">
                         <ul class="space-y-1">
                             {% for amenity in property.amenities %}
                             <li class="flex items-center text-xs">
