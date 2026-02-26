@@ -9,14 +9,14 @@
     - [x] Sub-task: Implement Feature (Parse URL params in `do_GET` and use `create_sort_key` for sorting)
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Backend Sort Logic' (Protocol in workflow.md)
 
-## Phase 2: Frontend Implementation
+## Phase 2: Frontend Implementation [checkpoint: afe5fc7]
 - [x] Task: Update `report.html` headers
     - [x] Sub-task: Implement Feature (Make headers clickable links with dynamic URL generation)
     - [x] Sub-task: Implement Feature (Add sorting arrows CSS/Logic based on current state)
 - [x] Task: Implement Commute Column Dropdown
     - [x] Sub-task: Implement Feature (Add UI for 'Transport', 'Cycling', 'Min' selection)
     - [x] Sub-task: Implement Feature (Ensure selection updates URL `mode` parameter)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Frontend Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Frontend Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Integration & Verification
 - [ ] Task: Verify Sorting Behavior
