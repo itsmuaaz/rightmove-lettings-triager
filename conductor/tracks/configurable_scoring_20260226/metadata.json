@@ -1,0 +1,8 @@
+{
+  "track_id": "configurable_scoring_20260226",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-26T14:30:00Z",
+  "updated_at": "2026-02-26T14:30:00Z",
+  "description": "User-Configurable Score Breakdown: Allow users to customize scoring weights via an interactive prompt with persistence."
+}

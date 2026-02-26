@@ -43,16 +43,16 @@ class TestSearchIntegration(unittest.TestCase):
         # Commute: 20 -> 100
         # Vibe: 8 -> 80
         # Freshness: 0 -> 100
-        # Weights: 0.3*100 + 0.4*100 + 0.2*80 + 0.1*100 = 30 + 40 + 16 + 10 = 96
-        self.assertAlmostEqual(processed[0]['smart_score'], 96.0)
+        # Weights: 0.3*100 + 0.3*100 + 0.3*80 + 0.1*100 = 30 + 30 + 24 + 10 = 94
+        self.assertAlmostEqual(processed[0]['smart_score'], 94.0)
 
         # Prop 2 should have low score
         # Price: Max -> 0
         # Commute: 60 -> 0
         # Vibe: 2 -> 20
         # Freshness: 7 -> 0
-        # Weights: 0.3*0 + 0.4*0 + 0.2*20 + 0.1*0 = 4
-        self.assertAlmostEqual(processed[1]['smart_score'], 4.0)
+        # Weights: 0.3*0 + 0.3*0 + 0.3*20 + 0.1*0 = 6
+        self.assertAlmostEqual(processed[1]['smart_score'], 6.0)
 
     def test_post_process_sorting(self):
         if post_process_properties is None:
