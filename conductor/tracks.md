@@ -101,3 +101,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Enable table sorting by column headers (Price, Smart Score, Vibe, Commute, Added On)**
   *Link: [./tracks/table_sorting_20260226/](./tracks/table_sorting_20260226/)*
+
+---
+
+- [ ] **Track: Revamp the UI design with a modern, light-themed aesthetic, focusing on readability and component consistency.**
+  *Link: [./tracks/ui_redesign_20260226/](./tracks/ui_redesign_20260226/)*
