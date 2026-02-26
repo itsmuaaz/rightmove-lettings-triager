@@ -1,12 +1,12 @@
 # Implementation Plan - Table Sorting & Commute Optimization
 
 ## Phase 1: Backend Sort Logic
-- [ ] Task: Create sort key factory in `utils.py`
-    - [ ] Sub-task: Write Tests (verify factory returns correct key for price, score, date, and commute modes)
-    - [ ] Sub-task: Implement Feature (Add `create_sort_key` function handling all sort modes)
-- [ ] Task: Update `DashboardHandler` to parse query parameters
-    - [ ] Sub-task: Write Tests (Simulate GET requests with `?sort=...` and verify property order)
-    - [ ] Sub-task: Implement Feature (Parse URL params in `do_GET` and use `create_sort_key` for sorting)
+- [x] Task: Create sort key factory in `utils.py`
+    - [x] Sub-task: Write Tests (verify factory returns correct key for price, score, date, and commute modes)
+    - [x] Sub-task: Implement Feature (Add `create_sort_key` function handling all sort modes)
+- [x] Task: Update `DashboardHandler` to parse query parameters
+    - [x] Sub-task: Write Tests (Simulate GET requests with `?sort=...` and verify property order)
+    - [x] Sub-task: Implement Feature (Parse URL params in `do_GET` and use `create_sort_key` for sorting)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Backend Sort Logic' (Protocol in workflow.md)
 
 ## Phase 2: Frontend Implementation

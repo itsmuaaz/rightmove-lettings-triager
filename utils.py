@@ -132,6 +132,53 @@ def extract_location_for_vibe(address: str) -> str | None:
     
     return None
 
+def create_sort_key(property_data: dict, sort_by: str = 'smart_score', mode: str = 'min') -> float | str:
+    """Generates a sort key for a property based on the specified criteria.
+
+    Args:
+        property_data: The dictionary containing property details.
+        sort_by: The field to sort by ('price', 'smart_score', 'vibe_score', 'commute', 'added_on').
+        mode: The commute mode ('min', 'transport', 'cycling'). Only used if sort_by='commute'.
+
+    Returns:
+        A comparable value (float or string).
+    """
+    if sort_by == 'price':
+        val = property_data.get('price')
+        if isinstance(val, (int, float)):
+            return val
+        
+        parsed = extract_numeric_price(str(val)) if val else None
+        return parsed if parsed is not None else float('inf')
+
+    elif sort_by == 'smart_score':
+        val = property_data.get('smart_score')
+        return val if val is not None else -1.0
+
+    elif sort_by == 'vibe_score':
+        val = property_data.get('vibe_score')
+        return val if val is not None else -1.0
+
+    elif sort_by == 'added_on':
+        val = property_data.get('added_on')
+        return val if val else ''
+
+    elif sort_by == 'commute':
+        commute = property_data.get('commute_time')
+        cycling = property_data.get('commute_cycling')
+        
+        c_val = commute if commute is not None else float('inf')
+        cy_val = cycling if cycling is not None else float('inf')
+
+        if mode == 'transport':
+            return c_val
+        elif mode == 'cycling':
+            return cy_val
+        else:
+            return min(c_val, cy_val)
+            
+    return 0
+
 def get_sort_key(p):
     """Determine the sort key for a property based on shortest commute."""
     commute = p.get('commute_time')

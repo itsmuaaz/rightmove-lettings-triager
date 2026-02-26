@@ -2,7 +2,8 @@ from http.server import BaseHTTPRequestHandler
 import socketserver
 import json
 from datetime import datetime
-from utils import WORK_COORDS, get_sort_key
+from urllib.parse import urlparse, parse_qs
+from utils import WORK_COORDS, get_sort_key, create_sort_key
 
 class DashboardHandler(BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -11,10 +12,19 @@ class DashboardHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Serve the HTML report."""
-        if self.path == '/' or self.path == '/index.html':
+        parsed_url = urlparse(self.path)
+        path = parsed_url.path
+
+        if path == '/' or path == '/index.html':
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
+            
+            # Parse query parameters
+            query_params = parse_qs(parsed_url.query)
+            sort_by = query_params.get('sort', ['smart_score'])[0]
+            order = query_params.get('order', ['desc'])[0]
+            mode = query_params.get('mode', ['min'])[0]
             
             # Regenerate HTML if possible to show latest notes
             has_reqs = (hasattr(self.server, 'reporter') and 
@@ -38,7 +48,12 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     total_count = len(properties)
 
                 # Create sorted list for display
-                display_properties = sorted(properties, key=get_sort_key)
+                reverse = (order.lower() == 'desc')
+                display_properties = sorted(
+                    properties, 
+                    key=lambda p: create_sort_key(p, sort_by=sort_by, mode=mode),
+                    reverse=reverse
+                )
 
                 # Refresh notes and history
                 for p in display_properties:
@@ -53,7 +68,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     html_content = self.server.reporter.generate_report(
                         display_properties, 
                         processed_count=processed_count, 
-                        total_count=total_count
+                        total_count=total_count,
+                        sort_by=sort_by,
+                        order=order,
+                        mode=mode
                     )
                 except TypeError:
                     # Fallback for old signature
