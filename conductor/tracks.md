@@ -101,3 +101,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: User-Configurable Score Breakdown: Allow users to customize scoring weights via an interactive prompt with persistence.**
   *Link: [./tracks/configurable_scoring_20260226/](./tracks/configurable_scoring_20260226/)*
+
+---
+
+- [ ] **Track: Enable table sorting by column headers (Price, Smart Score, Vibe, Commute, Added On)**
+  *Link: [./tracks/table_sorting_20260226/](./tracks/table_sorting_20260226/)*
