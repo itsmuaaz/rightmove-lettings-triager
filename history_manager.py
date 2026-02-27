@@ -128,13 +128,32 @@ class HistoryManager:
             pid = prop.get('id')
             if not pid:
                 continue
+            
+            agency_name = prop.get('agency_name')
+            agency_phone = prop.get('agency_phone')
                 
             if pid not in self.history:
                 self.history[pid] = {
                     "first_seen": datetime.now().isoformat(),
-                    "status": "new"
+                    "status": "new",
+                    "agency_name": agency_name,
+                    "agency_phone": agency_phone
                 }
                 changed = True
+            else:
+                # Update existing entry if agency info is missing or changed
+                entry = self.history[pid]
+                updated = False
+                if agency_name and entry.get('agency_name') != agency_name:
+                    entry['agency_name'] = agency_name
+                    updated = True
+                if agency_phone and entry.get('agency_phone') != agency_phone:
+                    entry['agency_phone'] = agency_phone
+                    updated = True
+                
+                if updated:
+                    self.history[pid] = entry
+                    changed = True
         
         if changed:
             self._save_history()
