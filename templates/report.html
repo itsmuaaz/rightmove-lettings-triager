@@ -41,11 +41,17 @@
 <!-- Triage Section (Shortlist) -->
 {% if shortlist %}
 <div class="mb-12">
-    <h2 class="text-2xl font-semibold mb-4 text-brand-primary flex items-center">
-        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-        Shortlisted Properties
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-semibold text-brand-primary flex items-center cursor-pointer select-none" onclick="toggleShortlist()">
+            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            Shortlisted Properties
+            <span class="ml-2 text-sm font-normal text-text-tertiary bg-slate-100 px-2 py-0.5 rounded-full">{{ shortlist|length }}</span>
+        </h2>
+        <button onclick="toggleShortlist()" class="p-2 hover:bg-slate-100 rounded-full transition-colors text-text-secondary">
+            <svg id="shortlist-chevron" class="w-6 h-6 transform transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+    </div>
+    <div id="shortlist-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 transition-all duration-300 origin-top">
         {% for property in shortlist %}
         <div class="bg-surface rounded-lg shadow-sm border border-border-subtle overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-200">
             <!-- Image Area -->
@@ -388,6 +394,19 @@
 
 {% block scripts %}
 <script>
+    function toggleShortlist() {
+        const grid = document.getElementById('shortlist-grid');
+        const chevron = document.getElementById('shortlist-chevron');
+        
+        if (grid.classList.contains('hidden')) {
+            grid.classList.remove('hidden');
+            chevron.classList.add('rotate-180');
+        } else {
+            grid.classList.add('hidden');
+            chevron.classList.remove('rotate-180');
+        }
+    }
+
     function toggleNotes(propertyId) {
         const row = document.getElementById('notes-row-' + propertyId);
         if (row) {
