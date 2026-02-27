@@ -7,7 +7,7 @@
 - [x] Task: Verify extraction works on real/cached data (Manual Verification)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Data Extraction & Model Update' (Protocol in workflow.md)
 
-## Phase 2: Presentation (HTML Dashboard)
-- [ ] Task: Update `templates/results.html` to display `agency_name` and `agency_phone` in the Property column
-- [ ] Task: Verify HTML dashboard renders correctly with new data (Manual Verification)
+## Phase 2: Presentation (HTML Dashboard) [checkpoint: 172945d]
+- [~] Task: Update `templates/results.html` to display `agency_name` and `agency_phone` in the Property column
+- [x] Task: Verify HTML dashboard renders correctly with new data (Manual Verification)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Presentation (HTML Dashboard)' (Protocol in workflow.md)
