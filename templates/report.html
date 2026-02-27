@@ -256,13 +256,13 @@
 
                     <!-- Smart Score -->
                     <td class="px-3 py-3 whitespace-nowrap align-top">
-                         <div class="relative group cursor-help w-max">
+                         <div class="relative group/score cursor-help w-max">
                             <span class="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold text-white shadow-sm" style="background-color: {{ property.smart_score_bg_color }}">
                                                             {{ property.smart_score }}
                                                         </span>
                             
                             <!-- Tooltip -->
-                            <div class="hidden group-hover:block absolute left-full top-0 ml-2 w-48 bg-gray-900 text-white text-xs rounded p-2 z-50 shadow-xl border border-gray-700">
+                            <div class="hidden group-hover/score:block absolute left-full top-0 ml-2 w-48 bg-gray-900 text-white text-xs rounded p-2 z-50 shadow-xl border border-gray-700">
                                 <div class="font-bold mb-1 border-b border-gray-600 pb-1 text-gray-300">Score Breakdown</div>
                                 {% if property.score_breakdown %}
                                 <div class="space-y-1">
