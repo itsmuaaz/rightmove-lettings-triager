@@ -119,6 +119,11 @@ def parse_property_data(p):
     agent = p.get('customer', {}).get('brandTradingName', 'Unknown')
     url = p.get('propertyUrl', '')
     
+    # Extract detailed agency info
+    customer = p.get('customer', {})
+    agency_name = customer.get('branchDisplayName') or customer.get('brandTradingName') or ""
+    agency_phone = customer.get('contactTelephone') or ""
+    
     # New fields
     image_url = None
     images = p.get('propertyImages', {}).get('images', [])
@@ -160,6 +165,8 @@ def parse_property_data(p):
         'type': prop_type,
         'address': address,
         'agent': agent,
+        'agency_name': agency_name,
+        'agency_phone': agency_phone,
         'url': url,
         'image_url': image_url,
         'bedrooms': bedrooms,
