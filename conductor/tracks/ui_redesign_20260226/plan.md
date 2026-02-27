@@ -28,8 +28,9 @@
 - [x] Task: Refactor Amenities list in `report.html` (`leading-relaxed`, `text-text-secondary`, `opacity-75` icons)
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Data Visualization & Logic Support' (Protocol in workflow.md)
 
-## Phase 4: Responsiveness & Final Polish
-- [ ] Task: Optimize the "Shortlist" Grid for mobile (collapse to 1 column: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`)
-- [ ] Task: Optimize the "Main Results Table" for mobile (ensure horizontal scrolling or stacked layout if feasible)
-- [ ] Task: Verify all text contrast meets accessibility standards
+## Phase 4: Responsiveness & Final Polish [checkpoint: bed1990]
+- [x] Task: Optimize the "Shortlist" Grid for mobile (collapse to 1 column: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`)
+- [x] Task: Optimize the "Main Results Table" for mobile (ensure horizontal scrolling or stacked layout if feasible)
+- [x] Task: Verify all text contrast meets accessibility standards
+- [x] Task: Implement user feedback: Increase text size, reduce padding, modernize icons, verify border colors
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Responsiveness & Final Polish' (Protocol in workflow.md)
