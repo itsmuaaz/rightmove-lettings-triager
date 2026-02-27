@@ -33,4 +33,11 @@
 - [x] Task: Optimize the "Main Results Table" for mobile (ensure horizontal scrolling or stacked layout if feasible)
 - [x] Task: Verify all text contrast meets accessibility standards
 - [x] Task: Implement user feedback: Increase text size, reduce padding, modernize icons, verify border colors
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Responsiveness & Final Polish' (Protocol in workflow.md)
+## Phase 4.2: Final User Refinements
+- [x] Task: Fix vertical alignment of Actions cell (remove align-top)
+- [x] Task: Fix left border color for starred properties (debug CSS specificity)
+- [x] Task: Move TfL/Google Maps links to the Commute cell
+## Phase 4.3: Final Fixes (Border & Pills) [checkpoint: 7f46501]
+- [x] Task: Force orange border for starred properties (use !important or target first child)
+- [x] Task: Revert Pill size to text-xs/px-3 and full text "Google Maps" (and further refinements: vertical stack, text-sm)
+- [x] Task: Conductor - User Manual Verification 'Phase 4.3: Final Fixes' (Protocol in workflow.md)
