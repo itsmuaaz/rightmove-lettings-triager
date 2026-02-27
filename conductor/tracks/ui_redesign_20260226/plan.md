@@ -19,14 +19,14 @@
 - [x] Task: Implement collapsible toggle for Shortlisted Properties section
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Core Components Refactor' (Protocol in workflow.md)
 
-## Phase 3: Data Visualization & Logic Support
-- [ ] Task: Update `reporter.py` (or helper) to generate the new CSS classes for Score bubbles (Green > 80, Amber 50-79, Red < 50)
-    - [ ] TDD: Write unit tests for the color logic
-    - [ ] Implement logic
-- [ ] Task: Update `report.html` to display Score bubbles using the new logic/classes
-- [ ] Task: Refactor Price display in `report.html` (bold primary text for PCM, secondary for PW, remove floating dots if needed)
-- [ ] Task: Refactor Amenities list in `report.html` (`leading-relaxed`, `text-text-secondary`, `opacity-75` icons)
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Data Visualization & Logic Support' (Protocol in workflow.md)
+## Phase 3: Data Visualization & Logic Support [checkpoint: 329f7da]
+- [x] Task: Update `reporter.py` (or helper) to generate the new CSS classes for Score bubbles (Green > 80, Amber 50-79, Red < 50)
+    - [x] TDD: Write unit tests for the color logic
+    - [x] Implement logic
+- [x] Task: Update `report.html` to display Score bubbles using the new logic/classes
+- [x] Task: Refactor Price display in `report.html` (bold primary text for PCM, secondary for PW, remove floating dots if needed)
+- [x] Task: Refactor Amenities list in `report.html` (`leading-relaxed`, `text-text-secondary`, `opacity-75` icons)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Data Visualization & Logic Support' (Protocol in workflow.md)
 
 ## Phase 4: Responsiveness & Final Polish
 - [ ] Task: Optimize the "Shortlist" Grid for mobile (collapse to 1 column: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`)
