@@ -40,4 +40,7 @@
 ## Phase 4.3: Final Fixes (Border & Pills) [checkpoint: 7f46501]
 - [x] Task: Force orange border for starred properties (use !important or target first child)
 - [x] Task: Revert Pill size to text-xs/px-3 and full text "Google Maps" (and further refinements: vertical stack, text-sm)
-- [x] Task: Conductor - User Manual Verification 'Phase 4.3: Final Fixes' (Protocol in workflow.md)
+## Phase 4.4: Final Polish (Tooltips & Spacing) [checkpoint: c31b3ae]
+- [x] Task: Fix Smart Score tooltip trigger scope (move 'group' class)
+- [x] Task: Compact Pill layout (reduce padding/spacing, ensure inline width)
+- [x] Task: Conductor - User Manual Verification 'Phase 4.4: Final Polish' (Protocol in workflow.md)
