@@ -5,13 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}UK Letting Researcher{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', "Segoe UI", 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    colors: {
+                        /* Neutral Palette */
+                        page: '#F8FAFC',
+                        surface: '#FFFFFF',
+                        border: {
+                            subtle: '#E2E8F0',
+                            highlight: '#F59E0B', // Amber
+                            new: '#38BDF8',       // Light Blue
+                        },
+                        
+                        /* Text Colors */
+                        text: {
+                            primary: '#0F172A',
+                            secondary: '#475569',
+                            tertiary: '#94A3B8',
+                        },
+                        
+                        /* Semantic Colors */
+                        brand: {
+                            primary: '#2563EB',
+                        },
+                        state: {
+                            highlight: '#FEF3C7', // Pale Cream
+                            new: '#F0F9FF',       // Pale Blue
+                            good: '#10B981',
+                            bad: '#EF4444',
+                            avg: '#F59E0B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Custom styles if needed */
-        body { font-family: sans-serif; }
+        /* Custom Row Logic for cleaner HTML */
+        .property-row {
+            background-color: white; /* var(--bg-surface) */
+            border-bottom: 1px solid #E2E8F0;
+            transition: all 0.2s ease;
+        }
+
+        /* Shortlisted State */
+        .property-row.state-shortlisted {
+            background-color: #FEF3C7; /* var(--highlight-bg) */
+            border-left: 4px solid #F59E0B; /* var(--highlight-border) */
+        }
+
+        /* New Item State (Overrides default, combines with shortlist if needed) */
+        .property-row.state-new:not(.state-shortlisted) {
+            background-color: #F0F9FF;
+            border-left: 4px solid #38BDF8;
+        }
+
+        /* Dismissed State */
+        .property-row.state-dismissed {
+            opacity: 0.6;
+            background-color: #F1F5F9;
+            filter: grayscale(100%);
+        }
     </style>
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-page text-text-primary font-sans antialiased">
     <div class="container mx-auto px-4 py-8">
         {% block content %}{% endblock %}
     </div>
