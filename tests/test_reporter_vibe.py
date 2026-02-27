@@ -21,7 +21,7 @@ class TestReporterVibe(unittest.TestCase):
         self.assertEqual(enriched['vibe_score'], 8)
         self.assertEqual(enriched['vibe_summary'], 'Nice place')
         self.assertEqual(enriched['vibe_safety'], 'High')
-        self.assertEqual(enriched['vibe_color_class'], 'text-green-600')  # Check color mapping
+        self.assertEqual(enriched['vibe_color_class'], 'text-state-good')  # Check color mapping
 
     def test_enrich_property_without_vibe(self):
         reporter = Reporter()
@@ -36,7 +36,7 @@ class TestReporterVibe(unittest.TestCase):
         self.assertIn('vibe_score', enriched)
         self.assertEqual(enriched['vibe_score'], 'N/A')
         self.assertEqual(enriched['vibe_safety'], 'Unknown')
-        self.assertEqual(enriched['vibe_color_class'], 'text-gray-400')
+        self.assertEqual(enriched['vibe_color_class'], 'text-text-tertiary')
 
 if __name__ == '__main__':
     unittest.main()
