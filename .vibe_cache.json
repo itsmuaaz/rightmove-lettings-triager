@@ -2758,5 +2758,45 @@
       "Convenient",
       "Gritty"
     ]
+  },
+  "SW11": {
+    "score": 8,
+    "summary": "Vibrant, green, trendy hub",
+    "safety": "High",
+    "keywords": [
+      "Vibrant",
+      "Green",
+      "Trendy"
+    ]
+  },
+  "Petergate, LONDON": {
+    "score": 7,
+    "summary": "Pleasant, residential, well-connected",
+    "safety": "High",
+    "keywords": [
+      "Residential",
+      "Quiet",
+      "Safe"
+    ]
+  },
+  "Globe Road, Bethnal Green, London": {
+    "score": 6,
+    "summary": "Trendy, bustling, mixed urban",
+    "safety": "Medium",
+    "keywords": [
+      "Vibrant",
+      "Urban",
+      "Trendy"
+    ]
+  },
+  "Central Harrow": {
+    "score": 5,
+    "summary": "Busy, functional suburban hub",
+    "safety": "Medium",
+    "keywords": [
+      "Suburban",
+      "Busy",
+      "Convenient"
+    ]
   }
 }
