@@ -65,14 +65,51 @@ class Reporter:
                     'color_class': color_class
                 })
             else:
-                # Option to show missing amenities or just skip
-                # Template seems to iterate over existing ones
                 pass
         return processed
 
+    def _get_smart_score_bg_color(self, score):
+        """Returns the HSL color string for the smart score badge."""
+        if score is None:
+            return "#D1D5DB" # gray-300
+        
+        try:
+            val = round(score)
+            # Threshold Gradient Logic
+            # 80-100: Green (120)
+            # 0-20: Red (0)
+            # 20-80: Linear
+            
+            if val >= 80:
+                hue = 120
+            elif val <= 20:
+                hue = 0
+            else:
+                ratio = (val - 20) / 60
+                hue = int(120 * ratio)
+            
+            return f"hsl({hue}, 100%, 40%)" # Slightly darker for text readability (40% lightness)
+        except (ValueError, TypeError):
+             return "#D1D5DB"
+
+    def _get_vibe_class(self, score):
+        """Returns the Tailwind color class for the vibe text."""
+        if score is None:
+            return "text-text-tertiary"
+        
+        try:
+            val = float(score)
+            if val >= 8:
+                return "text-state-good"
+            elif val >= 5:
+                return "text-state-avg"
+            else:
+                return "text-state-bad"
+        except (ValueError, TypeError):
+             return "text-text-tertiary"
+
     def _enrich_property(self, p, min_price=None, max_price=None):
         """Enriches a property dict with display-ready fields."""
-        # Clone to avoid mutating original if needed, but here we modify for display
         p = p.copy()
         
         # Price Indicator
@@ -80,22 +117,16 @@ class Reporter:
             price_val = extract_numeric_price(p.get('price'))
             if price_val is not None:
                 if min_price == max_price:
-                    # Default to yellow if all prices are the same
                     hue = 60
                 else:
-                    # Map price to 0-1 range (0 = min, 1 = max)
                     ratio = (price_val - min_price) / (max_price - min_price)
-                    # Clamp ratio just in case
                     ratio = max(0.0, min(1.0, ratio))
-                    # Map to hue: 120 (Green) is cheapest, 0 (Red) is most expensive
                     hue = int(120 * (1 - ratio))
                 
                 p['price_indicator_color'] = f"hsl({hue}, 100%, 45%)"
 
         # Commute
-        # Check if keys exist to distinguish between 'pending' and 'failed/no route'
         is_processed = 'commute_time' in p
-        
         commute_mins = p.get("commute_time")
         
         if not is_processed:
@@ -105,7 +136,6 @@ class Reporter:
             p['commute_color_class'] = self._get_commute_class(commute_mins)
             p['commute_time'] = commute_mins if commute_mins is not None else "N/A"
             
-            # Commute Cost Display
             commute_fares = p.get('commute_fares')
             if commute_fares:
                 peak = commute_fares.get('peak')
@@ -114,7 +144,6 @@ class Reporter:
                 cost = commute_fares.get('cost')
                 
                 cost_str = None
-                
                 if peak and off_peak:
                     cost_str = f"£{peak/100:.2f} / £{off_peak/100:.2f}"
                 elif total_cost:
@@ -143,7 +172,6 @@ class Reporter:
         if p.get('latitude') and p.get('longitude'):
             origin_coords = (p.get('latitude'), p.get('longitude'))
         
-        # Ensure absolute link
         raw_url = p.get('url', '')
         if raw_url.startswith('http'):
             p['link'] = raw_url
@@ -154,36 +182,28 @@ class Reporter:
         p['tfl_link'] = generate_tfl_url(origin_address, origin_coords)
         
         # Amenities
-        # Only process amenities if they exist (processed)
         if 'nearby_amenities' in p:
             p['amenities'] = self._process_amenities(p.get('nearby_amenities'))
         else:
-            p['amenities'] = [] # Or could be a loading indicator
+            p['amenities'] = []
 
         # Dates/Formatting
         p['added_on'] = format_date(p.get("published_on"))
         
-        # Prices
-        # Rightmove usually provides formatted strings like "£2,000 pcm"
         if 'price' in p:
-             p['price_pcm'] = p['price'] # Use as is
-             p['price_pw'] = "N/A" # Default if not split
-
+             p['price_pcm'] = p['price']
+             p['price_pw'] = "N/A"
 
         # Status
         history = p.get('history_status', {}) or {}
         p['status'] = history.get('status', 'new')
         p['is_new'] = (p['status'] == 'new')
         
-        # Ensure ID exists
         if 'id' not in p and 'url' in p:
-             # Fallback ID generation if missing (should exist from search)
              p['id'] = str(hash(p['url']))
 
-        # Notes
         p['notes'] = p.get('note') or ''
 
-        # Images
         if 'image_url' in p and 'images' not in p:
             p['images'] = [p['image_url']]
         
@@ -194,37 +214,26 @@ class Reporter:
             p['vibe_score'] = score
             p['vibe_summary'] = vibe.get('summary', 'Unknown')
             p['vibe_safety'] = vibe.get('safety', 'Unknown')
-            
-            if score:
-                if score >= 8:
-                    p['vibe_color_class'] = "text-green-600"
-                elif score >= 5:
-                    p['vibe_color_class'] = "text-yellow-600"
-                else:
-                    p['vibe_color_class'] = "text-red-600"
-            else:
-                p['vibe_color_class'] = "text-gray-400"
+            p['vibe_color_class'] = self._get_vibe_class(score)
         else:
              p['vibe_score'] = "N/A"
              p['vibe_summary'] = "Unknown"
              p['vibe_safety'] = "Unknown"
-             p['vibe_color_class'] = "text-gray-400"
+             p['vibe_color_class'] = "text-text-tertiary"
         
         # Smart Score
         smart_score = p.get('smart_score')
+        base_classes = "inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold shadow-sm text-white"
+        
         if smart_score is not None:
             score_val = round(smart_score)
             p['smart_score'] = score_val
-            
-            if score_val >= 90:
-                p['smart_score_badge_class'] = "bg-green-600 text-white"
-            elif score_val >= 70:
-                p['smart_score_badge_class'] = "bg-yellow-500 text-white"
-            else:
-                p['smart_score_badge_class'] = "bg-gray-400 text-white"
+            p['smart_score_badge_class'] = base_classes
+            p['smart_score_bg_color'] = self._get_smart_score_bg_color(score_val)
         else:
             p['smart_score'] = "N/A"
-            p['smart_score_badge_class'] = "bg-gray-300 text-gray-600"
+            p['smart_score_badge_class'] = base_classes
+            p['smart_score_bg_color'] = self._get_smart_score_bg_color(None)
 
         return p
 
@@ -240,7 +249,6 @@ class Reporter:
         if shortlist:
              enriched_shortlist = [self._enrich_property(p, min_price=min_price, max_price=max_price) for p in shortlist]
         elif shortlist is None:
-             # Auto-derive shortlist from properties if not provided separately
              enriched_shortlist = [p for p in enriched_properties if p.get('status') == 'shortlisted']
 
         return template.render(

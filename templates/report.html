@@ -85,7 +85,7 @@
                 <div class="mt-4 flex justify-between items-center border-t border-border-subtle pt-3">
                      <!-- Quick Stats -->
                      <div class="flex items-center space-x-2">
-                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white shadow-sm {{ property.smart_score_badge_class }}" title="Smart Score">
+                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white shadow-sm" style="background-color: {{ property.smart_score_bg_color }}" title="Smart Score">
                             {{ property.smart_score }}
                         </span>
                      </div>
@@ -261,9 +261,9 @@
                     <!-- Smart Score -->
                     <td class="px-4 py-5 whitespace-nowrap align-top">
                          <div class="relative group cursor-help">
-                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold text-white shadow-sm {{ property.smart_score_badge_class }}">
-                                {{ property.smart_score }}
-                            </span>
+                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold text-white shadow-sm" style="background-color: {{ property.smart_score_bg_color }}">
+                                                            {{ property.smart_score }}
+                                                        </span>
                             
                             <!-- Tooltip -->
                             <div class="hidden group-hover:block absolute left-full top-0 ml-2 w-48 bg-gray-900 text-white text-xs rounded p-2 z-50 shadow-xl border border-gray-700">
