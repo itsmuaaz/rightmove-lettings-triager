@@ -45,32 +45,50 @@
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
         Shortlisted Properties
     </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {% for property in shortlist %}
-        <div class="bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition-shadow duration-200 border border-gray-100">
-            <div class="flex items-center mb-1">
-                <div class="flex-shrink-0 h-16 w-24 bg-gray-200 rounded overflow-hidden">
-                    {% if property.images and property.images[0] %}
-                    <a href="#property-{{ property.id }}">
-                        <img class="w-full h-full object-cover" src="{{ property.images[0] }}" alt="Property">
-                    </a>
-                    {% else %}
-                    <div class="flex items-center justify-center h-full text-xs text-gray-400">N/A</div>
-                    {% endif %}
-                </div>
-                <div class="ml-3 flex-1 min-w-0">
-                    <div class="text-sm font-medium text-gray-900 truncate">
-                        <a href="#property-{{ property.id }}" class="hover:underline text-blue-600">
-                            {{ property.address }}
-                        </a>
-                    </div>
-                    <div class="text-xs text-gray-500 font-bold">{{ property.price_pcm }}</div>
+        <div class="bg-surface rounded-lg shadow-sm border border-border-subtle overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-200">
+            <!-- Image Area -->
+            <div class="relative h-32 w-full bg-gray-200">
+                {% if property.images and property.images[0] %}
+                <a href="#property-{{ property.id }}" class="block w-full h-full">
+                    <img class="w-full h-full object-cover hover:opacity-95 transition-opacity" src="{{ property.images[0] }}" alt="Property">
+                </a>
+                {% else %}
+                <div class="flex items-center justify-center h-full text-xs text-text-tertiary">No Image</div>
+                {% endif %}
+                
+                <!-- Price Badge -->
+                <div class="absolute bottom-3 left-3 bg-surface/90 backdrop-blur-sm px-2 py-1 rounded shadow-sm text-sm font-bold text-text-primary">
+                    {{ property.price_pcm }}
                 </div>
             </div>
-            <div class="flex justify-end items-center">
-                 <button onclick="updateHistory('{{ property.id }}', 'unshortlist')" class="text-red-500 hover:text-red-700 text-xs font-medium">
-                    Remove ⭐
-                </button>
+
+            <!-- Content Area -->
+            <div class="p-4 flex-1 flex flex-col">
+                <div class="flex-1">
+                    <h3 class="text-base font-semibold text-text-primary leading-tight mb-1 line-clamp-2" title="{{ property.address }}">
+                        <a href="#property-{{ property.id }}" class="hover:underline text-brand-primary">
+                            {{ property.address }}
+                        </a>
+                    </h3>
+                    <p class="text-xs text-text-secondary mt-1">{{ property.type }}</p>
+                </div>
+                
+                <!-- Footer / Actions -->
+                <div class="mt-4 flex justify-between items-center border-t border-border-subtle pt-3">
+                     <!-- Quick Stats -->
+                     <div class="flex items-center space-x-2">
+                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white shadow-sm {{ property.smart_score_badge_class }}" title="Smart Score">
+                            {{ property.smart_score }}
+                        </span>
+                     </div>
+
+                     <button onclick="updateHistory('{{ property.id }}', 'unshortlist')" 
+                             class="text-xs font-medium text-text-tertiary uppercase tracking-wider hover:text-state-bad transition-colors flex items-center group">
+                        Remove <span class="ml-1 text-lg leading-none group-hover:scale-110 transition-transform">×</span>
+                    </button>
+                </div>
             </div>
         </div>
         {% endfor %}
@@ -158,22 +176,16 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-surface divide-y divide-border-subtle">
                 {% for property in properties %}
                 <tr id="property-{{ property.id }}" 
-                    class="transition-colors duration-150 border-l-4 
-                    {% if property.status == 'dismissed' %}
-                        bg-gray-200 opacity-50 border-gray-400
-                    {% elif property.status == 'shortlisted' %}
-                        bg-yellow-100 border-yellow-500
-                    {% elif property.is_new %}
-                        bg-blue-100 border-blue-500
-                    {% else %}
-                        bg-white hover:bg-gray-50 border-transparent
-                    {% endif %}">
+                    class="property-row group
+                    {% if property.status == 'dismissed' %}state-dismissed{% endif %}
+                    {% if property.status == 'shortlisted' %}state-shortlisted{% endif %}
+                    {% if property.is_new %}state-new{% endif %}">
                     
                     <!-- Actions (Moved to Start) -->
-                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium w-12">
+                    <td class="px-4 py-5 whitespace-nowrap text-sm font-medium w-12 align-top">
                          <div class="flex flex-col space-y-4 items-center">
                             <!-- Status Badges -->
                             {% if property.is_new %}
@@ -214,36 +226,36 @@
                     </td>
 
                     <!-- Property Details -->
-                    <td class="px-4 py-4 whitespace-normal max-w-[400px]">
+                    <td class="px-4 py-5 whitespace-normal max-w-[400px] align-top">
                         <div class="flex items-start">
-                            <div class="flex-shrink-0 h-36 w-48 relative overflow-hidden rounded bg-gray-200">
+                            <div class="flex-shrink-0 h-32 w-48 relative overflow-hidden rounded-md bg-gray-200 shadow-sm border border-border-subtle">
                                 {% if property.images and property.images[0] %}
                                 <a href="{{ property.link }}" target="_blank" onclick="updateHistory('{{ property.id }}', 'view')">
                                     <img class="absolute inset-0 w-full h-full object-cover hover:opacity-90 transition-opacity" src="{{ property.images[0] }}" alt="Property Image">
                                 </a>
                                 {% else %}
-                                <div class="flex items-center justify-center h-full text-gray-400 text-xs">No Image</div>
+                                <div class="flex items-center justify-center h-full text-text-tertiary text-xs">No Image</div>
                                 {% endif %}
                             </div>
                             <div class="ml-4 flex-1 min-w-[150px]">
-                                <div class="text-sm font-medium text-gray-900 leading-snug">
-                                    <a href="{{ property.link }}" target="_blank" class="hover:underline text-blue-600 visited:text-purple-600" onclick="updateHistory('{{ property.id }}', 'view')">
+                                <h3 class="text-base font-semibold leading-tight mb-1">
+                                    <a href="{{ property.link }}" target="_blank" class="text-brand-primary hover:underline" onclick="updateHistory('{{ property.id }}', 'view')">
                                         {{ property.address }}
                                     </a>
-                                </div>
-                                <div class="text-xs text-gray-500 mt-1">{{ property.type }}</div>
-                                <div class="flex flex-wrap mt-2 gap-2">
-                                    <a href="{{ property.tfl_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 whitespace-nowrap">TfL Journey</a>
-                                    <a href="{{ property.google_maps_link }}" target="_blank" class="text-xs text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 whitespace-nowrap">Google Maps</a>
+                                </h3>
+                                <div class="text-sm text-text-secondary">{{ property.type }}</div>
+                                <div class="flex flex-wrap mt-3 gap-2">
+                                    <a href="{{ property.tfl_link }}" target="_blank" class="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-brand-primary text-xs font-medium hover:bg-slate-200 transition-colors whitespace-nowrap">TfL Journey</a>
+                                    <a href="{{ property.google_maps_link }}" target="_blank" class="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-brand-primary text-xs font-medium hover:bg-slate-200 transition-colors whitespace-nowrap">Google Maps</a>
                                 </div>
                             </div>
                         </div>
                     </td>
 
                     <!-- Smart Score -->
-                    <td class="px-4 py-4 whitespace-nowrap">
+                    <td class="px-4 py-5 whitespace-nowrap align-top">
                          <div class="relative group cursor-help">
-                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold shadow-sm {{ property.smart_score_badge_class }}">
+                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold text-white shadow-sm {{ property.smart_score_badge_class }}">
                                 {{ property.smart_score }}
                             </span>
                             
@@ -277,46 +289,46 @@
                     </td>
 
                     <!-- Price -->
-                    <td class="px-4 py-4 whitespace-nowrap">
+                    <td class="px-4 py-5 whitespace-nowrap align-top">
                         <div class="flex items-center space-x-2">
                             {% if property.price_indicator_color %}
-                            <span class="w-3 h-3 rounded-full inline-block flex-shrink-0 shadow-sm" 
+                            <span class="w-2 h-2 rounded-full inline-block flex-shrink-0 shadow-sm ring-1 ring-white" 
                                   style="background-color: {{ property.price_indicator_color }};" 
                                   title="Relative to search results">
                             </span>
                             {% endif %}
                             <div>
-                                <div class="text-sm font-bold text-gray-900">{{ property.price_pcm }}</div>
+                                <div class="text-base font-bold text-text-primary">{{ property.price_pcm }}</div>
                                 {% if property.price_pw != "N/A" %}
-                                <div class="text-xs text-gray-500">{{ property.price_pw }}</div>
+                                <div class="text-xs text-text-secondary">{{ property.price_pw }}</div>
                                 {% endif %}
                             </div>
                         </div>
                     </td>
 
                     <!-- Vibe -->
-                    <td class="px-4 py-4 whitespace-normal max-w-[150px]">
+                    <td class="px-4 py-5 whitespace-normal max-w-[150px] align-top">
                         <div class="flex items-start space-x-2">
                              <span class="text-xl font-bold {{ property.vibe_color_class }} mt-0.5">{{ property.vibe_score }}</span>
                              <div class="flex flex-col">
-                                 <span class="text-xs text-gray-700 font-medium leading-tight">{{ property.vibe_summary }}</span>
-                                 <span class="text-[10px] text-gray-500 mt-0.5">Safety: {{ property.vibe_safety }}</span>
+                                 <span class="text-xs text-text-primary font-medium leading-tight">{{ property.vibe_summary }}</span>
+                                 <span class="text-[10px] text-text-secondary mt-0.5">Safety: {{ property.vibe_safety }}</span>
                              </div>
                         </div>
                     </td>
 
                     <!-- Commute -->
-                    <td class="px-4 py-4 whitespace-nowrap">
+                    <td class="px-4 py-5 whitespace-nowrap align-top">
                         <div class="flex flex-col space-y-1">
                             <!-- Public Transport -->
                             <div class="flex items-center text-sm {{ property.commute_color_class }}">
                                 <span class="mr-1">🚆</span>
                                 <span class="font-semibold">{{ property.commute_time }} min</span>
                                 {% if property.commute_cost_display %}
-                                <span class="ml-1 text-xs text-gray-500" title="Peak / Off-Peak Fares">({{ property.commute_cost_display }})</span>
+                                <span class="ml-1 text-xs text-text-tertiary" title="Peak / Off-Peak Fares">({{ property.commute_cost_display }})</span>
                                 {% endif %}
                                 {% if property.commute_updated_at %}
-                                <button onclick="refreshCommute('{{ property.id }}')" class="ml-1 text-gray-400 hover:text-blue-500" title="Refresh Commute">🔄</button>
+                                <button onclick="refreshCommute('{{ property.id }}')" class="ml-1 text-text-tertiary hover:text-brand-primary transition-colors" title="Refresh Commute">🔄</button>
                                 {% endif %}
                             </div>
                             <!-- Cycling -->
@@ -328,18 +340,19 @@
                     </td>
 
                     <!-- Amenities -->
-                    <td class="px-4 py-4 whitespace-normal text-sm text-gray-500 max-w-[200px]">
-                        <ul class="space-y-1">
+                    <td class="px-4 py-5 whitespace-normal text-sm text-text-secondary max-w-[200px] align-top">
+                        <ul class="space-y-1 leading-relaxed">
                             {% for amenity in property.amenities %}
-                            <li class="flex items-center text-xs">
-                                {{ amenity.name }}: {{ amenity.distance }}
+                            <li class="flex items-center text-xs opacity-90">
+                                <span class="truncate mr-1">{{ amenity.name }}</span>
+                                <span class="text-text-tertiary whitespace-nowrap">({{ amenity.distance }})</span>
                             </li>
                             {% endfor %}
                         </ul>
                     </td>
 
                     <!-- Added On -->
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="px-4 py-5 whitespace-nowrap text-sm text-text-tertiary align-top">
                         {{ property.added_on }}
                     </td>
                 </tr>
