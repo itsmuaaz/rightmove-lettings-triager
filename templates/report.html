@@ -191,7 +191,7 @@
                     {% if property.is_new %}state-new{% endif %}">
                     
                     <!-- Actions (Moved to Start) -->
-                    <td class="px-3 py-3 whitespace-nowrap text-sm font-medium w-12 align-top">
+                    <td class="px-3 py-3 whitespace-nowrap text-sm font-medium w-12">
                          <div class="flex flex-col space-y-4 items-center">
                             <!-- Status Badges -->
                             {% if property.is_new %}
@@ -250,10 +250,6 @@
                                     </a>
                                 </h3>
                                 <div class="text-sm text-text-secondary">{{ property.type }}</div>
-                                <div class="flex flex-wrap mt-3 gap-2">
-                                    <a href="{{ property.tfl_link }}" target="_blank" class="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-brand-primary text-xs font-medium hover:bg-slate-200 transition-colors whitespace-nowrap">TfL Journey</a>
-                                    <a href="{{ property.google_maps_link }}" target="_blank" class="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-brand-primary text-xs font-medium hover:bg-slate-200 transition-colors whitespace-nowrap">Google Maps</a>
-                                </div>
                             </div>
                         </div>
                     </td>
@@ -341,6 +337,15 @@
                              <div class="flex items-center text-sm {{ property.cycling_color_class }}">
                                 <span class="mr-1">🚲</span>
                                 <span>{{ property.cycling_time }} min</span>
+                            </div>
+                            
+                            <div class="flex flex-col space-y-2 mt-4">
+                                <a href="{{ property.tfl_link }}" target="_blank" class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 text-brand-primary text-sm font-medium hover:bg-slate-200 transition-colors whitespace-nowrap" title="View on TfL">
+                                    TfL Journey
+                                </a>
+                                <a href="{{ property.google_maps_link }}" target="_blank" class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 text-brand-primary text-sm font-medium hover:bg-slate-200 transition-colors whitespace-nowrap" title="View on Google Maps">
+                                    Google Maps
+                                </a>
                             </div>
                         </div>
                     </td>
