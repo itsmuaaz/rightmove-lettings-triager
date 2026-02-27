@@ -106,3 +106,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Revamp the UI design with a modern, light-themed aesthetic, focusing on readability and component consistency.**
   *Link: [./tracks/ui_redesign_20260226/](./tracks/ui_redesign_20260226/)*
+
+---
+
+- [ ] **Track: Extract and display agency name and phone number for property listings.**
+  *Link: [./tracks/agency_phone_integration_20260227/](./tracks/agency_phone_integration_20260227/)*
