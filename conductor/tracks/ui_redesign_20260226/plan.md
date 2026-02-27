@@ -44,3 +44,6 @@
 - [x] Task: Fix Smart Score tooltip trigger scope (move 'group' class)
 - [x] Task: Compact Pill layout (reduce padding/spacing, ensure inline width)
 - [x] Task: Conductor - User Manual Verification 'Phase 4.4: Final Polish' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (Fix regression in legacy tests) 7e92433
