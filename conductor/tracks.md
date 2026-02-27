@@ -109,5 +109,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Extract and display agency name and phone number for property listings.**
+- [x] **Track: Extract and display agency name and phone number for property listings.**
   *Link: [./tracks/agency_phone_integration_20260227/](./tracks/agency_phone_integration_20260227/)*
