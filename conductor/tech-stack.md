@@ -23,4 +23,4 @@
 - **Google Gemini CLI:** Used to fetch AI-generated "vibe" insights for property locations.
 
 ## Output Format
-- **Rich HTML:** Search results are formatted as a styled HTML dashboard (`results.html`) using **Jinja2** templates and **Tailwind CSS**.
+- **Rich HTML:** Search results are formatted as a styled HTML dashboard (`results.html`) using **Jinja2** templates and **Tailwind CSS** (configured with a custom semantic design system).

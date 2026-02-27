@@ -16,10 +16,10 @@ People who are looking for rental properties in London and want to quickly compa
 - **Commute Cost:** Estimates the single journey cost (Peak/Off-Peak) using TfL fare data.
 - **Commute Stability:** Standardizes commute calculations to a consistent benchmark (Next Tuesday at 9:00 AM) to ensure fair comparison across properties, with an option to manually force-refresh data.
 - **Amenity Proximity:** Identifies nearby supermarkets, gyms, parks, and healthcare facilities using OpenStreetMap data.
-- **Rich Reporting:** Generates a styled HTML dashboard with property images, color-coded metrics, and direct navigation links (Google Maps, TfL).
+- **Rich Reporting:** Generates a modern, styled HTML dashboard with property images, dynamic color-coded metrics, and semantic components (Pills, Cards).
 - **Interactive Dashboard:** Serves a local web interface where users can add persistent notes, shortlist favorites, and dismiss unwanted properties.
 - **History Manager:** Tracks 'New', 'Viewed', 'Shortlisted', and 'Dismissed' property states across search sessions to prevent redundant analysis.
-- **Triage Workflow:** Features a high-visibility 'Shortlist' state and a top-level summary section for quick navigation to favorite properties.
+- **Triage Workflow:** Features a high-visibility, collapsible 'Shortlist' grid and a top-level summary section for quick navigation to favorite properties.
 - **TfL Client Optimization:** Implements robust caching and rate limiting to ensure reliable and efficient commute time calculations, preventing API throttling.
 - **Property Vibe:** Uses AI (Gemini) to categorize the "vibe" of a property's area (e.g., "Safe", "Trendy", "Quiet") and assign a score (1-10) for easier decision-making.
 - **Smart Scoring System:** Evaluates properties with a 0-100 score based on weighted factors (Price, Commute, Vibe, Freshness) to highlight the best overall options. (Weights are user-configurable via the CLI).
