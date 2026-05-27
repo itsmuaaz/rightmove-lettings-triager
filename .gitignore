@@ -11,3 +11,10 @@ test_report.html
 .amenity_cache/
 .DS_Store
 **/.DS_Store
+.vibe_cache.json
+history.json
+notes.json
+check_duplicates.py
+verify_agencies.html
+verify_agencies.py
+verify_dashboard.html

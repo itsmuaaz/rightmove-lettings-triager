@@ -19,4 +19,5 @@
 - [ ] Task: Implement `ClientFactory` to select `RightmoveClient` based on URL (TDD - Red/Green)
 - [ ] Task: Update `search.py` to use `ClientFactory` and run the generic search loop (Integration)
 - [ ] Task: Ensure all tests pass and coverage is >80% (Verification)
+- [ ] Task: Rename the project, GitHub repository, and update any documentation to reflect the multi-portal architecture (e.g. from 'rightmove-lettings-triager' to a more generic name) (Chore)
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Generic Runner' (Protocol in workflow.md)
