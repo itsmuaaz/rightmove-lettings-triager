@@ -108,7 +108,7 @@ class Reporter:
         except (ValueError, TypeError):
              return "text-text-tertiary"
 
-    def _enrich_property(self, p, min_price=None, max_price=None):
+    def _enrich_property(self, p, min_price=None, max_price=None, scorer=None):
         """Enriches a property dict with display-ready fields."""
         p = p.copy()
         
@@ -223,6 +223,15 @@ class Reporter:
         
         # Smart Score
         smart_score = p.get('smart_score')
+        
+        if smart_score is None and scorer is not None and min_price is not None and max_price is not None:
+            global_stats = {"min_price": min_price, "max_price": max_price}
+            score_result = scorer.calculate_score(p, global_stats)
+            if score_result and score_result.get('total') is not None:
+                p['smart_score'] = score_result['total']
+                p['score_breakdown'] = score_result['breakdown']
+                smart_score = score_result['total']
+
         base_classes = "inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold shadow-sm text-white"
         
         if smart_score is not None:
@@ -243,11 +252,23 @@ class Reporter:
         
         min_price, max_price = self._calculate_price_boundaries(properties)
         
-        enriched_properties = [self._enrich_property(p, min_price=min_price, max_price=max_price) for p in properties]
+        from scoring import SmartScorer
+        scorer = SmartScorer()
+        
+        enriched_properties = [self._enrich_property(p, min_price=min_price, max_price=max_price, scorer=scorer) for p in properties]
+        
+        # Sort the properties AFTER enriching them, to ensure that dynamically calculated 
+        # smart_score or flattened vibe_score are actually available as sort keys.
+        from utils import create_sort_key
+        reverse = (order.lower() == 'desc')
+        enriched_properties.sort(
+            key=lambda p: create_sort_key(p, sort_by=sort_by, mode=mode),
+            reverse=reverse
+        )
         
         enriched_shortlist = []
         if shortlist:
-             enriched_shortlist = [self._enrich_property(p, min_price=min_price, max_price=max_price) for p in shortlist]
+             enriched_shortlist = [self._enrich_property(p, min_price=min_price, max_price=max_price, scorer=scorer) for p in shortlist]
         elif shortlist is None:
              enriched_shortlist = [p for p in enriched_properties if p.get('status') == 'shortlisted']
 

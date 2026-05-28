@@ -424,11 +424,22 @@ def main():
         vibe_client.get_vibes(list(locations))
 
     # Using 3 workers to stay well within TfL's 50 req/min limit and Overpass limits
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-        futures = [executor.submit(process_property, p, i, len(all_properties)) 
-                   for i, p in enumerate(all_properties)]
-        # Wait for all to complete
-        concurrent.futures.wait(futures)
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
+    futures = [executor.submit(process_property, p, i, len(all_properties)) 
+               for i, p in enumerate(all_properties)]
+    
+    try:
+        # Wait for all to complete using a non-blocking loop so KeyboardInterrupt (Ctrl+C) can be processed instantly
+        import time
+        while any(not f.done() for f in futures):
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        sys.stderr.write("\n\nProcess interrupted by user (Ctrl+C). Exiting immediately...\n")
+        executor.shutdown(wait=False)
+        import os
+        os._exit(1)
+    finally:
+        executor.shutdown(wait=True)
     
     # Calculate Smart Scores and Sort
     sys.stderr.write("Calculating Smart Scores...\n")

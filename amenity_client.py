@@ -8,7 +8,7 @@ import time
 import sys
 from utils import haversine
 
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+OVERPASS_URL = "https://overpass.openstreetmap.fr/api/interpreter"
 
 class AmenityClient:
     """Client for fetching amenities from Overpass API with caching and retries."""
@@ -60,8 +60,12 @@ class AmenityClient:
         
         for attempt in range(max_attempts):
             try:
-                data = urllib.parse.urlencode({'data': query}).encode('utf-8')
-                req = urllib.request.Request(OVERPASS_URL, data=data)
+                # Use GET request as openstreetmap.fr blocks POST requests with 403 Forbidden.
+                # Use a curl User-Agent as openstreetmap.fr whitelists curl but blocks standard generic browsers to prevent spam.
+                encoded_query = urllib.parse.urlencode({'data': query})
+                url = f"{OVERPASS_URL}?{encoded_query}"
+                req = urllib.request.Request(url)
+                req.add_header("User-Agent", "curl/8.7.1")
                 
                 with urllib.request.urlopen(req, timeout=60) as response:
                     data = response.read().decode('utf-8')
