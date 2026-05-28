@@ -1,6 +1,7 @@
 import json
 import subprocess
 import os
+import sys
 import time
 from typing import Dict, List, Any
 
@@ -44,9 +45,15 @@ class VibeClient:
             else:
                 missing.append(district)
 
+        # Log cache status transparently to avoid user confusion
+        hits = len(districts) - len(missing)
+        if hits > 0:
+            sys.stderr.write(f"Vibe Cache: Loaded {hits}/{len(districts)} locations from '.vibe_cache.json' (0s delay).\n")
+
         if not missing:
             return results
 
+        sys.stderr.write(f"Vibe Cache Miss: Fetching remaining {len(missing)} uncached locations from Gemini...\n")
         # Fetch missing in batches (simple implementation: one batch for now)
         fetched_data = self._fetch_from_gemini(missing)
         

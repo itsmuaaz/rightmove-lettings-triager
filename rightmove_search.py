@@ -420,7 +420,6 @@ def main():
             locations.add(loc)
     
     if locations:
-        sys.stderr.write(f"Prefetching vibes for {len(locations)} locations...\n")
         vibe_client.get_vibes(list(locations))
 
     # Using 3 workers to stay well within TfL's 50 req/min limit and Overpass limits
