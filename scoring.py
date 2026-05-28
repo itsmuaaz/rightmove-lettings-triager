@@ -27,13 +27,6 @@ class SmartScorer:
         price_val = extract_numeric_price(property_data.get('price'))
         price_score = self._normalize_price(price_val, global_stats.get('min_price'), global_stats.get('max_price'))
 
-        # If critical data (Price) is missing, total score is 0
-        if price_score is None:
-            return {
-                "total": 0,
-                "breakdown": {"price": None, "commute": None, "vibe": None, "freshness": None}
-            }
-
         # Commute
         commute_val = property_data.get('commute_time')
         commute_score = self._normalize_commute(commute_val)
@@ -47,6 +40,18 @@ class SmartScorer:
         pub_date = property_data.get('published_on')
         days_since = get_days_since(pub_date)
         freshness_score = self._normalize_freshness(days_since)
+
+        # If any of the core parameters (Price, Commute, or Vibe) are missing, we do not calculate the total score (returns None)
+        if price_score is None or commute_score is None or vibe_score is None:
+            return {
+                "total": None,
+                "breakdown": {
+                    "price": price_score,
+                    "commute": commute_score,
+                    "vibe": vibe_score,
+                    "freshness": freshness_score
+                }
+            }
 
         # 2. Redistribute Weights for Missing Data
         valid_components = {}

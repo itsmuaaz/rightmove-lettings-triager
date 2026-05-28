@@ -60,41 +60,29 @@ class TestSmartScorer(unittest.TestCase):
         
         self.assertAlmostEqual(score_data['total'], expected_vibe) 
 
-    def test_redistribute_missing_commute(self):
-        """Test that missing commute redistributes weight to others."""
+    def test_missing_commute_returns_none(self):
+        """Test that missing commute results in None total score (not calculated)."""
         property_data = {
-            "price": "£1,000 pcm", # Max score (100)
+            "price": "£1,000 pcm",
             "commute_time": None, # Missing
-            "vibe_score": 10, # Max score (100)
-            "published_on": "2023-10-27T10:00:00Z" # Max score (100)
+            "vibe_score": 10,
+            "published_on": "2023-10-27T10:00:00Z"
         }
         global_stats = {"min_price": 1000, "max_price": 2000}
-
-        # Weights: Price 0.3, Vibe 0.2, Freshness 0.1. Total valid = 0.6
-        # New Weights: 
-        # Price = 0.3 / 0.6 = 0.5
-        # Vibe = 0.2 / 0.6 = 0.333
-        # Freshness = 0.1 / 0.6 = 0.166
-        
-        # Expected Score:
-        # Price: 100 * 0.5 = 50
-        # Vibe: 100 * 0.333 = 33.33
-        # Freshness: 100 * 0.166 = 16.66
-        # Total = 100
         
         with patch('scoring.get_days_since', return_value=0):
             score_data = self.scorer.calculate_score(property_data, global_stats)
             
-        self.assertAlmostEqual(score_data['total'], 100.0)
+        self.assertIsNone(score_data['total'])
         self.assertIsNone(score_data['breakdown']['commute'])
 
-    def test_missing_price_returns_zero(self):
-        """Test that missing price results in 0 score."""
+    def test_missing_price_returns_none(self):
+        """Test that missing price results in None total score."""
         property_data = {"price": None}
         global_stats = {"min_price": 1000, "max_price": 2000}
         
         score_data = self.scorer.calculate_score(property_data, global_stats)
-        self.assertEqual(score_data['total'], 0)
+        self.assertIsNone(score_data['total'])
 
 if __name__ == '__main__':
     unittest.main()
