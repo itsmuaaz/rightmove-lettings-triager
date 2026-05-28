@@ -75,3 +75,11 @@ The codebase comes with **175 automated unit and integration tests**:
 ```bash
 pytest
 ```
+
+---
+
+## ⚠️ Known Issues (Work in Progress)
+Here are some known issues currently being investigated and resolved:
+*   **Caching Limitations:** Search results and caches are not consistently saved across some sessions; working on stabilizing the persistence layer.
+*   **Ctrl+C Termination:** Thread pool shutdown occasionally hangs, meaning `Ctrl+C` doesn't terminate cleanly on all environments.
+*   **Early Termination:** The main script occasionally finishes running before background threads have fully completed processing all properties.
