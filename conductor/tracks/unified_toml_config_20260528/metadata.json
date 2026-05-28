@@ -1,0 +1,8 @@
+{
+  "track_id": "unified_toml_config_20260528",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-05-28T09:30:00Z",
+  "updated_at": "2026-05-28T09:30:00Z",
+  "description": "Let’s add a new yaml file to host all configurations for the script. This will include any API tokens, the scoring weights, the user prompt used for Gemini, the longitude and latitude of the work location, and any other configurations that users might want to change or tweak."
+}
