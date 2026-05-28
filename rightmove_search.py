@@ -248,8 +248,8 @@ def post_process_properties(properties):
         p['score_breakdown'] = score_result['breakdown']
 
     # 3. Sorting
-    # Default to smart_score descending
-    properties.sort(key=lambda x: x.get('smart_score', 0), reverse=True)
+    # Default to smart_score descending (handle None scores gracefully)
+    properties.sort(key=lambda x: x.get('smart_score') if x.get('smart_score') is not None else -1.0, reverse=True)
 
     return properties
 
