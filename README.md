@@ -17,9 +17,10 @@
 ## 🛠️ Prerequisites
 Before running the script, ensure you have:
 *   **Python 3.11+** (The project uses the standard `tomllib` library, which requires Python 3.11 or newer).
-*   **TfL Unified API Credentials** (Free app ID and key from [TfL Developer Portal](https://api-portal.tfl.gov.uk/) to calculate commute times and fares).
-*   **Google Gemini CLI / API Key** (To query vibes and neighborhood insights).
 *   **Active Internet Connection** (To fetch live listings from Rightmove, commute data from TfL, and local amenities from OpenStreetMap).
+*   **Google Gemini CLI / API Key** (To query vibes and neighborhood insights).
+
+*Note on TfL Commute calculations:* **No TfL API credentials are required!** The script works perfectly out of the box anonymously. If you want higher rate limits and faster querying, you can register for free credentials at the [TfL Developer Portal](https://api-portal.tfl.gov.uk/) and add them to your setup, but it is completely optional.
 
 ---
 
