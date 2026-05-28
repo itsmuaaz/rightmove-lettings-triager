@@ -1,95 +1,76 @@
 # Rightmove Lettings Triager 🏡🚇📊
 
-An automated, intelligent, and highly interactive property search, evaluation, and triage tool for the London rental market. It fetches search listings directly from Rightmove, enriches them with multi-modal commute times, local amenities, and AI-powered neighborhood vibes, and serves them up in a beautiful, responsive, stateful HTML dashboard.
+**The Problem:** Searching for London rentals on Rightmove is painfully tedious. You have to copy addresses, manually plug them into Google Maps or Citymapper to calculate commute times, research if neighborhoods are safe/lively, check if supermarkets or parks are nearby, and somehow keep track of flats you’ve already dismissed, viewed, or shortlisted.
+
+**The Goal:** This script automates that entire research and evaluation loop. It scrapes properties directly from Rightmove, enriches them with multi-modal commute times (TfL), local amenities (OpenStreetMap), and neighborhood vibes (Gemini AI), and aggregates them into a stateful, interactive dashboard where you can easily evaluate, shortlist, and add notes to properties.
+
+---
+
+> 💡 **HOT TIP (Advanced Flat-Hunting Workflow):** Set up a saved search with **Email Alerts** on Rightmove for your desired area. Whenever you receive a new alert email, simply copy the URL from the email, feed it into this script, and open your dashboard. The program's built-in **History Manager** will automatically filter out any flats you've already dismissed or viewed, highlighting only the **brand-new listings** with their fully enriched metrics instantly!
+
+---
 
 ![Rightmove Lettings Triager Dashboard](./screenshot.png)
 
 ---
 
-## 🌟 Core Features
-
-### 1. Automated Scraping & Auto-Pagination
-Simply supply page 1 of any Rightmove search URL. The tool dynamically extracts the total results count and automatically paginates through every single page to parse all listings.
-
-### 2. Multi-Modal Commute Calculations (TfL API)
-Calculates real-world **Public Transport** and **Cycling** travel times to your specific workplace using the official Transport for London (TfL) Unified API.
-*   **Tuesday 9:00 AM Benchmark:** All commute queries are standardized to the next upcoming Tuesday at 9:00 AM to ensure travel times are consistent and not affected by when you run the script (e.g. weekend schedules).
-*   **Fares Integration:** Automatically retrieves and estimates the single journey Peak/Off-Peak ticket cost.
-
-### 3. OpenStreetMap Amenity Detection (Overpass API)
-Scans OpenStreetMap using a highly optimized French Overpass mirror to identify nearby **Supermarkets, Gyms, Parks, and Healthcare facilities (Hospitals/Doctors)** within a custom radius.
-
-### 4. AI-Powered Neighborhood "Vibes" (Google Gemini)
-Pre-fetches and batches neighborhood postcode districts to query Google Gemini, generating a qualitative summary, keywords, safety evaluation, and a 1-10 "vibe score."
-
-### 5. Smart Multi-Weighted Scoring System
-Calculates an aggregate **Smart Score (0-100)** for every flat based on user-adjustable weights for **Price, Commute, Vibe, and Freshness**. Adjust weights dynamically via a CLI prompt on startup. If critical parameters like Price, Commute, or Vibe are missing or unprocessed, the score is strictly set to `N/A`.
-
-### 6. Interactive, Stateful HTML Dashboard
-Serves a local web server (default port `8888`) with a modern, responsive design and advanced interactive features:
-*   **Inbox Triage:** Click **Star** to move properties to the collapsible "Shortlisted Properties" grid. Click **Trash** to hide/dismiss properties.
-*   **State Persistence:** Viewed, shortlisted, and dismissed states are tracked locally in `history.json` and persist across runs.
-*   **Persistent Inline Notes:** Write custom notes directly on any property card; they save automatically to `notes.json` on the fly.
-*   **Relative Price Dots:** Visually displays a green-to-red gradient dot based on where the flat's price sits relative to the minimum and maximum prices of your search.
-*   **Manual Commute Refresh:** Hover over transit times and click 🔄 to bypass the cache and force-trigger a fresh live query to TfL.
-*   **Stateful URL Sorting:** Click table headers to sort instantly by Smart Score, Price, Vibe, or Commute Time (Force sort by Min, Transit, or Cycling). Sort query parameters are preserved in the URL for consistent refreshes.
+## 🛠️ Prerequisites
+Before running the script, ensure you have:
+*   **Python 3.11+** (The project uses the standard `tomllib` library, which requires Python 3.11 or newer).
+*   **TfL Unified API Credentials** (Free app ID and key from [TfL Developer Portal](https://api-portal.tfl.gov.uk/) to calculate commute times and fares).
+*   **Google Gemini CLI / API Key** (To query vibes and neighborhood insights).
+*   **Active Internet Connection** (To fetch live listings from Rightmove, commute data from TfL, and local amenities from OpenStreetMap).
 
 ---
 
-## 🛠️ Setup & Installation
+## 🌟 Core Features
 
-### 1. Clone the Repository
+*   **Automated Scraping & Auto-Pagination:** Provide page 1 of any Rightmove search URL, and the script automatically browses through all result pages to extract every flat.
+*   **History & Triage Manager:** Tracks the state of flats (`New`, `Viewed`, `Shortlisted`, `Dismissed`) across sessions in `history.json` to prevent redundant analysis.
+*   **Multi-Modal Commute (TfL API):** Calculates exact Public Transport and Cycling travel times to your office, standardized to a *Tuesday 9:00 AM benchmark* for fair comparison. Includes Peak/Off-Peak fare costs.
+*   **Amenity Proximity (OSM API):** Searches OpenStreetMap via a fast French mirror to map nearby supermarkets, gyms, parks, hospitals, and doctors within walking distance.
+*   **AI Neighborhood "Vibes" (Gemini):** Pre-fetches postcode districts to batch-query Gemini for area safety evaluations, 3-word summaries, and 1-10 "vibe scores."
+*   **Smart Multi-Weighted Scoring (0-100):** Aggregates Price, Commute, Vibe, and Freshness into a unified score. The score is strictly set to `N/A` if critical parameters like Price, Commute, or Vibe are missing.
+*   **Relative Price Dots:** Dynamic green-to-red color indicator showing how cheap or expensive a flat is relative to all other search results.
+*   **Interactive Dashboard:** A local web server (`http://localhost:8888`) featuring progressive real-time loading, star/trash inbox triage, persistent inline text notes, and URL sorting.
+*   **Fast Instant Termination:** Hit **`Ctrl+C`** at any time to instantly kill the entire script and background threads.
+
+---
+
+## 🚀 Setup & Installation
+
+### 1. Clone & Set Up Virtual Environment
 ```bash
 git clone https://github.com/itsmuaaz/rightmove-lettings-triager.git
 cd rightmove-lettings-triager
-```
-
-### 2. Setup Virtual Environment & Dependencies
-```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Configure API Credentials
+### 2. Configure Credentials & Work Location
 Create a `.env` file in the root directory:
 ```env
 TFL_APP_ID=your_tfl_app_id
 TFL_APP_KEY=your_tfl_app_key
 GOOGLE_MAPS_API_KEY=your_google_maps_api_key  # Optional fallback
 ```
-
-### 4. Configure Your Work Location
-To calculate commutes to your actual office, open `rightmove_search.py` and modify the coordinates in line 21 with your office's latitude and longitude:
+Set your office's coordinates in `rightmove_search.py` (Line 21):
 ```python
-WORK_LOCATION_COORDS = (51.5349, -0.1238)  # Default: King's Cross area
+WORK_LOCATION_COORDS = (51.5349, -0.1238)  # Latitude, Longitude (e.g. King's Cross)
 ```
 
----
-
-## 🚀 How to Run
-
-1.  Go to [Rightmove.co.uk](https://www.rightmove.co.uk/) and perform your search (set rent limits, bedrooms, location, etc.).
-2.  **Copy the search URL** from your browser.
-3.  Execute the script:
-    ```bash
-    python rightmove_search.py "YOUR_RIGHTMOVE_URL"
-    ```
-4.  The script will prompt you if you'd like to adjust the default scoring weights. Type **`n`** for default or **`y`** to customize.
-5.  Open **`http://localhost:8888`** in your browser. 
-6.  The dashboard supports **Progressive Loading**. Watch properties load instantly, and hit **"Refresh"** in the floating blue progress banner to see them enrich in real-time as background threads fetch TfL, OSM, and Gemini data!
-7.  Press **`Ctrl+C`** in your terminal at any time to instantly stop the program.
+### 3. Run the Script
+Execute the script using your Rightmove search URL:
+```bash
+python rightmove_search.py "YOUR_RIGHTMOVE_URL"
+```
+Choose whether to calibrate scoring weights at the CLI prompt, and then open **`http://localhost:8888`** in your browser. Watch properties enrich progressively in real-time!
 
 ---
 
-## 🧪 Developer Section (Running Tests)
-The project comes with an extensive automated test suite of **175 unit and integration tests** verifying caches, clients, and API integration.
-
-To run the tests:
+## 🧪 Running Tests
+The codebase comes with **175 automated unit and integration tests**:
 ```bash
 pytest
-```
-To run tests with coverage reporting:
-```bash
-pytest --cov=.
 ```
