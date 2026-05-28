@@ -106,3 +106,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Revamp the UI design with a modern, light-themed aesthetic, focusing on readability and component consistency.**
   *Link: [./tracks/ui_redesign_20260226/](./tracks/ui_redesign_20260226/)*
+
+---
+
+- [ ] **Track: Cache Partitioning & Targeted Threading**
+  *Link: [./tracks/cache_partitioning_20260528/](./tracks/cache_partitioning_20260528/)*

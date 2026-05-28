@@ -1,0 +1,8 @@
+{
+  "track_id": "cache_partitioning_20260528",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-05-28T09:30:00Z",
+  "updated_at": "2026-05-28T09:30:00Z",
+  "description": "Let's update the script to add a cache partition step right before the multi-threaded processing loop starts: 1. Cache Detection: The script checks every scraped property to see if we already have its matching TfL commute data (Transit and Cycling) AND its OpenStreetMap amenities on disk. 2. Instant Synchronous Processing: * Any property that is already fully cached is processed immediately on the main thread. * Since these require zero API calls, they are populated in milliseconds without spawning any threads. * This instantly updates the search_state.processed counter. 3. Targeted Thread Pool: Only properties that are actually un-cached are submitted to the ThreadPoolExecutor. * If you have 30 properties, and 25 are cached, the thread pool only has to run for the remaining 5! * If all 30 are cached, the thread pool is completely bypassed, and the script finishes instantly!"
+}
