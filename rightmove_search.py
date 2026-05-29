@@ -31,9 +31,11 @@ def is_tfl_cached(tfl_client: TflClient, from_coords: tuple, to_coords: tuple) -
     cycling_hit = tfl_client.is_cached(from_coords, to_coords, "Cycling")
     return transit_hit and cycling_hit
 
-def is_osm_cached(amenity_client: AmenityClient, lat: float, lon: float) -> bool:
+def is_osm_cached(amenity_calculator, lat: float, lon: float) -> bool:
     """Checks if OpenStreetMap amenity data is locally cached for the coordinates."""
-    return amenity_client.is_cached(lat, lon)
+    if not amenity_calculator or not amenity_calculator.amenity_client:
+        return False
+    return amenity_calculator.amenity_client.is_cached(lat, lon, amenity_calculator.radius)
 
 def is_vibe_cached(vibe_client: VibeClient, location_key: str) -> bool:
     """Checks if the vibe score is locally cached and valid."""
@@ -46,7 +48,7 @@ def is_vibe_cached(vibe_client: VibeClient, location_key: str) -> bool:
                 return True
     return False
 
-def is_fully_cached(tfl_client, amenity_client, vibe_client, property_data, work_coords):
+def is_fully_cached(tfl_client, amenity_calculator, vibe_client, property_data, work_coords):
     """Unified check to determine if a property's dynamic metrics are entirely cached."""
     # Check TfL
     lat, lon = property_data.get('latitude'), property_data.get('longitude')
@@ -57,51 +59,46 @@ def is_fully_cached(tfl_client, amenity_client, vibe_client, property_data, work
         return False
         
     # Check Amenities
-    if not is_osm_cached(amenity_client, lat, lon):
+    if not is_osm_cached(amenity_calculator, lat, lon):
         return False
         
     # Check Vibe
-    vibe_loc = extract_location_for_vibe(property_data, lat, lon)
+    vibe_loc = extract_location_for_vibe(property_data.get('displayAddress', property_data.get('address', '')), (lat, lon))
     if not vibe_loc or not is_vibe_cached(vibe_client, vibe_loc):
         return False
         
     return True
 
-def populate_property_sync(property_data, tfl_client, amenity_client, vibe_client, calculator, amenity_calculator, work_coords, scorer):
+def populate_property_sync(p):
     """Synchronously populates a property using only local cache data. No thread pools or locks needed."""
-    lat, lon = property_data.get('latitude'), property_data.get('longitude')
-    
-    # 1. Fetch TfL Commutes (Instant Hit)
-    pt_time = calculator.get_commute_time((lat, lon), work_coords, "Public Transport")
-    property_data['commute_time'] = pt_time
-    
-    cycling_time = calculator.get_commute_time((lat, lon), work_coords, "Cycling")
-    property_data['cycling_time'] = cycling_time
-    
-    # 2. Fetch Amenities (Instant Hit)
-    amenities = amenity_calculator.get_amenities(lat, lon)
-    property_data['amenities'] = amenities
-    
-    # 3. Fetch Vibe (Instant Hit)
-    vibe_loc = extract_location_for_vibe(property_data, lat, lon)
-    if vibe_loc:
-        vibes = vibe_client.get_vibes([vibe_loc])
-        if vibe_loc in vibes:
-            property_data['vibe_score'] = vibes[vibe_loc].get('score', 'N/A')
-            property_data['vibe_summary'] = vibes[vibe_loc].get('summary', 'N/A')
-            property_data['vibe_safety'] = vibes[vibe_loc].get('safety', 'N/A')
-        else:
-            property_data['vibe_score'] = 'N/A'
-            property_data['vibe_summary'] = 'N/A'
-            property_data['vibe_safety'] = 'N/A'
-    else:
-        property_data['vibe_score'] = 'N/A'
-        property_data['vibe_summary'] = 'N/A'
-        property_data['vibe_safety'] = 'N/A'
+    global calculator, amenity_calculator, note_manager, history_manager, vibe_client
 
-    # 4. Calculate Score
-    property_data['smart_score'] = scorer.calculate_score(property_data)
-    return property_data
+    try:
+        if calculator:
+            res = calculator.calculate(p['_original'])
+            p['distance'] = res['distance']
+            p['commute_time'] = res['commute_time']
+            p['commute_fares'] = res.get('commute_fares')
+            p['commute_cycling'] = res.get('commute_cycling')
+
+        if amenity_calculator:
+            p['nearby_amenities'] = amenity_calculator.calculate(p.get('latitude'), p.get('longitude'))
+
+        if vibe_client:
+            location_key = extract_location_for_vibe(p['address'], (p.get('latitude'), p.get('longitude')))
+            if location_key:
+                vibes = vibe_client.get_vibes([location_key])
+                p['vibe'] = vibes.get(location_key)
+
+        if note_manager:
+            p['note'] = note_manager.get_note(p['id'])
+
+        if history_manager:
+            p['history_status'] = history_manager.get_status(p['id'])
+    except Exception as e:
+        sys.stderr.write(f"Error sync-processing property {p.get('id')}: {e}\n")
+
+    return p
 
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
@@ -494,35 +491,55 @@ def main():
         sys.stderr.write("Search continues in background...\n")
 
     sys.stderr.write(f"Calculating metrics for {len(all_properties)} properties...\n")
-    
-    # Pre-fetch Vibes for all locations to batch API calls
-    locations = set()
-    for p in all_properties:
-        loc = extract_location_for_vibe(p['address'], (p.get('latitude'), p.get('longitude')))
-        if loc:
-            locations.add(loc)
-    
-    if locations:
-        vibe_client.get_vibes(list(locations))
 
-    # Using 3 workers to stay well within TfL's 50 req/min limit and Overpass limits
-    executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
-    futures = [executor.submit(process_property, p, i, len(all_properties)) 
-               for i, p in enumerate(all_properties)]
-    
-    try:
-        # Wait for all to complete using a non-blocking loop so KeyboardInterrupt (Ctrl+C) can be processed instantly
-        import time
-        while any(not f.done() for f in futures):
-            time.sleep(0.1)
-    except KeyboardInterrupt:
-        sys.stderr.write("\n\nProcess interrupted by user (Ctrl+C). Exiting immediately...\n")
-        executor.shutdown(wait=False)
-        import os
-        os._exit(1)
-    finally:
-        executor.shutdown(wait=True)
-    
+    # ---- PARTITIONING PASS ----
+    synchronous_properties = []
+    async_properties = []
+
+    for p in all_properties:
+        if is_fully_cached(tfl, amenity_calculator, vibe_client, p, WORK_LOCATION_COORDS):
+            synchronous_properties.append(p)
+        else:
+            async_properties.append(p)
+
+    if synchronous_properties:
+        sys.stderr.write(f"Instantly loading {len(synchronous_properties)} fully cached properties...\n")
+        for p in synchronous_properties:
+            populate_property_sync(p)
+        search_state.processed += len(synchronous_properties)
+
+    if async_properties:
+        # Pre-fetch Vibes for async locations to batch API calls
+        locations = set()
+        for p in async_properties:
+            loc = extract_location_for_vibe(p['address'], (p.get('latitude'), p.get('longitude')))
+            if loc:
+                locations.add(loc)
+
+        if locations:
+            vibe_client.get_vibes(list(locations))
+
+        sys.stderr.write(f"Querying external APIs for remaining {len(async_properties)} properties...\n")
+        # Using 3 workers to stay well within TfL's 50 req/min limit and Overpass limits
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
+        futures = [executor.submit(process_property, p, i, len(async_properties))
+                   for i, p in enumerate(async_properties)]
+
+        try:
+            # Wait for all to complete using a non-blocking loop so KeyboardInterrupt (Ctrl+C) can be processed instantly
+            import time
+            while any(not f.done() for f in futures):
+                time.sleep(0.1)
+        except KeyboardInterrupt:
+            sys.stderr.write("\n\nProcess interrupted by user (Ctrl+C). Exiting immediately...\n")
+            executor.shutdown(wait=False)
+            import os
+            os._exit(1)
+        finally:
+            executor.shutdown(wait=True)
+    else:
+        sys.stderr.write("All properties loaded from cache! Bypassing thread pool entirely.\n")
+
     # Calculate Smart Scores and Sort
     sys.stderr.write("Calculating Smart Scores...\n")
     all_properties = post_process_properties(all_properties)

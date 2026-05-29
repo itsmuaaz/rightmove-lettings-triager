@@ -49,6 +49,25 @@ class TflClient:
         key_str = f"{from_coords}-{to_coords}-{json.dumps(params, sort_keys=True)}"
         return hashlib.md5(key_str.encode('utf-8')).hexdigest()
 
+    def _build_params(self, mode: str) -> dict:
+        """Builds API params based on transport mode."""
+        if mode == "Cycling":
+            return {'mode': 'cycle'}
+        else:
+            benchmark = get_next_benchmark_time()
+            return {
+                "date": benchmark.strftime("%Y%m%d"),
+                "time": benchmark.strftime("%H%M"),
+                "timeIs": "Arriving"
+            }
+
+    def is_cached(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], mode: str) -> bool:
+        """Returns True if the commute is locally cached and not stale."""
+        params = self._build_params(mode)
+        key = self._get_cache_key(from_coords, to_coords, params)
+        # Using _load_cache automatically checks for TTL/staleness vs arrival_benchmark
+        return self._load_cache(key) is not None
+
     def _load_cache(self, key: str, ignore_expiration: bool = False) -> Optional[Any]:
         """Loads data from cache if available."""
         cache_path = os.path.join(self.cache_dir, f"{key}.json")
