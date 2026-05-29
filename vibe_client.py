@@ -15,6 +15,7 @@ class VibeClient:
         self.cache_file = cache_file
         self.lock = threading.RLock()
         self.cache = self._load_cache()
+        self._failed_session_fetches = set()
 
     def _load_cache(self) -> Dict[str, Any]:
         """Loads the cache from disk."""
@@ -47,6 +48,10 @@ class VibeClient:
         # Check cache under lock
         with self.lock:
             for district in districts:
+                if district in self._failed_session_fetches:
+                    sys.stderr.write(f"[CACHE MISS] Vibe for {district} previously failed in this session. Skipping.\n")
+                    continue
+                
                 if district in self.cache:
                     entry = self.cache[district]
                     if isinstance(entry, dict):
@@ -96,6 +101,7 @@ class VibeClient:
                         results[district] = self.cache[district]
                         sys.stderr.write(f"[API ERROR] [FAIL] Vibe fetch for {district} - Falling back to stale cached data.\n")
                     else:
+                        self._failed_session_fetches.add(district)
                         sys.stderr.write(f"[API ERROR] [FAIL] Vibe fetch for {district}\n")
             
             self._save_cache()
