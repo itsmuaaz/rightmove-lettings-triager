@@ -150,17 +150,18 @@ class TflClient:
         """Internal helper to fetch journey data with specific parameters."""
         # Check cache first
         cache_key = self._get_cache_key(from_coords, to_coords, params)
+        mode = "Cycling" if params.get('mode') == 'cycle' else "Public Transport"
         if not force_refresh:
             cached_data = self._load_cache(cache_key)
             if cached_data:
-                sys.stderr.write(f"[CACHE HIT] TfL commute {from_coords} to {to_coords}\n")
+                sys.stderr.write(f"[CACHE HIT] TfL commute ({mode}) {from_coords} to {to_coords}\n")
                 return self._extract_journey_data(cached_data)
             else:
                 cache_path = os.path.join(self.cache_dir, f"{cache_key}.json")
                 if not os.path.exists(cache_path):
-                    sys.stderr.write(f"[CACHE MISS] TfL commute {from_coords} to {to_coords} not found.\n")
+                    sys.stderr.write(f"[CACHE MISS] TfL commute ({mode}) {from_coords} to {to_coords} not found.\n")
 
-        sys.stderr.write(f"[CACHE FETCH] Fetching TfL commute {from_coords} to {to_coords} from API...\n")
+        sys.stderr.write(f"[CACHE FETCH] Fetching TfL commute ({mode}) {from_coords} to {to_coords} from API...\n")
         from_str = f"{from_coords[0]},{from_coords[1]}"
         to_str = f"{to_coords[0]},{to_coords[1]}"
         
@@ -196,15 +197,15 @@ class TflClient:
                         sys.stderr.write(f"TfL API Error: Status {response.status}\n")
                         fallback_data = self._load_cache(cache_key, ignore_expiration=True)
                         if fallback_data:
-                            sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch failed - Falling back to stale cached commute data.\n")
+                            sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch ({mode}) failed - Falling back to stale cached commute data.\n")
                             return self._extract_journey_data(fallback_data)
-                        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
+                        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch ({mode}) for {from_coords} to {to_coords}\n")
                         return None
                     data = json.loads(response.read().decode('utf-8'))
                     
                     # Save to cache
                     self._save_cache(cache_key, data)
-                    sys.stderr.write(f"[API SUCCESS] [PASS] TfL fetch for {from_coords} to {to_coords}\n")
+                    sys.stderr.write(f"[API SUCCESS] [PASS] TfL fetch ({mode}) for {from_coords} to {to_coords}\n")
                     return self._extract_journey_data(data)
             except Exception as e:
                 sys.stderr.write(f"TfL API Attempt {attempt + 1} failed: {str(e)}\n")
@@ -214,15 +215,15 @@ class TflClient:
                 else:
                     fallback_data = self._load_cache(cache_key, ignore_expiration=True)
                     if fallback_data:
-                        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch failed - Falling back to stale cached commute data.\n")
+                        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch ({mode}) failed - Falling back to stale cached commute data.\n")
                         return self._extract_journey_data(fallback_data)
-                    sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
+                    sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch ({mode}) for {from_coords} to {to_coords}\n")
                     return None
         fallback_data = self._load_cache(cache_key, ignore_expiration=True)
         if fallback_data:
-            sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch failed - Falling back to stale cached commute data.\n")
+            sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch ({mode}) failed - Falling back to stale cached commute data.\n")
             return self._extract_journey_data(fallback_data)
-        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
+        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch ({mode}) for {from_coords} to {to_coords}\n")
         return None
 
     def get_journey_data(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3, force_refresh: bool = False) -> Optional[Dict[str, Any]]:
