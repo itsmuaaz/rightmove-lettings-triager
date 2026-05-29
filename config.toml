@@ -11,10 +11,10 @@ work_longitude = -0.1238
 [scoring.weights]
 # The relative importance of each metric when calculating the final Smart Score.
 # These will be automatically normalized to sum to 1.0
-price = 0.3
+price = 0.25
 commute = 0.3
-vibe = 0.3
-freshness = 0.1
+vibe = 0.2
+freshness = 0.25
 
 [scoring.thresholds]
 # Maximum acceptable commute time in minutes. Commutes longer than this score 0.
@@ -26,6 +26,18 @@ freshness_decay_days = 7
 # Number of days before local 'vibe' AI cache is considered stale.
 vibe_ttl_days = 30
 
+[api.gemini]
+# The Gemini Model to use for evaluating area vibes.
+model = "gemini-3.1-flash-lite"
+# Define what you consider a "good vibe". This is injected into the AI's prompt.
+custom_criteria = """
+- Transport Connectivity: High PTAL scores and redundancy (Tube, Rail, Overground).
+- Amenity Density: A functional '15-minute city' with independent high streets.
+- Public Realm Quality: Access to significant Green (Parks) or Blue (Thames/Canal) spaces.
+- Urban Safety: Low residential crime and high 'eyes on the street' activity.
+- General Reputation & Prestige
+"""
+
 [api.tfl]
 # Minimum seconds between requests to stay within TfL's 50/min free tier.
 rate_limit_interval_seconds = 1.5
@@ -36,18 +48,6 @@ rate_limit_interval_seconds = 1.5
 url = "https://overpass.openstreetmap.fr/api/interpreter"
 # Radius in meters to search for local amenities (e.g. gyms, supermarkets).
 search_radius_meters = 1000
-
-[api.gemini]
-# The Gemini Model to use for evaluating area vibes.
-model = "gemini-3.1-flash-lite"
-# Define what you consider a "good vibe". This is injected into the AI's prompt.
-custom_criteria = """
-- Safety & Crime
-- Target demographic (students, families, professionals)
-- Gentrification status
-- Access to Greenery (Parks, Commons)
-- General Reputation & Prestige
-"""
 
 [network]
 # User agent used when scraping property portals.
