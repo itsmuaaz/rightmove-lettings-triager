@@ -54,6 +54,7 @@ class VibeClient:
                                 sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} expired (cached on {cached_at_str}).\n")
                                 missing.append(district)
                             else:
+                                sys.stderr.write(f"[CACHE HIT] Vibe for {district}\n")
                                 results[district] = entry
                         except ValueError:
                             sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} had malformed timestamp.\n")
@@ -62,29 +63,30 @@ class VibeClient:
                         sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} is missing timestamp (legacy).\n")
                         missing.append(district)
                 else:
+                    sys.stderr.write(f"[CACHE MISS] Vibe for {district} had invalid format.\n")
                     missing.append(district)
             else:
+                sys.stderr.write(f"[CACHE MISS] Vibe for {district} not found.\n")
                 missing.append(district)
-
-        # Log cache status transparently to avoid user confusion
-        hits = len(districts) - len(missing)
-        if hits > 0:
-            sys.stderr.write(f"[CACHE HIT] Vibe for {hits}/{len(districts)} locations loaded.\n")
 
         if not missing:
             return results
 
-        sys.stderr.write(f"[CACHE MISS] Vibe for {len(missing)} locations not found or expired. Querying Gemini...\n")
+        sys.stderr.write(f"[CACHE MISS] Querying Gemini for remaining {len(missing)} uncached locations...\n")
         # Fetch missing in batches (simple implementation: one batch for now)
         fetched_data = self._fetch_from_gemini(missing)
         
-        # Update cache and results
+        # Update cache and results & print PASS/FAIL for each missing
         now_str = now.isoformat()
-        for district, data in fetched_data.items():
+        for district in missing:
+            data = fetched_data.get(district)
             if isinstance(data, dict):
                 data["cached_at"] = now_str
                 self.cache[district] = data
                 results[district] = data
+                sys.stderr.write(f"[API SUCCESS] [PASS] Vibe fetch for {district}\n")
+            else:
+                sys.stderr.write(f"[API ERROR] [FAIL] Vibe fetch for {district}\n")
         
         self._save_cache()
         

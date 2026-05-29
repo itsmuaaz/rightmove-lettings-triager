@@ -162,6 +162,10 @@ class TflClient:
             if cached_data:
                 sys.stderr.write(f"[CACHE HIT] TfL commute {from_coords} to {to_coords}\n")
                 return self._extract_journey_data(cached_data)
+            else:
+                cache_path = os.path.join(self.cache_dir, f"{cache_key}.json")
+                if not os.path.exists(cache_path):
+                    sys.stderr.write(f"[CACHE MISS] TfL commute {from_coords} to {to_coords} not found.\n")
 
         sys.stderr.write(f"[CACHE FETCH] Fetching TfL commute {from_coords} to {to_coords} from API...\n")
         from_str = f"{from_coords[0]},{from_coords[1]}"
@@ -197,12 +201,13 @@ class TflClient:
                         
                     if response.status != 200:
                         sys.stderr.write(f"TfL API Error: Status {response.status}\n")
+                        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
                         return None
                     data = json.loads(response.read().decode('utf-8'))
                     
                     # Save to cache
                     self._save_cache(cache_key, data)
-                    
+                    sys.stderr.write(f"[API SUCCESS] [PASS] TfL fetch for {from_coords} to {to_coords}\n")
                     return self._extract_journey_data(data)
             except Exception as e:
                 sys.stderr.write(f"TfL API Attempt {attempt + 1} failed: {str(e)}\n")
@@ -210,7 +215,9 @@ class TflClient:
                 if attempt < max_retries - 1:
                     time.sleep(1) # Simple backoff
                 else:
+                    sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
                     return None
+        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
         return None
 
     def get_journey_data(self, from_coords: Tuple[float, float], to_coords: Tuple[float, float], max_retries: int = 3, force_refresh: bool = False) -> Optional[Dict[str, Any]]:
