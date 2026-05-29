@@ -13,6 +13,7 @@
 - **`os`:** For interacting with environment variables.
 - **`venv`:** For managing project dependencies in a virtual environment.
 - **`http.server`:** For serving the local interactive dashboard.
+- **`tomllib`:** For parsing the unified `config.toml` configuration file.
 
 ## External Tools
 - **`curl`:** Used as the primary data fetching mechanism, configured with a browser-like User-Agent to bypass simple anti-bot measures.
