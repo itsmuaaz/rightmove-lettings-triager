@@ -14,3 +14,6 @@
 - [x] Task: Update `vibe_client.py` to read the Gemini prompt template dynamically from `config.toml` (Integration) [2d6af59]
 - [x] Task: Run the entire test suite and verify no regressions in scoring, caching, or execution (Verification) [2d6af59]
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Weights Migration & Script Integration' (Protocol in workflow.md) [checkpoint: 2d6af59]
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions [7586fd3]
