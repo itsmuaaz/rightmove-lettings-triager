@@ -36,6 +36,12 @@ class AmenityClient:
         key = f"{round(lat, 4)}:{round(lon, 4)}:{radius}:bulk"
         return hashlib.md5(key.encode('utf-8')).hexdigest()
 
+    def is_cached(self, lat: float, lon: float, radius: int = 1000) -> bool:
+        """Returns True if the bulk amenity cache file exists for these coordinates and radius."""
+        cache_key = self._get_cache_key(lat, lon, radius)
+        cache_file = os.path.join(self.cache_dir, f"{cache_key}.json") if self.cache_dir else None
+        return cache_file is not None and os.path.exists(cache_file)
+
     def fetch_all_amenities(self, lat: float, lon: float, radius: int, max_attempts: int = 5) -> dict:
         """Fetches all categories of amenities in a single bulk query."""
         cache_key = self._get_cache_key(lat, lon, radius)

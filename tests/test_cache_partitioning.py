@@ -11,6 +11,9 @@ class TestCachePartitioning(unittest.TestCase):
         self.tfl_client = MagicMock()
         self.amenity_client = MagicMock()
         self.vibe_client = MagicMock()
+        self.amenity_calculator = MagicMock()
+        self.amenity_calculator.amenity_client = self.amenity_client
+        self.amenity_calculator.radius = 1500
         self.work_coords = (51.0, -0.1)
         self.prop = {'latitude': 51.5, 'longitude': -0.2, 'displayAddress': 'Test St'}
 
@@ -26,10 +29,10 @@ class TestCachePartitioning(unittest.TestCase):
 
     def test_is_osm_cached(self):
         self.amenity_client.is_cached.return_value = True
-        self.assertTrue(is_osm_cached(self.amenity_client, 51.5, -0.2))
+        self.assertTrue(is_osm_cached(self.amenity_calculator, 51.5, -0.2))
         
         self.amenity_client.is_cached.return_value = False
-        self.assertFalse(is_osm_cached(self.amenity_client, 51.5, -0.2))
+        self.assertFalse(is_osm_cached(self.amenity_calculator, 51.5, -0.2))
 
     def test_is_vibe_cached(self):
         self.vibe_client.cache = {'SW1': {'cached_at': '2026-05-28T12:00:00'}}
@@ -48,24 +51,24 @@ class TestCachePartitioning(unittest.TestCase):
         self.amenity_client.is_cached.return_value = True
         self.vibe_client.cache = {'SW1': {'cached_at': '2026-05-28T12:00:00'}}
         
-        self.assertTrue(is_fully_cached(self.tfl_client, self.amenity_client, self.vibe_client, self.prop, self.work_coords))
+        self.assertTrue(is_fully_cached(self.tfl_client, self.amenity_calculator, self.vibe_client, self.prop, self.work_coords))
         
         # Miss TfL
         self.tfl_client.is_cached.return_value = False
-        self.assertFalse(is_fully_cached(self.tfl_client, self.amenity_client, self.vibe_client, self.prop, self.work_coords))
+        self.assertFalse(is_fully_cached(self.tfl_client, self.amenity_calculator, self.vibe_client, self.prop, self.work_coords))
         
         # Miss Amenity
         self.tfl_client.is_cached.return_value = True
         self.amenity_client.is_cached.return_value = False
-        self.assertFalse(is_fully_cached(self.tfl_client, self.amenity_client, self.vibe_client, self.prop, self.work_coords))
+        self.assertFalse(is_fully_cached(self.tfl_client, self.amenity_calculator, self.vibe_client, self.prop, self.work_coords))
 
         # Miss Vibe
         self.amenity_client.is_cached.return_value = True
         self.vibe_client.cache = {}
-        self.assertFalse(is_fully_cached(self.tfl_client, self.amenity_client, self.vibe_client, self.prop, self.work_coords))
+        self.assertFalse(is_fully_cached(self.tfl_client, self.amenity_calculator, self.vibe_client, self.prop, self.work_coords))
 
     def test_is_fully_cached_missing_coords(self):
-        self.assertFalse(is_fully_cached(self.tfl_client, self.amenity_client, self.vibe_client, {}, self.work_coords))
+        self.assertFalse(is_fully_cached(self.tfl_client, self.amenity_calculator, self.vibe_client, {}, self.work_coords))
 
 if __name__ == '__main__':
     unittest.main()
