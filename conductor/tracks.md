@@ -116,3 +116,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [ ] **Track: Unified TOML Configuration System**
   *Link: [./tracks/unified_toml_config_20260528/](./tracks/unified_toml_config_20260528/)*
+
+---
+
+- [ ] **Track: Fix Vibe Scoring & Address Fallback**
+  *Link: [./tracks/vibe_fallback_20260529/](./tracks/vibe_fallback_20260529/)*
