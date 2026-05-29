@@ -12,8 +12,8 @@ work_longitude = -0.1238
 # The relative importance of each metric when calculating the final Smart Score.
 # These will be automatically normalized to sum to 1.0
 price = 0.25
-commute = 0.3
-vibe = 0.2
+commute = 0.35
+vibe = 0.15
 freshness = 0.25
 
 [scoring.thresholds]
