@@ -40,20 +40,13 @@ search_radius_meters = 1000
 [api.gemini]
 # The Gemini Model to use for evaluating area vibes.
 model = "gemini-3.1-flash-lite"
-# The system prompt used to instruct Gemini.
-prompt_template = """
-You are a London property market expert.
-Analyze the 'vibe' of the following London locations (postcode districts or full addresses).
-Focus on: Safety, target demographic (students, families, professionals), gentrification status, and overall atmosphere.
-
-Respond ONLY with a valid JSON object where keys are the exact location strings provided, and values are objects with:
-1. "score": A subjective desirability score from 1-10 (1=terrible, 10=amazing).
-2. "summary": A concise 3-5 word description highlighting the dominant traits.
-3. "safety": One of ["High", "Medium", "Low"].
-4. "keywords": A list of 3 strings (e.g., ["Leafy", "Quiet", "Riverside"]).
-
-Locations to analyze:
-{locations}
+# Define what you consider a "good vibe". This is injected into the AI's prompt.
+custom_criteria = """
+- Safety & Crime
+- Target demographic (students, families, professionals)
+- Gentrification status
+- Access to Greenery (Parks, Commons)
+- General Reputation & Prestige
 """
 
 [network]

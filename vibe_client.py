@@ -6,7 +6,7 @@ import time
 import threading
 from typing import Dict, List, Any
 from datetime import datetime, timedelta
-from config import VIBE_CACHE_TTL_DAYS
+from config_manager import ConfigManager
 
 class VibeClient:
     """Client for fetching and caching 'vibe' data for London postcode districts using Gemini."""
@@ -16,6 +16,11 @@ class VibeClient:
         self.lock = threading.RLock()
         self.cache = self._load_cache()
         self._failed_session_fetches = set()
+        
+        manager = ConfigManager()
+        self.config = manager.load_config()
+        self.ttl_days = self.config.get("cache", {}).get("vibe_ttl_days", 30)
+        self.model = self.config.get("api", {}).get("gemini", {}).get("model", "gemini-3.1-flash-lite")
 
     def _load_cache(self) -> Dict[str, Any]:
         """Loads the cache from disk."""
@@ -59,7 +64,7 @@ class VibeClient:
                         if cached_at_str:
                             try:
                                 cached_at = datetime.fromisoformat(cached_at_str)
-                                if now - cached_at > timedelta(days=VIBE_CACHE_TTL_DAYS):
+                                if now - cached_at > timedelta(days=self.ttl_days):
                                     sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} expired (cached on {cached_at_str}).\n")
                                     missing.append(district)
                                 else:
@@ -109,11 +114,9 @@ class VibeClient:
         return results
 
     def _generate_prompt(self, locations: List[str]) -> str:
-        return f"""
-You are a London property market expert.
-Analyze the 'vibe' of the following London locations (postcode districts or full addresses): {locations}.
-
-Evaluate each location based on:
+        custom_criteria = self.config.get("api", {}).get("gemini", {}).get("custom_criteria", "")
+        if not custom_criteria:
+            custom_criteria = """
 - Safety & Crime
 - Fun & Nightlife
 - Amenities (Supermarkets, Gyms, Cafes)
@@ -121,6 +124,14 @@ Evaluate each location based on:
 - Quality of Life
 - Access to Greenery (Parks, Commons)
 - General Reputation & Prestige
+"""
+            
+        return f"""
+You are a London property market expert.
+Analyze the 'vibe' of the following London locations (postcode districts or full addresses): {locations}.
+
+Evaluate each location based on:
+{custom_criteria}
 
 For each location, provide a JSON object with:
 1. "score": An aggregate integer (1-10) reflecting all the above factors.
@@ -134,13 +145,13 @@ For each location, provide a JSON object with:
 4. "keywords": A list of 3 strings (e.g., ["Leafy", "Quiet", "Riverside"]).
 
 Use a consistent scoring rubric across similar London areas.
-Return ONLY a valid JSON object mapping the input location string exactly to the data. 
+Return ONLY a valid JSON object mapping the input location string exactly to the data.
 Do not include any markdown formatting (like ```json ... ```).
 
-Example: 
+Example:
 {{
   "SW14": {{
-    "score": 8, 
+    "score": 8,
     "summary": "Leafy, safe, riverside village",
     "safety": "High",
     "keywords": ["Leafy", "Riverside", "Quiet"]
