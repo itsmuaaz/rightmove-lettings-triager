@@ -1,8 +1,0 @@
-{
-  "track_id": "vibe_fallback_20260529",
-  "type": "bug",
-  "status": "new",
-  "created_at": "2026-05-29T12:00:00Z",
-  "updated_at": "2026-05-29T12:00:00Z",
-  "description": "Fix Vibe Scoring & Address Fallback"
-}

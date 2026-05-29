@@ -1,8 +1,0 @@
-{
-  "track_id": "table_sorting_20260226",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-02-26T12:00:00Z",
-  "updated_at": "2026-02-26T12:00:00Z",
-  "description": "Enable table sorting by column headers (Price, Smart Score, Vibe, Commute, Added On) with persisted state and commute mode selection."
-}

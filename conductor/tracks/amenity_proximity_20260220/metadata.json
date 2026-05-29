@@ -1,8 +1,0 @@
-{
-  "track_id": "amenity_proximity_20260220",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-02-20T12:30:00Z",
-  "updated_at": "2026-02-20T12:30:00Z",
-  "description": "Amenity Proximity: Calculate distance to nearest supermarkets, gyms, and green spaces."
-}

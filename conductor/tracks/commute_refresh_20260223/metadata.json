@@ -1,8 +1,0 @@
-{
-  "track_id": "commute_refresh_20260223",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-02-23T14:45:00Z",
-  "updated_at": "2026-02-23T14:45:00Z",
-  "description": "Add a way to force refresh cached data like commute details. Also, we should mention what day and hour (time of the day) the calculations were last calculated. Also, is it possible to always calculate the commute details at a specific time of the day, like 9am on the next Tuesday? (instead of the time of calling the API). This will help make the result more stable (whether you run the program in the morning, or at 2am, you will get the same commute details). Think like a product manager and take all this feedback into account to design a better website with a better UX."
-}
