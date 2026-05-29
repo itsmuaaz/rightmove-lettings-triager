@@ -323,44 +323,6 @@ def post_process_properties(properties):
 
     return properties
 
-def configure_scoring(config_manager, current_config):
-    """Interactively configure scoring weights."""
-    current_weights = current_config.get("scoring", {}).get("weights", {})
-    if not current_weights:
-        # Fallback to hardcoded if somehow missing
-        current_weights = {
-            "price": 0.3,
-            "commute": 0.3,
-            "vibe": 0.3,
-            "freshness": 0.1
-        }
-
-    print("\nCurrent Scoring Weights:")
-    for k, v in current_weights.items():
-        print(f"  - {k.capitalize()}: {v*100:.0f}%")
-
-    choice = input("\nDo you want to change these scoring weights? (y/n) [n]: ").lower().strip()
-    if choice != 'y':
-        return
-
-    print("\nEnter new weights (0-100). They will be normalized to sum to 100%.")
-    new_weights = {}
-    for key in ["price", "commute", "vibe", "freshness"]:
-        while True:
-            val = input(f"  {key.capitalize()}: ")
-            try:
-                val_float = float(val)
-                if val_float < 0:
-                    print("    Please enter a non-negative number.")
-                    continue
-                new_weights[key] = val_float
-                break
-            except ValueError:
-                print("    Invalid input. Please enter a number.")
-
-    config_manager.save_config(new_weights)
-    print("New weights saved.\n")
-
 def main():
     """Main execution function to search properties and generate reports."""
     # Define globals
@@ -375,10 +337,6 @@ def main():
     parser.add_argument("--port", type=int, default=8888, help="Port to run the dashboard server on (default: 8888).")
     parser.add_argument("--no-server", action="store_true", help="Skip starting the dashboard server.")
     args = parser.parse_args()
-
-    configure_scoring(config_manager, config)
-    # Refresh config in case user updated it via configure_scoring prompt
-    config = config_manager.load_config()
 
     base_url = args.url
     radius = args.radius

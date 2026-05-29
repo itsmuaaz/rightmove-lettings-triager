@@ -31,7 +31,15 @@ class TestSearchIntegration(unittest.TestCase):
         ]
 
         # Mock get_days_since to return 0 and 7 respectively
-        with patch('scoring.get_days_since', side_effect=[0, 7]):
+        # And mock ConfigManager to return predictable weights
+        mock_config = {
+            "scoring": {
+                "weights": {"price": 0.3, "commute": 0.3, "vibe": 0.3, "freshness": 0.1},
+                "thresholds": {"max_commute_mins": 60, "freshness_decay_days": 7}
+            }
+        }
+        with patch('scoring.get_days_since', side_effect=[0, 7]), \
+             patch('scoring.ConfigManager.load_config', return_value=mock_config):
             processed = post_process_properties(properties)
 
         # Check if scores are added
@@ -63,7 +71,14 @@ class TestSearchIntegration(unittest.TestCase):
             {"id": "2", "price": "£1,000 pcm", "commute_time": 20, "vibe": {"score": 8}, "published_on": "2023-10-27"}
         ]
         
-        with patch('scoring.get_days_since', side_effect=[7, 0]):
+        mock_config = {
+            "scoring": {
+                "weights": {"price": 0.3, "commute": 0.3, "vibe": 0.3, "freshness": 0.1},
+                "thresholds": {"max_commute_mins": 60, "freshness_decay_days": 7}
+            }
+        }
+        with patch('scoring.get_days_since', side_effect=[7, 0]), \
+             patch('scoring.ConfigManager.load_config', return_value=mock_config):
             processed = post_process_properties(properties)
             
         # Should be sorted by score descending (Prop 2 first)
