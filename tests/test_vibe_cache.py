@@ -7,7 +7,6 @@ import time
 from datetime import datetime, timedelta
 from unittest.mock import patch, MagicMock
 from vibe_client import VibeClient
-from config import VIBE_CACHE_TTL_DAYS
 
 class TestVibeCache(unittest.TestCase):
     def setUp(self):
@@ -46,7 +45,7 @@ class TestVibeCache(unittest.TestCase):
     def test_load_cache_expired_vibe(self, mock_fetch):
         """Test that an expired vibe cache entry (older than TTL) is bypassed and re-fetched."""
         # Setup expired cache entry
-        expired_time = (datetime.now() - timedelta(days=VIBE_CACHE_TTL_DAYS + 1)).isoformat()
+        expired_time = (datetime.now() - timedelta(days=self.client.ttl_days + 1)).isoformat()
         vibe_data = {
             "SW14": {
                 "score": 8,

@@ -1,0 +1,54 @@
+# UK Letting Researcher - Configuration
+# This file centralizes all configurable parameters for the application.
+# Make a copy of this file and rename it to 'config.toml'
+
+[search]
+# Your default work or POI location for all commute calculations.
+# The default is King's Cross (N1C 4AG)
+work_latitude = 51.5349
+work_longitude = -0.1238
+
+[scoring.weights]
+# The relative importance of each metric when calculating the final Smart Score.
+# These will be automatically normalized to sum to 1.0
+price = 0.3
+commute = 0.3
+vibe = 0.3
+freshness = 0.1
+
+[scoring.thresholds]
+# Maximum acceptable commute time in minutes. Commutes longer than this score 0.
+max_commute_mins = 60
+# Number of days before a property's freshness score decays to 0.
+freshness_decay_days = 7
+
+[cache]
+# Number of days before local 'vibe' AI cache is considered stale.
+vibe_ttl_days = 30
+
+[api.tfl]
+# Minimum seconds between requests to stay within TfL's 50/min free tier.
+rate_limit_interval_seconds = 1.5
+
+[api.overpass]
+# OpenStreetMap Overpass API Endpoint. 
+# openstreetmap.fr is preferred for stability and fewer blocks than the main endpoint.
+url = "https://overpass.openstreetmap.fr/api/interpreter"
+# Radius in meters to search for local amenities (e.g. gyms, supermarkets).
+search_radius_meters = 1000
+
+[api.gemini]
+# The Gemini Model to use for evaluating area vibes.
+model = "gemini-3.1-flash-lite"
+# Define what you consider a "good vibe". This is injected into the AI's prompt.
+custom_criteria = """
+- Safety & Crime
+- Target demographic (students, families, professionals)
+- Gentrification status
+- Access to Greenery (Parks, Commons)
+- General Reputation & Prestige
+"""
+
+[network]
+# User agent used when scraping property portals.
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"

@@ -49,8 +49,6 @@ class ConfigManager:
             merged_config["credentials"]["tfl_app_id"] = os.getenv("TFL_APP_ID")
         if os.getenv("TFL_APP_KEY"):
             merged_config["credentials"]["tfl_app_key"] = os.getenv("TFL_APP_KEY")
-        if os.getenv("GOOGLE_MAPS_API_KEY"):
-            merged_config["credentials"]["google_maps_api_key"] = os.getenv("GOOGLE_MAPS_API_KEY")
 
         return merged_config
 

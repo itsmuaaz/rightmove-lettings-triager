@@ -62,7 +62,6 @@ On your first run, the script will automatically generate a `config.toml` file i
 ```env
 TFL_APP_ID=your_tfl_app_id
 TFL_APP_KEY=your_tfl_app_key
-GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 ```
 
 ### 3. Run the Script

@@ -58,7 +58,7 @@ class TestTomlConfigManager(unittest.TestCase):
         self.assertEqual(config['scoring']['weights']['commute'], 0.3)
 
     @patch('os.path.exists', return_value=True)
-    @patch.dict(os.environ, {"TFL_APP_ID": "env_id", "TFL_APP_KEY": "env_key", "GOOGLE_MAPS_API_KEY": "env_maps"})
+    @patch.dict(os.environ, {"TFL_APP_ID": "env_id", "TFL_APP_KEY": "env_key"})
     def test_load_config_merges_env_overrides(self, mock_exists):
         toml_content = b"""
         [credentials]
@@ -73,7 +73,6 @@ class TestTomlConfigManager(unittest.TestCase):
         # Env variables should override TOML
         self.assertEqual(config['credentials']['tfl_app_id'], "env_id")
         self.assertEqual(config['credentials']['tfl_app_key'], "env_key")
-        self.assertEqual(config['credentials']['google_maps_api_key'], "env_maps")
 
     @patch('os.path.exists', return_value=True)
     def test_save_config_updates_toml(self, mock_exists):
