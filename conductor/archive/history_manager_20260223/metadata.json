@@ -1,0 +1,8 @@
+{
+  "track_id": "history_manager_20260223",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-23T12:00:00Z",
+  "updated_at": "2026-02-23T12:00:00Z",
+  "description": "Implement history tracking to distinguish new vs seen properties."
+}

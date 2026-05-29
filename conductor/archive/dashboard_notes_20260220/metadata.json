@@ -1,0 +1,8 @@
+{
+  "track_id": "dashboard_notes_20260220",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-20T12:00:00Z",
+  "updated_at": "2026-02-20T12:00:00Z",
+  "description": "Implement interactive dashboard with persistent notes."
+}

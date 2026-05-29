@@ -1,0 +1,8 @@
+{
+  "track_id": "refactor_jinja2_20260225",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-25T12:00:00Z",
+  "updated_at": "2026-02-25T12:00:00Z",
+  "description": "Refactor the templating architecture to use Jinja2 instead of string generation and Markdown, focusing solely on HTML output."
+}

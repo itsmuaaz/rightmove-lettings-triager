@@ -1,0 +1,8 @@
+{
+  "track_id": "fix_added_on_date_20260221",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-02-21T00:00:00Z",
+  "updated_at": "2026-02-21T00:00:00Z",
+  "description": "Fix 'Added On' date column showing 'Unknown' for all properties."
+}
