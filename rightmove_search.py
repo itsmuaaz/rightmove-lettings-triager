@@ -323,21 +323,22 @@ def post_process_properties(properties):
 
     return properties
 
-def configure_scoring():
+def configure_scoring(config_manager, current_config):
     """Interactively configure scoring weights."""
-    defaults = {
-        "price": 0.3,
-        "commute": 0.3,
-        "vibe": 0.3,
-        "freshness": 0.1
-    }
-    manager = ConfigManager(config_file=".scoring_config.json", defaults=defaults)
-    current_weights = manager.load_config()
-    
+    current_weights = current_config.get("scoring", {}).get("weights", {})
+    if not current_weights:
+        # Fallback to hardcoded if somehow missing
+        current_weights = {
+            "price": 0.3,
+            "commute": 0.3,
+            "vibe": 0.3,
+            "freshness": 0.1
+        }
+
     print("\nCurrent Scoring Weights:")
     for k, v in current_weights.items():
         print(f"  - {k.capitalize()}: {v*100:.0f}%")
-        
+
     choice = input("\nDo you want to change these scoring weights? (y/n) [n]: ").lower().strip()
     if choice != 'y':
         return
@@ -356,8 +357,8 @@ def configure_scoring():
                 break
             except ValueError:
                 print("    Invalid input. Please enter a number.")
-    
-    manager.save_config(new_weights)
+
+    config_manager.save_config(new_weights)
     print("New weights saved.\n")
 
 def main():
@@ -375,7 +376,9 @@ def main():
     parser.add_argument("--no-server", action="store_true", help="Skip starting the dashboard server.")
     args = parser.parse_args()
 
-    configure_scoring()
+    configure_scoring(config_manager, config)
+    # Refresh config in case user updated it via configure_scoring prompt
+    config = config_manager.load_config()
 
     base_url = args.url
     radius = args.radius

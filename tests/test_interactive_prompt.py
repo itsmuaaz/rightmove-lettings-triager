@@ -11,15 +11,13 @@ except ImportError:
 
 class TestInteractivePrompt(unittest.TestCase):
     @patch('builtins.input')
-    @patch('rightmove_search.ConfigManager')
-    def test_configure_scoring_yes(self, MockConfigManager, mock_input):
+    def test_configure_scoring_yes(self, mock_input):
         if configure_scoring is None:
             self.fail("configure_scoring not implemented")
 
         # Setup mocks
-        mock_manager = MockConfigManager.return_value
-        # Default weights
-        mock_manager.load_config.return_value = {"price": 0.3, "commute": 0.3, "vibe": 0.3, "freshness": 0.1}
+        mock_manager = MagicMock()
+        mock_config = {}
         
         # Simulate user input: 
         # 1. "y" (Change weights?)
@@ -29,7 +27,7 @@ class TestInteractivePrompt(unittest.TestCase):
         # 5. "0" (Freshness)
         mock_input.side_effect = ["y", "50", "50", "0", "0"]
         
-        configure_scoring()
+        configure_scoring(mock_manager, mock_config)
         
         # Verify save_config called with normalized map
         # configure_scoring handles user input (integers) and passes them to manager.
@@ -47,18 +45,17 @@ class TestInteractivePrompt(unittest.TestCase):
         self.assertEqual(args[0], expected_raw_weights)
 
     @patch('builtins.input')
-    @patch('rightmove_search.ConfigManager')
-    def test_configure_scoring_no(self, MockConfigManager, mock_input):
+    def test_configure_scoring_no(self, mock_input):
         if configure_scoring is None:
             self.fail("configure_scoring not implemented")
 
-        mock_manager = MockConfigManager.return_value
-        mock_manager.load_config.return_value = {"price": 0.3, "commute": 0.3, "vibe": 0.3, "freshness": 0.1}
+        mock_manager = MagicMock()
+        mock_config = {}
         
         # Simulate user input: "n"
         mock_input.side_effect = ["n"]
         
-        configure_scoring()
+        configure_scoring(mock_manager, mock_config)
         
         mock_manager.save_config.assert_not_called()
 
