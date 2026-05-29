@@ -28,7 +28,7 @@ python rightmove_search.py "https://www.rightmove.co.uk/property-to-rent/find.ht
 ## 🚀 Quick Start
 
 **1. Install**
-Requires **Python 3.11+** and the Google Gemini CLI configured.
+Requires **Python 3.11+**. You must also [install the Gemini CLI](https://geminicli.com/docs/get-started/installation/#install-gemini-cli) and [authenticate it](https://geminicli.com/docs/get-started/installation/#install-gemini-cli) before the script can be used to query area vibes.
 ```bash
 git clone https://github.com/itsmuaaz/rightmove-lettings-triager.git
 cd rightmove-lettings-triager
