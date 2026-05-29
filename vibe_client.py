@@ -166,7 +166,7 @@ Example:
         for attempt in range(max_retries + 1):
             try:
                 result = subprocess.run(
-                    ["gemini", "--prompt", prompt],
+                    ["gemini", "--skip-trust", "--prompt", prompt],
                     capture_output=True,
                     text=True,
                     check=True
@@ -186,12 +186,14 @@ Example:
                 return json.loads(raw_output.strip())
             
             except (subprocess.CalledProcessError, json.JSONDecodeError, FileNotFoundError) as e:
+                if isinstance(e, subprocess.CalledProcessError):
+                    sys.stderr.write(f"Gemini Subprocess Error: {e.stderr}\n")
                 if attempt < max_retries:
                     sleep_time = backoff_factor * (2 ** attempt)
                     # print(f"Gemini call failed: {e}. Retrying in {sleep_time}s...")
                     time.sleep(sleep_time)
                 else:
                     # Log final failure
-                    # print(f"Gemini call failed after {max_retries} retries: {e}")
+                    sys.stderr.write(f"Gemini call failed after {max_retries} retries: {e}\n")
                     return {}
         return {}
