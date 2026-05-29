@@ -9,4 +9,7 @@
 ## Phase 2: UI Integration
 - [x] Task: Update `templates/report.html` to render the colored circular marker next to the price (TDD - Red/Green) [842ceaf]
 - [x] Task: Ensure code coverage for modified modules remains >80% [842ceaf]
-- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Integration' (Protocol in workflow.md) [checkpoint: 842ceaf]\n## Phase: Review Fixes\n- [~] Task: Apply review suggestions
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Integration' (Protocol in workflow.md) [checkpoint: 842ceaf]
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions
