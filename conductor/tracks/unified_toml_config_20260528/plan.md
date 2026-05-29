@@ -8,9 +8,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Config Loader & Migrating Coordinates' (Protocol in workflow.md) [checkpoint: 0b67a31]
 
 ## Phase 2: Weights Migration & Script Integration
-- [~] Task: Implement a robust weight-updating helper in `config_manager.py` that saves weights back to `config.toml` cleanly (TDD - Red/Green)
-- [~] Task: Create unit tests verifying updating weights in TOML works and preserves other sections (TDD - Red)
-- [~] Task: Integrate weight updates into `rightmove_search.py` on startup, deprecating `.scoring_config.json` (Integration)
-- [~] Task: Update `vibe_client.py` to read the Gemini prompt template dynamically from `config.toml` (Integration)
-- [ ] Task: Run the entire test suite and verify no regressions in scoring, caching, or execution (Verification)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Weights Migration & Script Integration' (Protocol in workflow.md)
+- [x] Task: Implement a robust weight-updating helper in `config_manager.py` that saves weights back to `config.toml` cleanly (TDD - Red/Green) [a89e92d]
+- [x] Task: Create unit tests verifying updating weights in TOML works and preserves other sections (TDD - Red) [a89e92d]
+- [x] Task: Integrate weight updates into `rightmove_search.py` on startup, deprecating `.scoring_config.json` (Integration) [2d6af59]
+- [x] Task: Update `vibe_client.py` to read the Gemini prompt template dynamically from `config.toml` (Integration) [2d6af59]
+- [x] Task: Run the entire test suite and verify no regressions in scoring, caching, or execution (Verification) [2d6af59]
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Weights Migration & Script Integration' (Protocol in workflow.md) [checkpoint: 2d6af59]
