@@ -25,6 +25,84 @@ from utils import get_sort_key, extract_postcode_district, extract_location_for_
 from scoring import SmartScorer
 from config_manager import ConfigManager
 
+def is_tfl_cached(tfl_client: TflClient, from_coords: tuple, to_coords: tuple) -> bool:
+    """Checks if TfL cache has valid benchmarked data for both transport and cycling modes."""
+    transit_hit = tfl_client.is_cached(from_coords, to_coords, "Public Transport")
+    cycling_hit = tfl_client.is_cached(from_coords, to_coords, "Cycling")
+    return transit_hit and cycling_hit
+
+def is_osm_cached(amenity_client: AmenityClient, lat: float, lon: float) -> bool:
+    """Checks if OpenStreetMap amenity data is locally cached for the coordinates."""
+    return amenity_client.is_cached(lat, lon)
+
+def is_vibe_cached(vibe_client: VibeClient, location_key: str) -> bool:
+    """Checks if the vibe score is locally cached and valid."""
+    with vibe_client.lock:
+        if location_key in vibe_client.cache:
+            entry = vibe_client.cache[location_key]
+            if isinstance(entry, dict) and entry.get("cached_at"):
+                # Fast bypass check: If it exists and has a timestamp, we consider it cached for partitioning purposes.
+                # Actual TTL stale check happens inside vibe_client.get_vibes during the synchronous fetch.
+                return True
+    return False
+
+def is_fully_cached(tfl_client, amenity_client, vibe_client, property_data, work_coords):
+    """Unified check to determine if a property's dynamic metrics are entirely cached."""
+    # Check TfL
+    lat, lon = property_data.get('latitude'), property_data.get('longitude')
+    if not lat or not lon:
+        return False
+    
+    if not is_tfl_cached(tfl_client, (lat, lon), work_coords):
+        return False
+        
+    # Check Amenities
+    if not is_osm_cached(amenity_client, lat, lon):
+        return False
+        
+    # Check Vibe
+    vibe_loc = extract_location_for_vibe(property_data, lat, lon)
+    if not vibe_loc or not is_vibe_cached(vibe_client, vibe_loc):
+        return False
+        
+    return True
+
+def populate_property_sync(property_data, tfl_client, amenity_client, vibe_client, calculator, amenity_calculator, work_coords, scorer):
+    """Synchronously populates a property using only local cache data. No thread pools or locks needed."""
+    lat, lon = property_data.get('latitude'), property_data.get('longitude')
+    
+    # 1. Fetch TfL Commutes (Instant Hit)
+    pt_time = calculator.get_commute_time((lat, lon), work_coords, "Public Transport")
+    property_data['commute_time'] = pt_time
+    
+    cycling_time = calculator.get_commute_time((lat, lon), work_coords, "Cycling")
+    property_data['cycling_time'] = cycling_time
+    
+    # 2. Fetch Amenities (Instant Hit)
+    amenities = amenity_calculator.get_amenities(lat, lon)
+    property_data['amenities'] = amenities
+    
+    # 3. Fetch Vibe (Instant Hit)
+    vibe_loc = extract_location_for_vibe(property_data, lat, lon)
+    if vibe_loc:
+        vibes = vibe_client.get_vibes([vibe_loc])
+        if vibe_loc in vibes:
+            property_data['vibe_score'] = vibes[vibe_loc].get('score', 'N/A')
+            property_data['vibe_summary'] = vibes[vibe_loc].get('summary', 'N/A')
+            property_data['vibe_safety'] = vibes[vibe_loc].get('safety', 'N/A')
+        else:
+            property_data['vibe_score'] = 'N/A'
+            property_data['vibe_summary'] = 'N/A'
+            property_data['vibe_safety'] = 'N/A'
+    else:
+        property_data['vibe_score'] = 'N/A'
+        property_data['vibe_summary'] = 'N/A'
+        property_data['vibe_safety'] = 'N/A'
+
+    # 4. Calculate Score
+    property_data['smart_score'] = scorer.calculate_score(property_data)
+    return property_data
+
 # Configuration
 WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
