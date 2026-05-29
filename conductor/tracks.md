@@ -9,7 +9,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Cache Partitioning & Targeted Threading**
+- [x] **Track: Cache Partitioning & Targeted Threading**
   *Link: [./tracks/cache_partitioning_20260528/](./tracks/cache_partitioning_20260528/)*
 
 ---
