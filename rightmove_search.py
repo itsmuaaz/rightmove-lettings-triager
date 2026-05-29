@@ -361,6 +361,11 @@ def main():
     # Initialize calculators and storage
     config = load_config()
     tfl = TflClient(app_id=config.get('TFL_APP_ID'), app_key=config.get('TFL_APP_KEY'))
+    
+    # Run Automated Cache Cleanup Chore
+    from tfl_client import cleanup_stale_caches
+    cleanup_stale_caches(tfl.cache_dir)
+    
     calculator = CommuteCalculator(tfl_client=tfl, destination=WORK_LOCATION_COORDS)
     
     amenity_client = AmenityClient()

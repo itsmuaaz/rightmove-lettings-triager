@@ -1,6 +1,8 @@
 import os
 from config_manager import ConfigManager
 
+VIBE_CACHE_TTL_DAYS = 30
+
 def load_config():
     """Load configuration from environment variables and defaults."""
     

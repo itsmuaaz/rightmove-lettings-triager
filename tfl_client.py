@@ -59,6 +59,24 @@ class TflClient:
                 
                 # Check for new structure with metadata
                 if isinstance(data, dict) and "response" in data:
+                    # Check for expiration (arrival_benchmark in past)
+                    benchmark_str = data.get("arrival_benchmark")
+                    if benchmark_str:
+                        try:
+                            benchmark_time = datetime.fromisoformat(benchmark_str)
+                            if datetime.now() > benchmark_time:
+                                sys.stderr.write(f"[CACHE BYPASS - STALE] TfL benchmark {benchmark_str} expired.\n")
+                                try:
+                                    os.remove(cache_path)
+                                except OSError:
+                                    pass
+                                return None
+                        except ValueError:
+                            try:
+                                os.remove(cache_path)
+                            except OSError:
+                                pass
+                            return None
                     return data["response"]
                 else:
                     # Legacy file or unexpected format, delete and return None
@@ -142,8 +160,10 @@ class TflClient:
         if not force_refresh:
             cached_data = self._load_cache(cache_key)
             if cached_data:
+                sys.stderr.write(f"[CACHE HIT] TfL commute {from_coords} to {to_coords}\n")
                 return self._extract_journey_data(cached_data)
 
+        sys.stderr.write(f"[CACHE FETCH] Fetching TfL commute {from_coords} to {to_coords} from API...\n")
         from_str = f"{from_coords[0]},{from_coords[1]}"
         to_str = f"{to_coords[0]},{to_coords[1]}"
         
@@ -251,3 +271,45 @@ class TflClient:
         if result:
             return result.get('duration')
         return None
+
+def cleanup_stale_caches(cache_dir: str) -> None:
+    """Scans the given directory and deletes stale TfL cache JSON files."""
+    if not os.path.exists(cache_dir):
+        return
+        
+    now = datetime.now()
+    try:
+        files = os.listdir(cache_dir)
+    except OSError:
+        return
+        
+    for filename in files:
+        if filename.endswith(".json"):
+            file_path = os.path.join(cache_dir, filename)
+            try:
+                with open(file_path, "r") as f:
+                    data = json.load(f)
+                
+                # Check arrival_benchmark
+                if isinstance(data, dict):
+                    benchmark_str = data.get("arrival_benchmark")
+                    if benchmark_str:
+                        benchmark_time = datetime.fromisoformat(benchmark_str)
+                        if now > benchmark_time:
+                            # Stale! Delete it
+                            try:
+                                os.remove(file_path)
+                            except OSError:
+                                pass
+                    else:
+                        # Legacy file without arrival_benchmark, delete it to be clean
+                        try:
+                            os.remove(file_path)
+                        except OSError:
+                            pass
+            except (json.JSONDecodeError, IOError, ValueError):
+                # Malformed file or read error, delete it
+                try:
+                    os.remove(file_path)
+                except OSError:
+                    pass

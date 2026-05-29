@@ -4,6 +4,8 @@ import os
 import sys
 import time
 from typing import Dict, List, Any
+from datetime import datetime, timedelta
+from config import VIBE_CACHE_TTL_DAYS
 
 class VibeClient:
     """Client for fetching and caching 'vibe' data for London postcode districts using Gemini."""
@@ -37,30 +39,52 @@ class VibeClient:
         """
         results = {}
         missing = []
+        now = datetime.now()
 
         # Check cache
         for district in districts:
             if district in self.cache:
-                results[district] = self.cache[district]
+                entry = self.cache[district]
+                if isinstance(entry, dict):
+                    cached_at_str = entry.get("cached_at")
+                    if cached_at_str:
+                        try:
+                            cached_at = datetime.fromisoformat(cached_at_str)
+                            if now - cached_at > timedelta(days=VIBE_CACHE_TTL_DAYS):
+                                sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} expired (cached on {cached_at_str}).\n")
+                                missing.append(district)
+                            else:
+                                results[district] = entry
+                        except ValueError:
+                            sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} had malformed timestamp.\n")
+                            missing.append(district)
+                    else:
+                        sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} is missing timestamp (legacy).\n")
+                        missing.append(district)
+                else:
+                    missing.append(district)
             else:
                 missing.append(district)
 
         # Log cache status transparently to avoid user confusion
         hits = len(districts) - len(missing)
         if hits > 0:
-            sys.stderr.write(f"Vibe Cache: Loaded {hits}/{len(districts)} locations from '.vibe_cache.json' (0s delay).\n")
+            sys.stderr.write(f"[CACHE HIT] Vibe for {hits}/{len(districts)} locations loaded.\n")
 
         if not missing:
             return results
 
-        sys.stderr.write(f"Vibe Cache Miss: Fetching remaining {len(missing)} uncached locations from Gemini...\n")
+        sys.stderr.write(f"[CACHE MISS] Vibe for {len(missing)} locations not found or expired. Querying Gemini...\n")
         # Fetch missing in batches (simple implementation: one batch for now)
         fetched_data = self._fetch_from_gemini(missing)
         
         # Update cache and results
+        now_str = now.isoformat()
         for district, data in fetched_data.items():
-            self.cache[district] = data
-            results[district] = data
+            if isinstance(data, dict):
+                data["cached_at"] = now_str
+                self.cache[district] = data
+                results[district] = data
         
         self._save_cache()
         
