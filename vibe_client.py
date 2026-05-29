@@ -166,7 +166,7 @@ Example:
         for attempt in range(max_retries + 1):
             try:
                 result = subprocess.run(
-                    ["gemini", "--model", "flash", "--skip-trust", "--prompt", prompt],
+                    ["gemini", "--model", "gemini-3.1-flash-lite", "--skip-trust", "--prompt", prompt],
                     capture_output=True,
                     text=True,
                     check=True
