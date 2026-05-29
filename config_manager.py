@@ -54,12 +54,36 @@ class ConfigManager:
 
         return merged_config
 
-    # --- Legacy methods kept for temporary backwards compatibility ---
     def save_config(self, weights: Dict[str, float]):
+        """Updates the [scoring.weights] section in the TOML file, preserving comments."""
         normalized = self.normalize_weights(weights)
+        if not os.path.exists(self.config_file):
+            return
+
         try:
+            with open(self.config_file, 'r') as f:
+                lines = f.readlines()
+
+            # Find the [scoring.weights] section
+            in_weights_section = False
+            for i, line in enumerate(lines):
+                stripped = line.strip()
+                if stripped.startswith('[') and stripped.endswith(']'):
+                    if stripped == '[scoring.weights]':
+                        in_weights_section = True
+                    else:
+                        in_weights_section = False
+                    continue
+
+                if in_weights_section and '=' in line and not stripped.startswith('#'):
+                    key = line.split('=')[0].strip()
+                    if key in normalized:
+                        # Replace the line, preserving original indentation
+                        indent = line[:len(line) - len(line.lstrip())]
+                        lines[i] = f"{indent}{key} = {normalized[key]}\n"
+
             with open(self.config_file, 'w') as f:
-                json.dump(normalized, f, indent=2)
+                f.writelines(lines)
         except IOError:
             pass
 

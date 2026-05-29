@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 import os
 import json
 from scoring import SmartScorer
@@ -7,16 +8,21 @@ from config_manager import ConfigManager
 class TestSmartScorerIntegration(unittest.TestCase):
     def setUp(self):
         # Create a temporary config file
-        self.test_config_file = ".scoring_config.json"
-        self.manager = ConfigManager(config_file=self.test_config_file, defaults={})
-        
-        # Save custom weights: Price 100%
-        self.custom_weights = {"price": 1.0, "commute": 0.0, "vibe": 0.0, "freshness": 0.0}
-        self.manager.save_config(self.custom_weights)
+        self.test_config_file = "test_config.toml"
+        # The scorer pulls config via ConfigManager.load_config. We'll mock that instead.
+        self.patcher = patch('scoring.ConfigManager.load_config')
+        self.mock_config = self.patcher.start()
+
+        self.mock_config.return_value = {
+            "scoring": {
+                "weights": {
+                    "price": 1.0, "commute": 0.0, "vibe": 0.0, "freshness": 0.0
+                }
+            }
+        }
 
     def tearDown(self):
-        if os.path.exists(self.test_config_file):
-            os.remove(self.test_config_file)
+        self.patcher.stop()
 
     def test_smart_scorer_uses_saved_config(self):
         # Initialize scorer (should load from file via config.py -> ConfigManager)

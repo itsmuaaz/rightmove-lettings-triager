@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, MagicMock
 import os
 import tomllib
 from config_manager import ConfigManager
@@ -74,6 +74,53 @@ class TestTomlConfigManager(unittest.TestCase):
         self.assertEqual(config['credentials']['tfl_app_id'], "env_id")
         self.assertEqual(config['credentials']['tfl_app_key'], "env_key")
         self.assertEqual(config['credentials']['google_maps_api_key'], "env_maps")
+
+    @patch('os.path.exists', return_value=True)
+    def test_save_config_updates_toml(self, mock_exists):
+        initial_toml = """
+[search]
+work_latitude = 51.5
+
+[scoring.weights]
+# Price is very important
+price = 0.3
+commute = 0.3
+vibe = 0.3
+freshness = 0.1
+"""
+        
+        manager = ConfigManager("test_save.toml", self.defaults)
+        
+        new_weights = {
+            "price": 50,
+            "commute": 50,
+            "vibe": 0,
+            "freshness": 0
+        }
+
+        # Python's mock_open has a quirk with readlines when iterating. 
+        # Best to just mock the file operations directly for this specific test case.
+        file_writes = []
+        def mock_file_open(file, mode='r', **kwargs):
+            m = MagicMock()
+            if mode == 'r':
+                m.__enter__.return_value.readlines.return_value = [line + '\n' for line in initial_toml.split('\n')]
+            elif mode == 'w':
+                m.__enter__.return_value.writelines.side_effect = lambda lines: file_writes.extend(lines)
+            return m
+
+        with patch('builtins.open', side_effect=mock_file_open):
+            manager.save_config(new_weights)
+
+        written_content = "".join(file_writes)
+
+        self.assertIn("price = 0.5", written_content)
+        self.assertIn("commute = 0.5", written_content)
+        self.assertIn("vibe = 0.0", written_content)
+        self.assertIn("freshness = 0.0", written_content)
+        self.assertIn("[search]", written_content)
+        self.assertIn("work_latitude = 51.5", written_content)
+        self.assertIn("# Price is very important", written_content)
 
 if __name__ == '__main__':
     unittest.main()
