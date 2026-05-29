@@ -160,7 +160,7 @@ Example:
         for attempt in range(max_retries + 1):
             try:
                 result = subprocess.run(
-                    ["gemini", prompt],
+                    ["gemini", "--prompt", prompt],
                     capture_output=True,
                     text=True,
                     check=True
