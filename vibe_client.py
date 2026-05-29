@@ -91,7 +91,12 @@ class VibeClient:
                     results[district] = data
                     sys.stderr.write(f"[API SUCCESS] [PASS] Vibe fetch for {district}\n")
                 else:
-                    sys.stderr.write(f"[API ERROR] [FAIL] Vibe fetch for {district}\n")
+                    # Fallback to stale/legacy data if fetch failed
+                    if district in self.cache:
+                        results[district] = self.cache[district]
+                        sys.stderr.write(f"[API ERROR] [FAIL] Vibe fetch for {district} - Falling back to stale cached data.\n")
+                    else:
+                        sys.stderr.write(f"[API ERROR] [FAIL] Vibe fetch for {district}\n")
             
             self._save_cache()
         

@@ -49,7 +49,7 @@ class TflClient:
         key_str = f"{from_coords}-{to_coords}-{json.dumps(params, sort_keys=True)}"
         return hashlib.md5(key_str.encode('utf-8')).hexdigest()
 
-    def _load_cache(self, key: str) -> Optional[Any]:
+    def _load_cache(self, key: str, ignore_expiration: bool = False) -> Optional[Any]:
         """Loads data from cache if available."""
         cache_path = os.path.join(self.cache_dir, f"{key}.json")
         if os.path.exists(cache_path):
@@ -59,24 +59,17 @@ class TflClient:
                 
                 # Check for new structure with metadata
                 if isinstance(data, dict) and "response" in data:
-                    # Check for expiration (arrival_benchmark in past)
-                    benchmark_str = data.get("arrival_benchmark")
-                    if benchmark_str:
-                        try:
-                            benchmark_time = datetime.fromisoformat(benchmark_str)
-                            if datetime.now() > benchmark_time:
-                                sys.stderr.write(f"[CACHE BYPASS - STALE] TfL benchmark {benchmark_str} expired.\n")
-                                try:
-                                    os.remove(cache_path)
-                                except OSError:
-                                    pass
-                                return None
-                        except ValueError:
+                    if not ignore_expiration:
+                        # Check for expiration (arrival_benchmark in past)
+                        benchmark_str = data.get("arrival_benchmark")
+                        if benchmark_str:
                             try:
-                                os.remove(cache_path)
-                            except OSError:
-                                pass
-                            return None
+                                benchmark_time = datetime.fromisoformat(benchmark_str)
+                                if datetime.now() > benchmark_time:
+                                    sys.stderr.write(f"[CACHE BYPASS - STALE] TfL benchmark {benchmark_str} expired.\n")
+                                    return None
+                            except ValueError:
+                                return None
                     return data["response"]
                 else:
                     # Legacy file or unexpected format, delete and return None
@@ -201,6 +194,10 @@ class TflClient:
                         
                     if response.status != 200:
                         sys.stderr.write(f"TfL API Error: Status {response.status}\n")
+                        fallback_data = self._load_cache(cache_key, ignore_expiration=True)
+                        if fallback_data:
+                            sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch failed - Falling back to stale cached commute data.\n")
+                            return self._extract_journey_data(fallback_data)
                         sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
                         return None
                     data = json.loads(response.read().decode('utf-8'))
@@ -215,8 +212,16 @@ class TflClient:
                 if attempt < max_retries - 1:
                     time.sleep(1) # Simple backoff
                 else:
+                    fallback_data = self._load_cache(cache_key, ignore_expiration=True)
+                    if fallback_data:
+                        sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch failed - Falling back to stale cached commute data.\n")
+                        return self._extract_journey_data(fallback_data)
                     sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
                     return None
+        fallback_data = self._load_cache(cache_key, ignore_expiration=True)
+        if fallback_data:
+            sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch failed - Falling back to stale cached commute data.\n")
+            return self._extract_journey_data(fallback_data)
         sys.stderr.write(f"[API ERROR] [FAIL] TfL fetch for {from_coords} to {to_coords}\n")
         return None
 

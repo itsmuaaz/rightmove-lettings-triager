@@ -126,9 +126,13 @@ class TestTflClient(unittest.TestCase):
         # Call load cache
         result = self.client._load_cache(key)
         
-        # It must return None (stale bypassed) and delete the file
+        # It must return None (stale bypassed) but preserve the file on disk for fallback
         self.assertIsNone(result)
-        self.assertFalse(os.path.exists(cache_path))
+        self.assertTrue(os.path.exists(cache_path))
+        
+        # Calling with ignore_expiration=True must return the stale data as fallback
+        fallback_result = self.client._load_cache(key, ignore_expiration=True)
+        self.assertEqual(fallback_result, {"journeys": [{"duration": 25}]})
 
     @patch("tfl_client.get_next_benchmark_time")
     def test_load_cache_fresh_valid(self, mock_benchmark_time):
