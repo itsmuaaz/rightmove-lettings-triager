@@ -1,16 +1,17 @@
 from typing import Dict, Any, Optional
 from utils import get_days_since, extract_numeric_price
-from config import load_config
+from config_manager import ConfigManager
 
 class SmartScorer:
     """Calculates a 'Smart Score' (0-100) for a property based on weighted criteria."""
 
     def __init__(self, weights: Optional[Dict[str, float]] = None):
-        config = load_config()
+        manager = ConfigManager()
+        config = manager.load_config()
         
-        self.weights = weights or config.get("SCORING_WEIGHTS")
-        self.max_commute = config.get("MAX_COMMUTE_MINS", 60)
-        self.freshness_decay = config.get("FRESHNESS_DECAY_DAYS", 7)
+        self.weights = weights or config.get("scoring", {}).get("weights", {})
+        self.max_commute = config.get("scoring", {}).get("thresholds", {}).get("max_commute_mins", 60)
+        self.freshness_decay = config.get("scoring", {}).get("thresholds", {}).get("freshness_decay_days", 7)
 
     def calculate_score(self, property_data: Dict[str, Any], global_stats: Dict[str, float]) -> Dict[str, Any]:
         """Calculates the weighted score for a property.

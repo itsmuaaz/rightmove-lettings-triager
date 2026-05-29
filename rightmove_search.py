@@ -8,7 +8,6 @@ import concurrent.futures
 from http.server import HTTPServer
 import socketserver
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
-from config import load_config
 from tfl_client import TflClient
 from calculator import CommuteCalculator
 from reporter import Reporter
@@ -100,10 +99,6 @@ def populate_property_sync(p):
 
     return p
 
-# Configuration
-WORK_LOCATION_COORDS = (51.5349, -0.1238)  # N1C 4AG (Work)
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-
 # Global references for testing purposes (in a real app, use dependency injection)
 calculator = None
 amenity_calculator = None
@@ -152,11 +147,11 @@ def print_dashboard_banner(url, stage="startup"):
     print(f"  {CYAN}║{' ' * w}║{RESET}")
     print(f"  {CYAN}╚{'═' * w}╝{RESET}\n")
 
-def fetch_data(url):
+def fetch_data(url, user_agent):
     """Fetch the page HTML using curl."""
     try:
         result = subprocess.run(
-            ["curl", "-s", "-L", "-A", USER_AGENT, url],
+            ["curl", "-s", "-L", "-A", user_agent, url],
             capture_output=True,
             text=True,
             check=True
@@ -368,7 +363,10 @@ def configure_scoring():
 def main():
     """Main execution function to search properties and generate reports."""
     # Define globals
-    global calculator, amenity_calculator, note_manager, history_manager, search_state, vibe_client
+    global calculator, amenity_calculator, note_manager, history_manager, search_state, vibe_client, config
+
+    config_manager = ConfigManager("config.toml")
+    config = config_manager.load_config()
 
     parser = argparse.ArgumentParser(description="Search Rightmove properties and calculate commutes/amenities.")
     parser.add_argument("url", help="The Rightmove search results URL.")
@@ -394,7 +392,7 @@ def main():
         url = update_url_index(base_url, current_index)
         sys.stderr.write(f"Fetching index {current_index}...\n")
         
-        html = fetch_data(url)
+        html = fetch_data(url, config.get('network', {}).get('user_agent', 'Mozilla/5.0'))
         if not html:
             break
             
@@ -434,14 +432,15 @@ def main():
         return
 
     # Initialize calculators and storage
-    config = load_config()
-    tfl = TflClient(app_id=config.get('TFL_APP_ID'), app_key=config.get('TFL_APP_KEY'))
+    credentials = config.get('credentials', {})
+    tfl = TflClient(app_id=credentials.get('tfl_app_id'), app_key=credentials.get('tfl_app_key'))
     
     # Run Automated Cache Cleanup Chore
     from tfl_client import cleanup_stale_caches
     cleanup_stale_caches(tfl.cache_dir)
     
-    calculator = CommuteCalculator(tfl_client=tfl, destination=WORK_LOCATION_COORDS)
+    work_coords = (config.get('search', {}).get('work_latitude', 51.5349), config.get('search', {}).get('work_longitude', -0.1238))
+    calculator = CommuteCalculator(tfl_client=tfl, destination=work_coords)
     
     amenity_client = AmenityClient()
     amenity_calculator = AmenityCalculator(amenity_client=amenity_client, radius=radius)
@@ -497,7 +496,7 @@ def main():
     async_properties = []
 
     for p in all_properties:
-        if is_fully_cached(tfl, amenity_calculator, vibe_client, p, WORK_LOCATION_COORDS):
+        if is_fully_cached(tfl, amenity_calculator, vibe_client, p, work_coords):
             synchronous_properties.append(p)
         else:
             async_properties.append(p)
