@@ -8,9 +8,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Cache Checking & Partitioning Logic' (Protocol in workflow.md) [checkpoint: aa137c6]
 
 ## Phase 2: Targeted Threading & Integration
-- [ ] Task: Integrate partitioning pass into `rightmove_search.py` main loop before ThreadPoolExecutor startup (Integration)
-- [ ] Task: Ensure `ThreadPoolExecutor` is completely bypassed if all properties are cached, proceeding instantly to server start (Integration)
-- [ ] Task: Bulk-update the progressive dashboard progress counter (`search_state.processed`) after processing synchronous properties (Integration)
-- [ ] Task: Create integration tests verifying the full partitioned run from scrape to server-ready state (Integration)
-- [ ] Task: Run full test suite and verify no regressions in scoring, sorting, or server endpoints (Verification)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Targeted Threading & Integration' (Protocol in workflow.md)
+- [x] Task: Integrate partitioning pass into `rightmove_search.py` main loop before ThreadPoolExecutor startup (Integration) [4dc4182]
+- [x] Task: Ensure `ThreadPoolExecutor` is completely bypassed if all properties are cached, proceeding instantly to server start (Integration) [4dc4182]
+- [x] Task: Bulk-update the progressive dashboard progress counter (`search_state.processed`) after processing synchronous properties (Integration) [4dc4182]
+- [x] Task: Create integration tests verifying the full partitioned run from scrape to server-ready state (Integration) [4dc4182]
+- [x] Task: Run full test suite and verify no regressions in scoring, sorting, or server endpoints (Verification) [4dc4182]
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Targeted Threading & Integration' (Protocol in workflow.md) [checkpoint: 84569a6]
