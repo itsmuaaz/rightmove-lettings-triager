@@ -119,7 +119,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Fix Vibe Scoring & Address Fallback**
+- [x] **Track: Fix Vibe Scoring & Address Fallback**
   *Link: [./tracks/vibe_fallback_20260529/](./tracks/vibe_fallback_20260529/)*
 
 ---

@@ -198,7 +198,7 @@ def process_property(p, i, total):
         
         # Vibe calculation
         if vibe_client:
-            location_key = extract_location_for_vibe(p['address'])
+            location_key = extract_location_for_vibe(p['address'], (p.get('latitude'), p.get('longitude')))
             if location_key:
                 vibes = vibe_client.get_vibes([location_key])
                 p['vibe'] = vibes.get(location_key)
@@ -420,7 +420,7 @@ def main():
     # Pre-fetch Vibes for all locations to batch API calls
     locations = set()
     for p in all_properties:
-        loc = extract_location_for_vibe(p['address'])
+        loc = extract_location_for_vibe(p['address'], (p.get('latitude'), p.get('longitude')))
         if loc:
             locations.add(loc)
     

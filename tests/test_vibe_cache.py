@@ -2,6 +2,8 @@ import unittest
 import os
 import json
 import shutil
+import threading
+import time
 from datetime import datetime, timedelta
 from unittest.mock import patch, MagicMock
 from vibe_client import VibeClient
@@ -121,6 +123,41 @@ class TestVibeCache(unittest.TestCase):
         
         cached_time = datetime.fromisoformat(cached_entry["cached_at"])
         self.assertTrue(datetime.now() - cached_time < timedelta(seconds=10))
+
+    def test_concurrent_vibe_caching(self):
+        """Test that concurrent vibe requests do not cause write collisions or cache overrides."""
+        # Mock Gemini fetch to return unique score with latency
+        def mock_fetch(locations):
+            time.sleep(0.05) # Introduce latency to trigger race conditions
+            loc = locations[0]
+            return {
+                loc: {
+                    "score": int(loc[-1]),
+                    "summary": f"Vibe for {loc}"
+                }
+            }
+            
+        with patch("vibe_client.VibeClient._fetch_from_gemini", side_effect=mock_fetch):
+            threads = []
+            for i in range(1, 6):
+                loc_name = f"LOC{i}"
+                t = threading.Thread(target=self.client.get_vibes, args=([loc_name],))
+                threads.append(t)
+                
+            for t in threads:
+                t.start()
+                
+            for t in threads:
+                t.join()
+                
+        # Reload the disk file and verify ALL 5 entries are saved correctly!
+        with open(self.test_cache_file, 'r') as f:
+            disk_data = json.load(f)
+            
+        self.assertEqual(len(disk_data), 5)
+        for i in range(1, 6):
+            self.assertIn(f"LOC{i}", disk_data)
+            self.assertEqual(disk_data[f"LOC{i}"]["score"], i)
 
 if __name__ == '__main__':
     unittest.main()

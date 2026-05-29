@@ -3,7 +3,12 @@
 import math
 import re
 import urllib.parse
+import urllib.request
+import json
+import sys
 from datetime import datetime
+
+_GEOCODE_CACHE = {}
 
 # Constants for Work Location
 WORK_ADDRESS = "6 Pancras Square, N1C 4AG"
@@ -113,18 +118,61 @@ def extract_postcode_district(address: str) -> str | None:
         return match.group(1)
     return None
 
-def extract_location_for_vibe(address: str) -> str | None:
+def reverse_geocode(lat: float, lon: float) -> str | None:
+    """Reverse-geocodes latitude and longitude to a postcode district using postcodes.io.
+
+    Args:
+        lat: Latitude float.
+        lon: Longitude float.
+
+    Returns:
+        The postcode district (outcode) if found, otherwise None.
+    """
+    coords = (lat, lon)
+    if coords in _GEOCODE_CACHE:
+        return _GEOCODE_CACHE[coords]
+
+    url = f"https://api.postcodes.io/postcodes?lon={lon}&lat={lat}"
+    try:
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        })
+        with urllib.request.urlopen(req, timeout=3) as response:
+            status = getattr(response, "status", 200)
+            if status == 200:
+                res_data = json.loads(response.read().decode('utf-8'))
+                result_list = res_data.get('result')
+                if result_list and isinstance(result_list, list) and len(result_list) > 0:
+                    outcode = result_list[0].get('outcode')
+                    if outcode:
+                        _GEOCODE_CACHE[coords] = outcode
+                        return outcode
+    except Exception as e:
+        sys.stderr.write(f"Geocoding Error for coords {coords}: {e}\n")
+        
+    _GEOCODE_CACHE[coords] = None
+    return None
+
+def extract_location_for_vibe(address: str, coords: tuple[float, float] = None) -> str | None:
     """Extracts a location key for vibe lookup (postcode district or full address).
 
     Args:
         address: The address string.
+        coords: Optional Tuple of (lat, lon) coordinates to reverse-geocode if address has no postcode.
 
     Returns:
-        The postcode district if found, otherwise the full address, or None.
+        The postcode district if found, otherwise the fallback geocoded postcode, the full address, or None.
     """
     district = extract_postcode_district(address)
     if district:
         return district
+    
+    if coords and isinstance(coords, tuple) and len(coords) == 2:
+        lat, lon = coords
+        if lat is not None and lon is not None:
+            fallback_district = reverse_geocode(lat, lon)
+            if fallback_district:
+                return fallback_district
     
     if address and address.strip():
         # Clean address slightly (remove extra whitespace)

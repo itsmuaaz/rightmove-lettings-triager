@@ -3,6 +3,7 @@ import subprocess
 import os
 import sys
 import time
+import threading
 from typing import Dict, List, Any
 from datetime import datetime, timedelta
 from config import VIBE_CACHE_TTL_DAYS
@@ -12,6 +13,7 @@ class VibeClient:
 
     def __init__(self, cache_file: str = ".vibe_cache.json"):
         self.cache_file = cache_file
+        self.lock = threading.RLock()
         self.cache = self._load_cache()
 
     def _load_cache(self) -> Dict[str, Any]:
@@ -26,11 +28,12 @@ class VibeClient:
 
     def _save_cache(self):
         """Saves the cache to disk."""
-        try:
-            with open(self.cache_file, 'w') as f:
-                json.dump(self.cache, f, indent=2)
-        except IOError:
-            pass
+        with self.lock:
+            try:
+                with open(self.cache_file, 'w') as f:
+                    json.dump(self.cache, f, indent=2)
+            except IOError:
+                pass
 
     def get_vibes(self, districts: List[str]) -> Dict[str, Any]:
         """Fetches vibe data for a list of postcode districts.
@@ -41,33 +44,34 @@ class VibeClient:
         missing = []
         now = datetime.now()
 
-        # Check cache
-        for district in districts:
-            if district in self.cache:
-                entry = self.cache[district]
-                if isinstance(entry, dict):
-                    cached_at_str = entry.get("cached_at")
-                    if cached_at_str:
-                        try:
-                            cached_at = datetime.fromisoformat(cached_at_str)
-                            if now - cached_at > timedelta(days=VIBE_CACHE_TTL_DAYS):
-                                sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} expired (cached on {cached_at_str}).\n")
+        # Check cache under lock
+        with self.lock:
+            for district in districts:
+                if district in self.cache:
+                    entry = self.cache[district]
+                    if isinstance(entry, dict):
+                        cached_at_str = entry.get("cached_at")
+                        if cached_at_str:
+                            try:
+                                cached_at = datetime.fromisoformat(cached_at_str)
+                                if now - cached_at > timedelta(days=VIBE_CACHE_TTL_DAYS):
+                                    sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} expired (cached on {cached_at_str}).\n")
+                                    missing.append(district)
+                                else:
+                                    sys.stderr.write(f"[CACHE HIT] Vibe for {district}\n")
+                                    results[district] = entry
+                            except ValueError:
+                                sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} had malformed timestamp.\n")
                                 missing.append(district)
-                            else:
-                                sys.stderr.write(f"[CACHE HIT] Vibe for {district}\n")
-                                results[district] = entry
-                        except ValueError:
-                            sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} had malformed timestamp.\n")
+                        else:
+                            sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} is missing timestamp (legacy).\n")
                             missing.append(district)
                     else:
-                        sys.stderr.write(f"[CACHE BYPASS - STALE] Vibe for {district} is missing timestamp (legacy).\n")
+                        sys.stderr.write(f"[CACHE MISS] Vibe for {district} had invalid format.\n")
                         missing.append(district)
                 else:
-                    sys.stderr.write(f"[CACHE MISS] Vibe for {district} had invalid format.\n")
+                    sys.stderr.write(f"[CACHE MISS] Vibe for {district} not found.\n")
                     missing.append(district)
-            else:
-                sys.stderr.write(f"[CACHE MISS] Vibe for {district} not found.\n")
-                missing.append(district)
 
         if not missing:
             return results
@@ -76,19 +80,20 @@ class VibeClient:
         # Fetch missing in batches (simple implementation: one batch for now)
         fetched_data = self._fetch_from_gemini(missing)
         
-        # Update cache and results & print PASS/FAIL for each missing
+        # Update cache and results under lock & print PASS/FAIL for each missing
         now_str = now.isoformat()
-        for district in missing:
-            data = fetched_data.get(district)
-            if isinstance(data, dict):
-                data["cached_at"] = now_str
-                self.cache[district] = data
-                results[district] = data
-                sys.stderr.write(f"[API SUCCESS] [PASS] Vibe fetch for {district}\n")
-            else:
-                sys.stderr.write(f"[API ERROR] [FAIL] Vibe fetch for {district}\n")
-        
-        self._save_cache()
+        with self.lock:
+            for district in missing:
+                data = fetched_data.get(district)
+                if isinstance(data, dict):
+                    data["cached_at"] = now_str
+                    self.cache[district] = data
+                    results[district] = data
+                    sys.stderr.write(f"[API SUCCESS] [PASS] Vibe fetch for {district}\n")
+                else:
+                    sys.stderr.write(f"[API ERROR] [FAIL] Vibe fetch for {district}\n")
+            
+            self._save_cache()
         
         return results
 
