@@ -31,6 +31,8 @@ Before running the script, ensure you have:
 *   **Multi-Modal Commute (TfL API):** Calculates exact Public Transport and Cycling travel times to your office, standardized to a *Tuesday 9:00 AM benchmark* for fair comparison. Includes Peak/Off-Peak fare costs.
 *   **Amenity Proximity (OSM API):** Searches OpenStreetMap via a fast French mirror to map nearby supermarkets, gyms, parks, hospitals, and doctors within walking distance.
 *   **AI Neighborhood "Vibes" (Gemini):** Pre-fetches postcode districts to batch-query Gemini for area safety evaluations, 3-word summaries, and 1-10 "vibe scores."
+*   **Cache Partitioning & Instant Loads:** Employs smart cache partitioning to completely bypass network threads for fully cached properties, rendering them instantly on the dashboard.
+*   **Unified TOML Configuration:** A clean, centralized `config.toml` system replacing hardcoded scripts, environment variables, and interactive prompts. Manage your commute coordinates, scoring weights, API settings, and custom Gemini criteria in one file.
 *   **Smart Multi-Weighted Scoring (0-100):** Aggregates Price, Commute, Vibe, and Freshness into a unified score. The score is strictly set to `N/A` if critical parameters like Price, Commute, or Vibe are missing.
 *   **Relative Price Dots:** Dynamic green-to-red color indicator showing how cheap or expensive a flat is relative to all other search results.
 *   **Interactive Dashboard:** A local web server (`http://localhost:8888`) featuring progressive real-time loading, star/trash inbox triage, persistent inline text notes, and URL sorting.
@@ -49,16 +51,18 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Configure Credentials & Work Location
-Create a `.env` file in the root directory:
+### 2. Configure Settings & Credentials
+On your first run, the script will automatically generate a `config.toml` file in the root directory based on the template. You can open this file to configure:
+- **`work_latitude` / `work_longitude`**: Your office or POI coordinates.
+- **`scoring.weights`**: The weighting used for the Smart Score algorithm.
+- **`api.gemini`**: Define your custom AI "Vibe" criteria to personalize evaluations.
+- *...and much more!*
+
+*(Optional)* You can override API credentials dynamically by creating a `.env` file:
 ```env
 TFL_APP_ID=your_tfl_app_id
 TFL_APP_KEY=your_tfl_app_key
-GOOGLE_MAPS_API_KEY=your_google_maps_api_key  # Optional fallback
-```
-Set your office's coordinates in `rightmove_search.py` (Line 21):
-```python
-WORK_LOCATION_COORDS = (51.5349, -0.1238)  # Latitude, Longitude (e.g. King's Cross)
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 ```
 
 ### 3. Run the Script
@@ -66,20 +70,12 @@ Execute the script using your Rightmove search URL:
 ```bash
 python rightmove_search.py "YOUR_RIGHTMOVE_URL"
 ```
-Choose whether to calibrate scoring weights at the CLI prompt, and then open **`http://localhost:8888`** in your browser. Watch properties enrich progressively in real-time!
+Open **`http://localhost:8888`** in your browser and watch properties enrich progressively in real-time!
 
 ---
 
 ## 🧪 Running Tests
-The codebase comes with **175 automated unit and integration tests**:
+The codebase comes with **193 automated unit and integration tests**:
 ```bash
 pytest
 ```
-
----
-
-## ⚠️ Known Issues (Work in Progress)
-Here are some known issues currently being investigated and resolved:
-*   **Caching Limitations:** Search results and caches are not consistently saved across some sessions; working on stabilizing the persistence layer.
-*   **Ctrl+C Termination:** Thread pool shutdown occasionally hangs, meaning `Ctrl+C` doesn't terminate cleanly on all environments.
-*   **Early Termination:** The main script occasionally finishes running before background threads have fully completed processing all properties.
