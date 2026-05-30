@@ -4,17 +4,17 @@
 
 [search]
 # Your default work or POI location for all commute calculations.
-# The default is King's Cross (N1C 4AG)
+# The default is King's Cross, London.
 work_latitude = 51.5349
 work_longitude = -0.1238
 
 [scoring.weights]
 # The relative importance of each metric when calculating the final Smart Score.
 # These will be automatically normalized to sum to 1.0
-price = 0.25
-commute = 0.35
-vibe = 0.15
-freshness = 0.25
+price = 0.15
+commute = 0.45
+vibe = 0.1
+freshness = 0.3
 
 [scoring.thresholds]
 # Maximum acceptable commute time in minutes. Commutes longer than this score 0.
