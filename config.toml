@@ -18,7 +18,7 @@ freshness = 0.25
 
 [scoring.thresholds]
 # Maximum acceptable commute time in minutes. Commutes longer than this score 0.
-max_commute_mins = 35
+max_commute_mins = 40
 # Number of days before a property's freshness score decays to 0.
 freshness_decay_days = 7
 
