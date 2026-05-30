@@ -18,13 +18,9 @@ freshness = 0.25
 
 [scoring.thresholds]
 # Maximum acceptable commute time in minutes. Commutes longer than this score 0.
-max_commute_mins = 60
+max_commute_mins = 35
 # Number of days before a property's freshness score decays to 0.
 freshness_decay_days = 7
-
-[cache]
-# Number of days before local 'vibe' AI cache is considered stale.
-vibe_ttl_days = 30
 
 [api.gemini]
 # The Gemini Model to use for evaluating area vibes.
@@ -48,6 +44,10 @@ rate_limit_interval_seconds = 1.5
 url = "https://overpass.openstreetmap.fr/api/interpreter"
 # Radius in meters to search for local amenities (e.g. gyms, supermarkets).
 search_radius_meters = 1000
+
+[cache]
+# Number of days before local 'vibe' AI cache is considered stale.
+vibe_ttl_days = 30
 
 [network]
 # User agent used when scraping property portals.
