@@ -12,7 +12,7 @@ class TestVibeClientRetry(unittest.TestCase):
     @patch('subprocess.run')
     def test_fetch_from_gemini_retries_on_failure(self, mock_run, mock_sleep):
         # Fail twice, succeed on third try
-        error = subprocess.CalledProcessError(1, ["gemini", "--model", "gemini-3.1-flash-lite", "--skip-trust", "--prompt", "dummy"])
+        error = subprocess.CalledProcessError(1, ["gemini", "--model", "gemini-3.5-flash-lite", "--skip-trust", "--prompt", "dummy"])
         success = MagicMock()
         success.stdout = '{"SW14": {"score": 8}}'
         success.returncode = 0
@@ -35,7 +35,7 @@ class TestVibeClientRetry(unittest.TestCase):
     @patch('subprocess.run')
     def test_fetch_from_gemini_gives_up_after_max_retries(self, mock_run, mock_sleep):
         # Always fail
-        error = subprocess.CalledProcessError(1, ["gemini", "--model", "gemini-3.1-flash-lite", "--skip-trust", "--prompt", "dummy"])
+        error = subprocess.CalledProcessError(1, ["gemini", "--model", "gemini-3.5-flash-lite", "--skip-trust", "--prompt", "dummy"])
         mock_run.side_effect = error
         
         result = self.client._fetch_from_gemini(["SW14"])

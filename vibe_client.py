@@ -20,7 +20,7 @@ class VibeClient:
         manager = ConfigManager()
         self.config = manager.load_config()
         self.ttl_days = self.config.get("cache", {}).get("vibe_ttl_days", 30)
-        self.model = self.config.get("api", {}).get("gemini", {}).get("model", "gemini-3.1-flash-lite")
+        self.model = self.config.get("api", {}).get("gemini", {}).get("model", "gemini-3.5-flash-lite")
 
     def _load_cache(self) -> Dict[str, Any]:
         """Loads the cache from disk."""
@@ -177,7 +177,7 @@ Example:
         for attempt in range(max_retries + 1):
             try:
                 result = subprocess.run(
-                    ["gemini", "--model", "gemini-3.1-flash-lite", "--skip-trust", "--prompt", prompt],
+                    ["gemini", "--model", self.model, "--skip-trust", "--prompt", prompt],
                     capture_output=True,
                     text=True,
                     check=True

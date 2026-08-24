@@ -42,7 +42,7 @@ class TestVibeClient(unittest.TestCase):
         args = mock_run.call_args[0][0]
         self.assertEqual(args[0], "gemini")
         self.assertEqual(args[1], "--model")
-        self.assertEqual(args[2], "gemini-3.1-flash-lite")
+        self.assertEqual(args[2], "gemini-3.5-flash-lite")
         self.assertEqual(args[3], "--skip-trust")
         self.assertEqual(args[4], "--prompt")
         self.assertIn("SW14", args[5])
@@ -62,7 +62,7 @@ class TestVibeClient(unittest.TestCase):
     @patch('subprocess.run')
     def test_get_vibe_command_failure(self, mock_run):
         # Mock subprocess error
-        mock_run.side_effect = subprocess.CalledProcessError(1, ["gemini", "--model", "gemini-3.1-flash-lite", "--skip-trust", "--prompt", "dummy"])
+        mock_run.side_effect = subprocess.CalledProcessError(1, ["gemini", "--model", "gemini-3.5-flash-lite", "--skip-trust", "--prompt", "dummy"])
 
         result = self.client.get_vibes(["SW14"])
         

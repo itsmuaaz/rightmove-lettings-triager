@@ -24,7 +24,7 @@ freshness_decay_days = 7
 
 [api.gemini]
 # The Gemini Model to use for evaluating area vibes.
-model = "gemini-3.1-flash-lite"
+model = "gemini-3.5-flash-lite"
 # Define what you consider a "good vibe". This is injected into the AI's prompt.
 custom_criteria = """
 - Transport Connectivity: High PTAL scores and redundancy (Tube, Rail, Overground).
