@@ -1,4 +1,5 @@
 """Utility module for geographical calculations."""
+from __future__ import annotations
 
 import math
 import re

@@ -2,7 +2,7 @@ import unittest
 import os
 import json
 import shutil
-from datetime import datetime
+from datetime import datetime, timedelta
 from unittest.mock import patch, MagicMock
 from tfl_client import TflClient
 
@@ -137,16 +137,17 @@ class TestTflClient(unittest.TestCase):
     @patch("tfl_client.get_next_benchmark_time")
     def test_load_cache_fresh_valid(self, mock_benchmark_time):
         """Test that _load_cache returns cached response when benchmark is still fresh/future."""
-        # Current benchmark time is June 2
-        mock_benchmark_time.return_value = datetime(2026, 6, 2, 9, 0, 0)
+        now = datetime.now()
+        fresh_benchmark = now + timedelta(days=7)
+        mock_benchmark_time.return_value = fresh_benchmark
         
-        # Write a fresh cache entry (benchmark is also June 2)
+        # Write a fresh cache entry
         import json
         key = "fresh_key"
         cache_path = os.path.join(self.test_cache_dir, f"{key}.json")
         fresh_data = {
-            "calculated_at": datetime(2026, 5, 29, 12, 0, 0).isoformat(),
-            "arrival_benchmark": datetime(2026, 6, 2, 9, 0, 0).isoformat(),
+            "calculated_at": now.isoformat(),
+            "arrival_benchmark": fresh_benchmark.isoformat(),
             "response": {"journeys": [{"duration": 30}]}
         }
         with open(cache_path, "w") as f:
@@ -164,22 +165,24 @@ class TestTflClient(unittest.TestCase):
         """Test that cleanup_stale_caches scans the cache dir and deletes expired entries."""
         from tfl_client import cleanup_stale_caches
         
-        # Current benchmark time is June 2
-        mock_benchmark_time.return_value = datetime(2026, 6, 2, 9, 0, 0)
+        now = datetime.now()
+        fresh_benchmark = now + timedelta(days=7)
+        stale_benchmark = now - timedelta(days=7)
+        mock_benchmark_time.return_value = fresh_benchmark
         
-        # 1. Create a stale file (benchmark May 26)
+        # 1. Create a stale file
         stale_path = os.path.join(self.test_cache_dir, "stale_entry.json")
         stale_data = {
-            "arrival_benchmark": datetime(2026, 5, 26, 9, 0, 0).isoformat(),
+            "arrival_benchmark": stale_benchmark.isoformat(),
             "response": {"journeys": []}
         }
         with open(stale_path, "w") as f:
             json.dump(stale_data, f)
             
-        # 2. Create a fresh file (benchmark June 2)
+        # 2. Create a fresh file
         fresh_path = os.path.join(self.test_cache_dir, "fresh_entry.json")
         fresh_data = {
-            "arrival_benchmark": datetime(2026, 6, 2, 9, 0, 0).isoformat(),
+            "arrival_benchmark": fresh_benchmark.isoformat(),
             "response": {"journeys": []}
         }
         with open(fresh_path, "w") as f:

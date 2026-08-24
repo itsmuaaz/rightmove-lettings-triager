@@ -1,7 +1,10 @@
 import unittest
 from unittest.mock import patch, mock_open, MagicMock
 import os
-import tomllib
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
 from config_manager import ConfigManager
 
 class TestTomlConfigManager(unittest.TestCase):

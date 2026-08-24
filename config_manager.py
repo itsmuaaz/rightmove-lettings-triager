@@ -4,7 +4,10 @@ import shutil
 try:
     import tomllib
 except ImportError:
-    pass # Should be Python 3.11+
+    try:
+        import tomli as tomllib
+    except ImportError:
+        tomllib = None
 from typing import Dict, Any
 
 class ConfigManager:
